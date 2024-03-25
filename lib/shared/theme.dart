@@ -20,7 +20,10 @@ TextStyle WhiteTextStyle = GoogleFonts.inter(
   color: whiteContainerColor,
 );
 
-FontWeight regular = FontWeight.w400;
+TextStyle greenTextStyle = GoogleFonts.inter(
+  color: greenColor,
+);
+
 FontWeight medium = FontWeight.w500;
 FontWeight semiBold = FontWeight.w600;
 FontWeight bold = FontWeight.w700;

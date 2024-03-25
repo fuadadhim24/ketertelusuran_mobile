@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/masuk_page.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -15,7 +17,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   CarouselController carouselController = CarouselController();
 
   List<String> titles = [
-    'Meningkatkan pelayanan\nlebih baik',
+    'Meningkatkan pelayanan\nkamu lebih baik',
     'Buat Jaminan\nMutu Produk Anda',
     'Mulai Bersama',
   ];
@@ -62,7 +64,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               carouselController: carouselController,
             ),
             const SizedBox(
-              height: 80,
+              height: 70,
             ),
             Container(
               margin: const EdgeInsets.symmetric(
@@ -102,27 +104,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   currentIndex == 2
                       ? Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: TextButton(
-                                onPressed: () {
-                                  carouselController.nextPage();
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: greenColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(56),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Mulai',
-                                  style: WhiteTextStyle.copyWith(
-                                    fontSize: 16,
-                                    fontWeight: semiBold,
-                                  ),
-                                ),
-                              ),
+                            CustomFilledButton(
+                              title: 'Mulai Sekarang',
+                              onPressed: () {},
                             ),
                             const SizedBox(
                               height: 20,
@@ -131,7 +115,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               height: 24,
                               width: double.infinity,
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Masuk(),
+                                    ),
+                                  );
+                                },
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
                                 ),
