@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 
 class Masuk extends StatelessWidget {
   const Masuk({super.key});
@@ -49,54 +50,16 @@ class Masuk extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // NOTE: EMAIL INPUT
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email Address',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        contentPadding: const EdgeInsets.all(12),
-                      ),
-                    )
-                  ],
+                const CustomFormField(
+                  title: 'Alamat Email',
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 // NOTE: PASSWORD INPUT
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Password',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: medium,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        contentPadding: const EdgeInsets.all(12),
-                      ),
-                    )
-                  ],
+                const CustomFormField(
+                  title: 'Password',
+                  obscureText: true,
                 ),
                 const SizedBox(
                   height: 8,
