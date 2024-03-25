@@ -18,8 +18,8 @@ class CustomFilledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
-      width: double.infinity,
+      height: height,
+      width: width,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
@@ -33,6 +33,41 @@ class CustomFilledButton extends StatelessWidget {
           style: WhiteTextStyle.copyWith(
             fontSize: 16,
             fontWeight: semiBold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomTextButton extends StatelessWidget {
+  final String title;
+  final double width;
+  final double height;
+  final VoidCallback? onPressed;
+
+  const CustomTextButton({
+    super.key,
+    required this.title,
+    this.width = double.infinity,
+    this.height = 24,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          title,
+          style: GreyTextStyle.copyWith(
+            fontSize: 16,
           ),
         ),
       ),

@@ -111,28 +111,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             const SizedBox(
                               height: 20,
                             ),
-                            SizedBox(
-                              height: 24,
-                              width: double.infinity,
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Masuk(),
-                                    ),
-                                  );
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                ),
-                                child: Text(
-                                  'Masuk',
-                                  style: GreyTextStyle.copyWith(
-                                    fontSize: 16,
+                            CustomTextButton(
+                              title: 'Masuk',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Masuk(),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
                           ],
                         )
@@ -178,27 +166,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               ),
                             ),
                             const Spacer(),
-                            SizedBox(
-                              height: 50,
+                            CustomFilledButton(
                               width: 150,
-                              child: TextButton(
-                                onPressed: () {
-                                  carouselController.nextPage();
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: greenColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(56),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Berikutnya',
-                                  style: WhiteTextStyle.copyWith(
-                                    fontSize: 16,
-                                    fontWeight: semiBold,
-                                  ),
-                                ),
-                              ),
+                              title: 'Berikutnya',
+                              onPressed: () {
+                                carouselController.nextPage();
+                              },
                             ),
                           ],
                         ),

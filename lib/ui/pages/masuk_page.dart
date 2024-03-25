@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
 class Masuk extends StatelessWidget {
   const Masuk({super.key});
@@ -110,25 +111,9 @@ class Masuk extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: greenColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(56),
-                      ),
-                    ),
-                    child: Text(
-                      'Masuk',
-                      style: WhiteTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                      ),
-                    ),
-                  ),
+                CustomFilledButton(
+                  title: 'Masuk',
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -136,21 +121,9 @@ class Masuk extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          SizedBox(
-            height: 24,
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-              ),
-              child: Text(
-                'Buat Akun Baru',
-                style: GreyTextStyle.copyWith(
-                  fontSize: 16,
-                ),
-              ),
-            ),
+          CustomTextButton(
+            title: 'Buat Akun Barun',
+            onPressed: () {},
           ),
         ],
       ),
