@@ -3,8 +3,8 @@ import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignUpSetProfilePage extends StatelessWidget {
+  const SignUpSetProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,47 +47,63 @@ class SignUpPage extends StatelessWidget {
               color: whiteContainerColor,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // NOTE: Nama INPUT
-                const CustomFormField(
-                  title: 'Nama Lengkap',
+                // Container(
+                //   width: 120,
+                //   height: 120,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     color: whiteBackgroundColor,
+                //   ),
+                //   child: Center(
+                //     child: Image.asset(
+                //       'assets/ic_upload_cloud.png',
+                //       width: 32,
+                //     ),
+                //   ),
+                // ),
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/ic_profile.jpg',
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                // NOTE: EMAIL INPUT
-                const CustomFormField(
-                  title: 'Alamat Email',
+                Text(
+                  'Vanda Laura',
+                  style: BlackTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: medium,
+                  ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 30,
                 ),
-                // NOTE: PASSWORD INPUT
                 const CustomFormField(
-                  title: 'Password',
-                  obscureText: true,
+                  title: 'Buat PIN (6 nomer digit)',
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 CustomFilledButton(
                   title: 'Berikutnya',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/sign-up-set-profile');
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
           ),
           const SizedBox(
             height: 50,
-          ),
-          CustomTextButton(
-            title: 'Masuk',
-            onPressed: () {
-              Navigator.pushNamed(context, '/sign-in');
-            },
           ),
         ],
       ),
