@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
-import 'package:ketertelusuran_mobile/ui/pages/masuk_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -114,12 +114,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             CustomTextButton(
                               title: 'Masuk',
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Masuk(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, '/sign-in');
                               },
                             ),
                           ],
