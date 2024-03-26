@@ -16,9 +16,25 @@ class HomePage extends StatelessWidget {
           horizontal: 14,
         ),
         children: [
-          const SizedBox(
-            height: 64,
+          buildHomeHeading(),
+          buildCultivation(),
+          buildServices(context),
+          buildNotes(),
+          SizedBox(
+            height: 30,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHomeHeading() {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 64,
+      ),
+      child: Column(
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -63,9 +79,18 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 36,
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCultivation() {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 36,
+      ),
+      child: Column(
+        children: [
           Row(
             children: [
               Expanded(
@@ -234,9 +259,19 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildServices(context) {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 30,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
             'Fitur',
             style: BlackTextStyle.copyWith(
@@ -360,9 +395,18 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 30,
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildNotes() {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 50,
+      ),
+      child: Column(
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -389,16 +433,18 @@ class HomePage extends StatelessWidget {
               Container(
                 width: 94,
                 height: 22,
-                color: whiteContainerColor,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13),
+                  color: whiteContainerColor,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       width: 13,
                       height: 13,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(13),
-                        image: const DecorationImage(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
                           image: AssetImage('assets/ic_fire.png'),
                         ),
                       ),
@@ -416,7 +462,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Container(
             padding: const EdgeInsets.symmetric(
@@ -455,7 +501,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 35,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
