@@ -76,7 +76,13 @@ class SignInPage extends StatelessWidget {
                 ),
                 CustomFilledButton(
                   title: 'Masuk',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/home',
+                      (route) => false,
+                    );
+                  },
                 ),
               ],
             ),
