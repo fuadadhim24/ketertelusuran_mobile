@@ -7,6 +7,7 @@ Color txtBlackColor = const Color(0xff14193f);
 Color txtGreyColor = const Color(0xffA4ABAE);
 Color RedColor = const Color(0xffAD2323);
 Color greenColor = const Color(0xff588157);
+Color yellowColor = const Color(0xffEEF21E);
 
 TextStyle GreyTextStyle = GoogleFonts.inter(
   color: txtGreyColor,
