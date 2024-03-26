@@ -3,8 +3,8 @@ import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 
-class SignUpSetProfilePage extends StatelessWidget {
-  const SignUpSetProfilePage({super.key});
+class SignUpSetKtpPage extends StatelessWidget {
+  const SignUpSetKtpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class SignUpSetProfilePage extends StatelessWidget {
             ),
           ),
           Text(
-            'Bergabung untuk\nMeningkatkan Pelayanan\nLebih Baik',
+            'Verifikasi\nAkun Anda',
             style: BlackTextStyle.copyWith(
               fontSize: 20,
               fontWeight: semiBold,
@@ -49,51 +49,45 @@ class SignUpSetProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Container(
-                //   width: 120,
-                //   height: 120,
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     color: whiteBackgroundColor,
-                //   ),
-                //   child: Center(
-                //     child: Image.asset(
-                //       'assets/ic_upload_cloud.png',
-                //       width: 32,
-                //     ),
-                //   ),
-                // ),
                 Container(
                   width: 120,
                   height: 120,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/ic_profile.jpg',
-                      ),
+                    color: whiteBackgroundColor,
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/ic_upload_cloud.png',
+                      width: 32,
                     ),
                   ),
                 ),
+                // Container(
+                //   width: 120,
+                //   height: 120,
+                //   decoration: const BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     image: DecorationImage(
+                //       fit: BoxFit.cover,
+                //       image: AssetImage(
+                //         'assets/ic_profile.jpg',
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 16,
                 ),
                 Text(
-                  'Vanda Laura',
+                  'KTP/Kartu Identitas',
                   style: BlackTextStyle.copyWith(
                     fontSize: 18,
                     fontWeight: medium,
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
-                ),
-                const CustomFormField(
-                  title: 'Buat PIN (6 nomer digit)',
-                ),
-                const SizedBox(
-                  height: 30,
+                  height: 50,
                 ),
                 CustomFilledButton(
                   title: 'Berikutnya',
@@ -108,7 +102,11 @@ class SignUpSetProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 60,
+          ),
+          CustomTextButton(
+            title: 'Lewati untuk sekarang',
+            onPressed: () {},
           ),
         ],
       ),
