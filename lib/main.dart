@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 
 void main() => runApp(MyApp());
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashPage(),
         '/onboarding': (context) => const OnBoardingPage(),
-        '/sign-in': (context) => const SignIn(),
+        '/sign-in': (context) => const SignInPage(),
+        '/sign-up': (context) => const SignUpPage(),
       },
     );
   }

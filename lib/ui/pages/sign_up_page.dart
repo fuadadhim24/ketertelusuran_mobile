@@ -3,8 +3,8 @@ import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class SignInPage extends StatelessWidget {
             height: 50,
             margin: const EdgeInsets.only(
               top: 100,
-              bottom: 100,
+              bottom: 65,
             ),
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -31,7 +31,7 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           Text(
-            'Masuk &\nTingkatkan Pelayanan Kamu\nLebih Baik',
+            'Bergabung untuk\nMeningkatkan Pelayanan\nLebih Baik',
             style: BlackTextStyle.copyWith(
               fontSize: 20,
               fontWeight: semiBold,
@@ -49,6 +49,13 @@ class SignInPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // NOTE: Nama INPUT
+                const CustomFormField(
+                  title: 'Nama Lengkap',
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 // NOTE: EMAIL INPUT
                 const CustomFormField(
                   title: 'Alamat Email',
@@ -62,20 +69,10 @@ class SignInPage extends StatelessWidget {
                   obscureText: true,
                 ),
                 const SizedBox(
-                  height: 8,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Lupa Password?',
-                    style: greenTextStyle,
-                  ),
-                ),
-                const SizedBox(
                   height: 30,
                 ),
                 CustomFilledButton(
-                  title: 'Masuk',
+                  title: 'Berikutnya',
                   onPressed: () {},
                 ),
               ],
@@ -85,9 +82,9 @@ class SignInPage extends StatelessWidget {
             height: 50,
           ),
           CustomTextButton(
-            title: 'Buat Akun Baru',
+            title: 'Masuk',
             onPressed: () {
-              Navigator.pushNamed(context, '/sign-up');
+              Navigator.pushNamed(context, '/sign-in');
             },
           ),
         ],

@@ -106,7 +106,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           children: [
                             CustomFilledButton(
                               title: 'Mulai Sekarang',
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/sign-up');
+                              },
                             ),
                             const SizedBox(
                               height: 20,
