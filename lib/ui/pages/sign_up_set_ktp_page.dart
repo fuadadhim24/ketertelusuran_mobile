@@ -94,7 +94,7 @@ class SignUpSetKtpPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
-                      '/sign-up-set-ktp',
+                      '/sign-up-success',
                     );
                   },
                 ),
@@ -106,7 +106,12 @@ class SignUpSetKtpPage extends StatelessWidget {
           ),
           CustomTextButton(
             title: 'Lewati untuk sekarang',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/sign-up-success',
+              );
+            },
           ),
         ],
       ),

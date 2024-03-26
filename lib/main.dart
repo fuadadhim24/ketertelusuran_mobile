@@ -5,6 +5,7 @@ import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_set_ktp_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_set_profile_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/sign_up_success.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 
 void main() => runApp(MyApp());
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/sign-up': (context) => const SignUpPage(),
         '/sign-up-set-profile': (context) => const SignUpSetProfilePage(),
         '/sign-up-set-ktp': (context) => const SignUpSetKtpPage(),
+        '/sign-up-success': (context) => const SignUpSuccessPage(),
       },
     );
   }
