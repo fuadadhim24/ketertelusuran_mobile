@@ -22,6 +22,14 @@ class SignUpSuccessPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(
+              height: 8,
+            ),
+            Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: 64.0,
+            ),
+            const SizedBox(
               height: 26,
             ),
             Text(
