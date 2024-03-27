@@ -8,6 +8,10 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController fullNameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       backgroundColor: whiteBackgroundColor,
       body: ListView(
@@ -50,26 +54,29 @@ class SignUpPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // NOTE: Nama INPUT
-                const CustomFormField(
+                CustomFormField(
                   title: 'Nama Lengkap',
                   typeFormField: 0,
+                  controller: fullNameController,
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 // NOTE: EMAIL INPUT
-                const CustomFormField(
+                CustomFormField(
                   title: 'Alamat Email',
                   typeFormField: 0,
+                  controller: emailController,
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 // NOTE: PASSWORD INPUT
-                const CustomFormField(
+                CustomFormField(
                   title: 'Password',
                   obscureText: true,
                   typeFormField: 1,
+                  controller: passwordController,
                 ),
                 const SizedBox(
                   height: 30,
@@ -77,7 +84,34 @@ class SignUpPage extends StatelessWidget {
                 CustomFilledButton(
                   title: 'Berikutnya',
                   onPressed: () {
-                    Navigator.pushNamed(context, '/sign-up-set-profile');
+                    if (fullNameController.text.isEmpty &&
+                        emailController.text.isEmpty &&
+                        passwordController.text.isEmpty) {
+                      _showWarningSnackBar(context,
+                          'Nama lengkap, alamat email, dan password belum terisi');
+                    } else if (fullNameController.text.isEmpty &&
+                        emailController.text.isEmpty) {
+                      _showWarningSnackBar(
+                          context, 'Nama lengkap dan alamat email belum terisi');
+                    } else if (fullNameController.text.isEmpty &&
+                        passwordController.text.isEmpty) {
+                      _showWarningSnackBar(
+                          context, 'Nama lengkap dan password belum terisi');
+                    } else if (emailController.text.isEmpty &&
+                        passwordController.text.isEmpty) {
+                      _showWarningSnackBar(
+                          context, 'Alamat email dan password belum terisi');
+                    } else if (fullNameController.text.isEmpty) {
+                      _showWarningSnackBar(
+                          context, 'Nama lengkap belum terisi');
+                    } else if (emailController.text.isEmpty) {
+                      _showWarningSnackBar(
+                          context, 'Alamat email belum terisi');
+                    } else if (passwordController.text.isEmpty) {
+                      _showWarningSnackBar(context, 'Password belum terisi');
+                    } else {
+                      Navigator.pushNamed(context, '/sign-up-set-profile');
+                    }
                   },
                 ),
               ],
@@ -98,5 +132,20 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar peringatan
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2),
+      backgroundColor: Colors.red,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
