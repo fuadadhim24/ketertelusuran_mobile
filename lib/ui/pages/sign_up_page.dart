@@ -52,6 +52,7 @@ class SignUpPage extends StatelessWidget {
                 // NOTE: Nama INPUT
                 const CustomFormField(
                   title: 'Nama Lengkap',
+                  typeFormField: 0,
                 ),
                 const SizedBox(
                   height: 16,
@@ -59,6 +60,7 @@ class SignUpPage extends StatelessWidget {
                 // NOTE: EMAIL INPUT
                 const CustomFormField(
                   title: 'Alamat Email',
+                  typeFormField: 0,
                 ),
                 const SizedBox(
                   height: 16,
@@ -67,6 +69,7 @@ class SignUpPage extends StatelessWidget {
                 const CustomFormField(
                   title: 'Password',
                   obscureText: true,
+                  typeFormField: 1,
                 ),
                 const SizedBox(
                   height: 30,
@@ -89,6 +92,9 @@ class SignUpPage extends StatelessWidget {
               Navigator.pushNamed(context, '/sign-in');
             },
           ),
+          const SizedBox(
+            height: 30,
+          )
         ],
       ),
     );

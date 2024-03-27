@@ -52,6 +52,7 @@ class SignInPage extends StatelessWidget {
                 // NOTE: EMAIL INPUT
                 const CustomFormField(
                   title: 'Alamat Email',
+                  typeFormField: 0,
                 ),
                 const SizedBox(
                   height: 16,
@@ -60,6 +61,7 @@ class SignInPage extends StatelessWidget {
                 const CustomFormField(
                   title: 'Password',
                   obscureText: true,
+                  typeFormField: 1,
                 ),
                 const SizedBox(
                   height: 8,
