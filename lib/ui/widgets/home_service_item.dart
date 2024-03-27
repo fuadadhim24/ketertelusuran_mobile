@@ -15,9 +15,9 @@ class CustomHomeService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
+    return GestureDetector(
+      onTap: onTap,
+        child: Container(
           width: (MediaQuery.of(context).size.width - 40) / 3,
           height: 101,
           decoration: BoxDecoration(
@@ -45,7 +45,6 @@ class CustomHomeService extends StatelessWidget {
             ],
           ),
         ),
-      ],
     );
   }
 }

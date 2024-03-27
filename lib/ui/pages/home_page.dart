@@ -300,7 +300,12 @@ class HomePage extends StatelessWidget {
               CustomHomeService(
                 title: 'Grade',
                 iconUrl: 'assets/ic_grade.png',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/grade',
+                  );
+                },
               ),
               CustomHomeService(
                 title: 'Ketertelusuran',
