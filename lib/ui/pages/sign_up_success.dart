@@ -2,8 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
-class SignUpSuccessPage extends StatelessWidget {
-  const SignUpSuccessPage({super.key});
+class SignUpSuccessPage extends StatefulWidget {
+  const SignUpSuccessPage({Key? key}) : super(key: key);
+
+  @override
+  _SignUpSuccessPageState createState() => _SignUpSuccessPageState();
+}
+
+class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
+  bool _showCheckmark = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Delaying the appearance of the checkmark for demonstration purposes
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _showCheckmark = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +42,14 @@ class SignUpSuccessPage extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 64.0,
+            AnimatedOpacity(
+              opacity: _showCheckmark ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 500),
+              child: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 64.0,
+              ),
             ),
             const SizedBox(
               height: 26,
@@ -45,17 +67,36 @@ class SignUpSuccessPage extends StatelessWidget {
             CustomFilledButton(
               width: 183,
               title: 'Mulai Sekarang',
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/home',
-                  (route) => false,
-                );
-              },
+              onPressed: _showCheckmark
+                  ? () {
+                      _showSuccessSnackBar(context);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/home',
+                        (route) => false,
+                      );
+                    }
+                  : null,
             ),
           ],
         ),
       ),
     );
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar saat berhasil Daftar
+  void _showSuccessSnackBar(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Berhasil Daftar! Selamat Datang'),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar); // Menampilkan notifikasi
   }
 }
