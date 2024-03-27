@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -291,107 +292,20 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: (MediaQuery.of(context).size.width - 40) / 3,
-                height: 101,
-                decoration: BoxDecoration(
-                  color: whiteContainerColor,
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/ic_varietas.png',
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Text(
-                      'Varietas Padi',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: semiBold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
+              CustomHomeService(
+                title: 'Varietas Padi',
+                iconUrl: 'assets/ic_varietas.png',
+                onTap: () {},
               ),
-              Container(
-                width: (MediaQuery.of(context).size.width - 40) / 3,
-                height: 101,
-                decoration: BoxDecoration(
-                  color: whiteContainerColor,
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/ic_grade.png',
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Text(
-                      'Grade',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: semiBold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
+              CustomHomeService(
+                title: 'Grade',
+                iconUrl: 'assets/ic_grade.png',
+                onTap: () {},
               ),
-              Container(
-                width: (MediaQuery.of(context).size.width - 40) / 3,
-                height: 101,
-                decoration: BoxDecoration(
-                  color: whiteContainerColor,
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/ic_ketertelusuran.png',
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Text(
-                      'Ketertelusuran',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: semiBold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
+              CustomHomeService(
+                title: 'Ketertelusuran',
+                iconUrl: 'assets/ic_ketertelusuran.png',
+                onTap: () {},
               ),
             ],
           ),
