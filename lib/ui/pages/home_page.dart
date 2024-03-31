@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class HomePage extends StatelessWidget {
@@ -295,7 +296,13 @@ class HomePage extends StatelessWidget {
               CustomHomeService(
                 title: 'Varietas Padi',
                 iconUrl: 'assets/ic_varietas.png',
-                onTap: () {},
+                onTap: () {
+                  // Routing ke halaman VarietasPadiPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VarietasPadiPage()),
+                  );
+                },
               ),
               CustomHomeService(
                 title: 'Grade',
