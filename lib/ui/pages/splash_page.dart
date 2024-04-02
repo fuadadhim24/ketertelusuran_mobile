@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Timer(const Duration(seconds: 2), () {
-      Get.off('/onboarding');
+      Get.offNamed('/onboarding');
     });
   }
 

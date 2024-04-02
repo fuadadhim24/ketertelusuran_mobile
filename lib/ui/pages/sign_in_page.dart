@@ -5,7 +5,6 @@ import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
-import 'package:page_transition/page_transition.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key});
@@ -101,10 +100,8 @@ class SignInPage extends StatelessWidget {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
                       _showSuccessSnackBar(context);
-                      Get.to(
+                      Get.toNamed(
                         '/home',
-                        transition: Transition.fade,
-                        duration: Duration(milliseconds: 500),
                       );
                     }
                   },
@@ -118,10 +115,8 @@ class SignInPage extends StatelessWidget {
           CustomTextButton(
             title: 'Buat Akun Baru',
             onPressed: () {
-              Get.to(
+              Get.toNamed(
                 '/sign-up',
-                transition: Transition.fade,
-                duration: Duration(milliseconds: 500),
               );
             },
           ),

@@ -5,7 +5,6 @@ import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
 import 'package:ketertelusuran_mobile/ui/pages/grade_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/ketertelusuran.dart';
-import 'package:ketertelusuran_mobile/ui/pages/try_ketertelusuran_page..dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
@@ -35,6 +34,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/sign-up-success', page: ()=> const SignUpSuccessPage()),
         GetPage(name: '/home', page: ()=> const HomePage()),
         GetPage(name: '/grade', page: ()=> const GradePage()),
+        GetPage(name: '/ketertelusuran', page: ()=> const KetertelusuranPage()),
         GetPage(name: '/varietas-padi', page: ()=> const VarietasPadiPage()),
 
       ],
