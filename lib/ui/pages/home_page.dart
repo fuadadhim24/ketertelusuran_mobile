@@ -7,30 +7,166 @@ import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteBackgroundColor,
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-        ),
+      drawer: buildSidebar(), // Menggunakan Drawer untuk sidebar
+      body: Row(
         children: [
-          buildHomeHeading(),
-          buildCultivation(),
-          buildServices(context),
-          buildNotes(),
-          SizedBox(
-            height: 30,
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+              ),
+              children: [
+                buildHomeHeading(context),
+                buildCultivation(),
+                buildServices(context),
+                buildNotes(),
+                SizedBox(
+                  height: 30,
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget buildHomeHeading() {
+  Drawer buildSidebar() {
+    return Drawer(
+      child: Container(
+        width: 180, // Increased width of the Drawer
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Logo
+            Container(
+              width: 100,
+              height: 100,
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/ic_logo_2.png'),
+                ),
+              ),
+            ),
+            // Tambah Lahan Button
+            Container(
+              width: 160, // Increased width of the Tambah Lahan Button
+              height: 50, // Increased height of the Tambah Lahan Button
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25), // Rounded corners
+                color: greenColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(Icons.landscape, color: Colors.white),
+                  Text(
+                    'Tambah Lahan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(Icons.add, color: Colors.white),
+                ],
+              ),
+            ),
+            // Pembatas
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.grey[400],
+              margin: EdgeInsets.symmetric(vertical: 10),
+            ),
+            // Text Tambah Sawah
+            Text(
+              'Daftar Sawah',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            // Pembatas
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.grey[400],
+              margin: EdgeInsets.symmetric(vertical: 10),
+            ),
+            // List of Lahan
+            SizedBox(height: 20),
+            buildLahanButton('Sawah A'),
+            buildLahanButton('Sawah B'),
+            buildLahanButton('Sawah C'),
+            buildLahanButton('Sawah D'),
+            buildLahanButton('Sawah E'),
+            // You can add more lahan buttons here
+
+            // Spacer
+            Spacer(),
+
+            // Keluar Button
+            GestureDetector(
+              onTap: () {
+                // Implement your sign out logic here
+                // For example:
+                // Navigator.pop(context); // Close the drawer
+                // Navigator.pushReplacementNamed(context, '/login'); // Navigate to login screen
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.exit_to_app, color: Colors.black),
+                  SizedBox(width: 10),
+                  Text(
+                    'Keluar',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildLahanButton(String lahanName) {
+    return Container(
+      width: 160, // Increased width of the Lahan buttons
+      height: 50, // Increased height of the Lahan buttons
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25), // Rounded corners
+        color: Colors.grey[300],
+      ),
+      child: Center(
+        child: Text(
+          lahanName,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildHomeHeading(context) {
     return Container(
       margin: const EdgeInsets.only(
         top: 64,
@@ -40,21 +176,30 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 24,
-                width: 24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/ic_menu.png'),
-                  ),
-                ),
+              Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/ic_menu.png'),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               Text(
                 'Sawah A',
                 textAlign: TextAlign.center,
                 style: BlackTextStyle.copyWith(
                   fontSize: 20,
-                  fontWeight: semiBold,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Container(
@@ -266,7 +411,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget buildServices(context) {
+  Widget buildServices(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(
         top: 30,
@@ -480,30 +625,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   children: [
-                    //     Container(
-                    //       margin: const EdgeInsets.only(
-                    //         right: 5,
-                    //       ),
-                    //       width: 24,
-                    //       height: 24,
-                    //       decoration: const BoxDecoration(
-                    //         image: DecorationImage(
-                    //           image: AssetImage(
-                    //             'assets/ic_forward.png',
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Text(
-                    //       '-21 h fase berikutnya',
-                    //       style: BlackTextStyle.copyWith(
-                    //         fontSize: 11,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
                 const SizedBox(
