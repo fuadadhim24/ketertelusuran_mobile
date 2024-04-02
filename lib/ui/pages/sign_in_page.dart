@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:page_transition/page_transition.dart';
+
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key});
 
@@ -14,7 +16,6 @@ class SignInPage extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
@@ -43,7 +44,7 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 52,
           ),
           Container(
             padding: const EdgeInsets.all(22),
@@ -54,6 +55,9 @@ class SignInPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 16,
+                ),
                 // NOTE: EMAIL INPUT
                 CustomFormField(
                   title: 'Alamat Email',
@@ -61,7 +65,7 @@ class SignInPage extends StatelessWidget {
                   controller: emailController,
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 36,
                 ),
                 // NOTE: PASSWORD INPUT
                 CustomFormField(
@@ -71,7 +75,7 @@ class SignInPage extends StatelessWidget {
                   controller: passwordController,
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -81,7 +85,7 @@ class SignInPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 24,
                 ),
                 CustomFilledButton(
                   title: 'Masuk',
@@ -91,18 +95,16 @@ class SignInPage extends StatelessWidget {
                       _showWarningSnackBar(
                           context, 'Password dan alamat email belum terisi');
                     } else if (emailController.text.isEmpty) {
-                      _showWarningSnackBar(context, 'Alamat email belum terisi');
+                      _showWarningSnackBar(
+                          context, 'Alamat email belum terisi');
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
                       _showSuccessSnackBar(context);
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          duration: const Duration(milliseconds: 500),
-                          child: HomePage(),
-                        ),
+                      Get.to(
+                        '/home',
+                        transition: Transition.fade,
+                        duration: Duration(milliseconds: 500),
                       );
                     }
                   },
@@ -111,18 +113,15 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 16,
           ),
           CustomTextButton(
             title: 'Buat Akun Baru',
             onPressed: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.fade,
-                  duration: const Duration(milliseconds: 500),
-                  child: SignUpPage(),
-                ),
+              Get.to(
+                '/sign-up',
+                transition: Transition.fade,
+                duration: Duration(milliseconds: 500),
               );
             },
           ),

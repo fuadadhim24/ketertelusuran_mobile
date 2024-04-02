@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
@@ -26,7 +27,6 @@ class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,11 +70,7 @@ class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
               onPressed: _showCheckmark
                   ? () {
                       _showSuccessSnackBar(context);
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/home',
-                        (route) => false,
-                      );
+                      Get.off('/home');
                     }
                   : null,
             ),

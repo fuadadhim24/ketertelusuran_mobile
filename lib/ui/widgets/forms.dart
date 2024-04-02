@@ -35,15 +35,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(
-        //   widget.title,
-        //   style: BlackTextStyle.copyWith(
-        //     fontWeight: medium,
-        //   ),
-        // ),
-        const SizedBox(
-          height: 8,
-        ),
         typeFormField == 1
             ? TextFormField(
                 obscureText: obscureText,

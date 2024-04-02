@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
@@ -31,7 +32,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -107,11 +107,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             CustomFilledButton(
                               title: 'Mulai Sekarang',
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/sign-up',
-                                  (route) => false,
-                                );
+                                Get.offNamed('/sign-up');
                               },
                             ),
                             const SizedBox(
@@ -120,11 +116,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             CustomTextButton(
                               title: 'Masuk',
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/sign-in',
-                                  (route) => false,
-                                );
+                                Get.offNamed('/sign-in');
                               },
                             ),
                           ],

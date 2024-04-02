@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
@@ -9,7 +10,6 @@ class SignUpSetProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
@@ -95,15 +95,12 @@ class SignUpSetProfilePage extends StatelessWidget {
                   typeFormField: 1,
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 24,
                 ),
                 CustomFilledButton(
                   title: 'Berikutnya',
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/sign-up-set-ktp',
-                    );
+                    Get.to('/sign-up-set-ktp');
                   },
                 ),
               ],

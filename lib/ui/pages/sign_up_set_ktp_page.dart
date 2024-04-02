@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
@@ -9,7 +10,6 @@ class SignUpSetKtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
@@ -63,19 +63,6 @@ class SignUpSetKtpPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Container(
-                //   width: 120,
-                //   height: 120,
-                //   decoration: const BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     image: DecorationImage(
-                //       fit: BoxFit.cover,
-                //       image: AssetImage(
-                //         'assets/ic_profile.jpg',
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 16,
                 ),
@@ -87,30 +74,24 @@ class SignUpSetKtpPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 24,
                 ),
                 CustomFilledButton(
                   title: 'Berikutnya',
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/sign-up-success',
-                    );
+                    Get.to('/sign-up-success');
                   },
                 ),
               ],
             ),
           ),
           const SizedBox(
-            height: 60,
+            height: 16,
           ),
           CustomTextButton(
             title: 'Lewati untuk sekarang',
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/sign-up-success',
-              );
+              Get.to('/sign-up-success');
             },
           ),
         ],

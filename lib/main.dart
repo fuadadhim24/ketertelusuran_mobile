@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
 import 'package:ketertelusuran_mobile/ui/pages/grade_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/ketertelusuran.dart';
+import 'package:ketertelusuran_mobile/ui/pages/try_ketertelusuran_page..dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
@@ -12,7 +15,7 @@ import 'package:ketertelusuran_mobile/ui/pages/sign_up_success.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

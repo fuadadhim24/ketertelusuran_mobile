@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
@@ -13,7 +14,6 @@ class SignUpPage extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
@@ -42,7 +42,7 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 52,
           ),
           Container(
             padding: const EdgeInsets.all(22),
@@ -53,6 +53,9 @@ class SignUpPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 16,
+                ),
                 // NOTE: Nama INPUT
                 CustomFormField(
                   title: 'Nama Lengkap',
@@ -60,7 +63,7 @@ class SignUpPage extends StatelessWidget {
                   controller: fullNameController,
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 36,
                 ),
                 // NOTE: EMAIL INPUT
                 CustomFormField(
@@ -69,7 +72,7 @@ class SignUpPage extends StatelessWidget {
                   controller: emailController,
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 36,
                 ),
                 // NOTE: PASSWORD INPUT
                 CustomFormField(
@@ -79,7 +82,7 @@ class SignUpPage extends StatelessWidget {
                   controller: passwordController,
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 24,
                 ),
                 CustomFilledButton(
                   title: 'Berikutnya',
@@ -91,8 +94,8 @@ class SignUpPage extends StatelessWidget {
                           'Nama lengkap, alamat email, dan password belum terisi');
                     } else if (fullNameController.text.isEmpty &&
                         emailController.text.isEmpty) {
-                      _showWarningSnackBar(
-                          context, 'Nama lengkap dan alamat email belum terisi');
+                      _showWarningSnackBar(context,
+                          'Nama lengkap dan alamat email belum terisi');
                     } else if (fullNameController.text.isEmpty &&
                         passwordController.text.isEmpty) {
                       _showWarningSnackBar(
@@ -110,7 +113,7 @@ class SignUpPage extends StatelessWidget {
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
-                      Navigator.pushNamed(context, '/sign-up-set-profile');
+                      Get.to('/sign-up-set-profile');
                     }
                   },
                 ),
@@ -118,16 +121,16 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 16,
           ),
           CustomTextButton(
             title: 'Masuk',
             onPressed: () {
-              Navigator.pushNamed(context, '/sign-in');
+              Get.to('/sign-in');
             },
           ),
           const SizedBox(
-            height: 30,
+            height: 16,
           )
         ],
       ),

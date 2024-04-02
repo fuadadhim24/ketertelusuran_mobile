@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
@@ -119,12 +120,7 @@ class HomePage extends StatelessWidget {
 
             // Keluar Button
             GestureDetector(
-              onTap: () {
-                // Implement your sign out logic here
-                // For example:
-                // Navigator.pop(context); // Close the drawer
-                // Navigator.pushReplacementNamed(context, '/login'); // Navigate to login screen
-              },
+              onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -443,27 +439,22 @@ class HomePage extends StatelessWidget {
                 iconUrl: 'assets/ic_varietas.png',
                 onTap: () {
                   // Routing ke halaman VarietasPadiPage
-                  Navigator.pushNamed(context, '/varietas-padi');
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => VarietasPadiPage()),
-                  // );
+                  Get.toNamed('/varietas-padi');
                 },
               ),
               CustomHomeService(
                 title: 'Grade',
                 iconUrl: 'assets/ic_grade.png',
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/grade',
-                  );
+                  Get.toNamed('/grade');
                 },
               ),
               CustomHomeService(
                 title: 'Ketertelusuran',
                 iconUrl: 'assets/ic_ketertelusuran.png',
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed('/ketertelusuran');
+                },
               ),
             ],
           ),

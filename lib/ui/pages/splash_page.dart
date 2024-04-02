@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 
@@ -18,18 +19,13 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Timer(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/onboarding',
-        (route) => false,
-      );
+      Get.off('/onboarding');
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
       body: Center(
         child: Container(
           height: 50,
