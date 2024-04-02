@@ -443,10 +443,11 @@ class HomePage extends StatelessWidget {
                 iconUrl: 'assets/ic_varietas.png',
                 onTap: () {
                   // Routing ke halaman VarietasPadiPage
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => VarietasPadiPage()),
-                  );
+                  Navigator.pushNamed(context, '/varietas-padi');
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => VarietasPadiPage()),
+                  // );
                 },
               ),
               CustomHomeService(

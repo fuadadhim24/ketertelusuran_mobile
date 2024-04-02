@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
@@ -66,10 +68,12 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                 width: 24,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/ic_menu.png'),
+                    image: AssetImage('assets/ic_back.png'),
                   ),
                 ),
               ),
+              
+              
               Text(
                 'Varietas Padi',
                 textAlign: TextAlign.center,
