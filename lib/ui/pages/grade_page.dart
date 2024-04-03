@@ -10,7 +10,9 @@ class GradePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
+        toolbarHeight: 88,
+        centerTitle: true,
         title: Text(
           'Grade',
           style: BlackTextStyle.copyWith(

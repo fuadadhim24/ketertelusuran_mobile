@@ -223,7 +223,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                             Icon(
                               Icons.cloud,
                               color:
-                                  !isRainySeason ? greenColor : txtBlackColor,
+                                  !isRainySeason ? whiteContainerColor : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
@@ -231,7 +231,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                               'Musim Kemarau',
                               style: TextStyle(
                                 color:
-                                    !isRainySeason ? greenColor : txtBlackColor,
+                                    !isRainySeason ? whiteContainerColor : txtBlackColor,
                                 fontWeight: semiBold,
                                 fontSize: 14,
                               ),
