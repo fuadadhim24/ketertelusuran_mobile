@@ -126,7 +126,7 @@ class SignUpPage extends StatelessWidget {
           CustomTextButton(
             title: 'Masuk',
             onPressed: () {
-              Get.to('/sign-in');
+              Get.toNamed('/sign-in');
             },
           ),
           const SizedBox(
