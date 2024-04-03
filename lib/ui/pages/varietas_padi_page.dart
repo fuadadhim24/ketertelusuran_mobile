@@ -26,23 +26,33 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteBackgroundColor,
+      appBar: AppBar(
+        toolbarHeight: 88,
+        centerTitle: true,
+        title: Text(
+          'Varietas Padi',
+          style: BlackTextStyle.copyWith(
+            fontWeight: semiBold,
+            fontSize: 20,
+          ),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 14,
         ),
         children: [
-          buildHomeHeading(),
+          // buildHomeHeading(),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           buildNotes(),
           SizedBox(
             height: 30,
           ),
-          buildSearchAndFilter(),
+          buildSearchContainer(),
           SizedBox(
-            height: 30,
+            height: 5,
           ),
           buildVarietasPadiContent(),
           SizedBox(
@@ -72,8 +82,6 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                   ),
                 ),
               ),
-              
-              
               Text(
                 'Varietas Padi',
                 textAlign: TextAlign.center,
@@ -102,9 +110,6 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
 
   Widget buildNotes() {
     return Container(
-      margin: const EdgeInsets.only(
-        top: 30,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -149,23 +154,39 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                         width: 150,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: isRainySeason ? Colors.green : Colors.grey,
-                          borderRadius: BorderRadius.circular(20),
+                          color:
+                              isRainySeason ? greenColor : whiteContainerColor,
+                          borderRadius: BorderRadius.circular(13),
+                          border: isRainySeason
+                              ? Border.all(
+                                  color: greenColor,
+                                  strokeAlign: BorderSide.strokeAlignInside,
+                                  width: 0.5,
+                                )
+                              : Border.all(
+                                  color: txtBlackColor,
+                                  strokeAlign: BorderSide.strokeAlignInside,
+                                  width: 0.5,
+                                ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.water_drop,
-                              color: Colors.white,
+                              color: isRainySeason
+                                  ? whiteContainerColor
+                                  : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Musim Hujan',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                color: isRainySeason
+                                    ? whiteContainerColor
+                                    : txtBlackColor,
+                                fontWeight: semiBold,
                                 fontSize: 14,
                               ),
                             ),
@@ -181,23 +202,37 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                         width: 150,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: !isRainySeason ? Colors.green : Colors.grey,
-                          borderRadius: BorderRadius.circular(20),
+                          color:
+                              !isRainySeason ? greenColor : whiteContainerColor,
+                          borderRadius: BorderRadius.circular(13),
+                          border: isRainySeason
+                              ? Border.all(
+                                  color: greenColor,
+                                  strokeAlign: BorderSide.strokeAlignInside,
+                                  width: 0.5,
+                                )
+                              : Border.all(
+                                  color: txtBlackColor,
+                                  strokeAlign: BorderSide.strokeAlignInside,
+                                  width: 0.5,
+                                ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.cloud,
-                              color: Colors.white,
+                              color:
+                                  !isRainySeason ? greenColor : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Musim Kemarau',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                color:
+                                    !isRainySeason ? greenColor : txtBlackColor,
+                                fontWeight: semiBold,
                                 fontSize: 14,
                               ),
                             ),
@@ -215,6 +250,23 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     );
   }
 
+  Widget buildSearchContainer() {
+    return Container(
+      padding: EdgeInsets.all(9),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(13),
+        color: whiteContainerColor,
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            buildSearchAndFilter(),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildSearchAndFilter() {
     return Column(
       children: [
@@ -225,14 +277,14 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: whiteBackgroundColor,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.search,
-                      color: Colors.grey[600],
+                      color: txtBlackColor,
                     ),
                     SizedBox(width: 10),
                     Expanded(
@@ -252,11 +304,11 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(30),
+                  color: greenColor,
+                  borderRadius: BorderRadius.circular(13),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.filter_alt, color: Colors.white),
+                  icon: Icon(Icons.filter_alt, color: whiteContainerColor),
                   onPressed: () {
                     // Tambahkan aksi ketika tombol filter ditekan
                   },
@@ -283,22 +335,22 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption = ['Semua', 'Potensial', 'Selalu', 'Jarang']
-              .indexOf(option);
+          selectedOption =
+              ['Semua', 'Potensial', 'Selalu', 'Jarang'].indexOf(option);
         });
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 17),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.green : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? greenColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(13),
         ),
         child: Text(
           option,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
+            color: isSelected ? whiteContainerColor : txtBlackColor,
+            fontWeight: semiBold,
           ),
         ),
       ),
@@ -319,6 +371,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
   Widget buildContentCard() {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
+      color: whiteContainerColor,
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -327,37 +380,41 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
             Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(10), // Mengatur border radius gambar
+                  borderRadius: BorderRadius.circular(10),
                   child: Container(
                     width: 100,
                     height: 100,
-                    color: Colors.grey, // Ganti dengan gambar sesuai konten
+                    color: whiteBackgroundColor,
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Judul Konten', // Ganti dengan judul sesuai konten
+                        'Pulen',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Unggulan/Jarang Dipakai', // Ganti dengan keterangan sesuai konten
-                        style: TextStyle(
-                          color: Colors.grey,
+                          fontWeight: semiBold,
                         ),
                       ),
                       SizedBox(height: 5),
+                      Text(
+                        'Unggulan/Jarang Dipakai', // Ganti dengan keterangan sesuai konten
+                        style: BlackTextStyle.copyWith(
+                          fontSize: 11,
+                        ),
+                      ),
+                      SizedBox(height: 2),
                       Container(
                         margin: EdgeInsets.only(right: 10),
                         child: Text(
                           'Informasi singkat mengenai konten tersebut', // Ganti dengan informasi sesuai konten
-                          maxLines: 2,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
+                          style: BlackTextStyle.copyWith(
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -371,7 +428,6 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                               'Baca Selengkapnya',
                               style: TextStyle(
                                 color: Colors.blue,
-                                decoration: TextDecoration.underline,
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios, size: 12),
@@ -389,4 +445,3 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     );
   }
 }
-

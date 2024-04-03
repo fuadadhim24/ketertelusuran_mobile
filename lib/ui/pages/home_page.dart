@@ -165,7 +165,7 @@ class HomePage extends StatelessWidget {
   Widget buildHomeHeading(context) {
     return Container(
       margin: const EdgeInsets.only(
-        top: 64,
+        top: 54,
       ),
       child: Column(
         children: [
