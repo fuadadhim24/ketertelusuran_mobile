@@ -92,10 +92,10 @@ class SignInPage extends StatelessWidget {
                     if (emailController.text.isEmpty &&
                         passwordController.text.isEmpty) {
                       _showWarningSnackBar(
-                          context, 'Password dan alamat email belum terisi');
+                          context, 'Alamat Email dan Password belum terisi');
                     } else if (emailController.text.isEmpty) {
                       _showWarningSnackBar(
-                          context, 'Alamat email belum terisi');
+                          context, 'Alamat Email belum terisi');
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
