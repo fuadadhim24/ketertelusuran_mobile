@@ -70,7 +70,7 @@ class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
               onPressed: _showCheckmark
                   ? () {
                       _showSuccessSnackBar(context);
-                      Get.off('/home');
+                      Get.offNamed('/home');
                     }
                   : null,
             ),
