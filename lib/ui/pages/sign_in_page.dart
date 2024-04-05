@@ -78,9 +78,14 @@ class SignInPage extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    'Lupa Password?',
-                    style: greenTextStyle,
+                  child: TextButton(
+                    onPressed: () {
+                      Get.toNamed('/lupa-password');
+                    },
+                    child: Text(
+                      'Lupa Password?',
+                      style: greenTextStyle,
+                    ),
                   ),
                 ),
                 const SizedBox(
