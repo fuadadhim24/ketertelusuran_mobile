@@ -100,7 +100,7 @@ class SignUpSetProfilePage extends StatelessWidget {
                 CustomFilledButton(
                   title: 'Berikutnya',
                   onPressed: () {
-                    Get.to('/sign-up-set-ktp');
+                    Get.toNamed('/sign-up-set-ktp');
                   },
                 ),
               ],
