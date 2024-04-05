@@ -113,7 +113,7 @@ class SignUpPage extends StatelessWidget {
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
-                      Get.to('/sign-up-set-profile');
+                      Get.toNamed('/sign-up-set-ktp');
                     }
                   },
                 ),
@@ -124,7 +124,7 @@ class SignUpPage extends StatelessWidget {
             height: 16,
           ),
           CustomTextButton(
-            title: 'Masuk',
+            title: 'Kembali ke Halaman Login',
             onPressed: () {
               Get.toNamed('/sign-in');
             },
