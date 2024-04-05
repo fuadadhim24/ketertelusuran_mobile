@@ -120,7 +120,11 @@ class HomePage extends StatelessWidget {
 
             // Keluar Button
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(
+                      '/sign-in',
+                    );
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
