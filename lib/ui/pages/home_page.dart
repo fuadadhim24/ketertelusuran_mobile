@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Drawer buildSidebar() {
+  Widget buildSidebar() {
     return Drawer(
       child: Container(
         width: 180, // Increased width of the Drawer
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
             ),
             // Tambah Lahan Button
             Container(
-              width: 160, // Increased width of the Tambah Lahan Button
+              width: 180, // Increased width of the Tambah Lahan Button
               height: 50, // Increased height of the Tambah Lahan Button
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
@@ -103,10 +103,10 @@ class HomePage extends StatelessWidget {
             Container(
               height: 1,
               width: double.infinity,
-              color: Colors.grey[400],
+              color: greenColor,
               margin: EdgeInsets.symmetric(vertical: 10),
             ),
-            // List of Lahan
+            // List Lahan Sawah
             SizedBox(height: 20),
             buildLahanButton('Sawah A'),
             buildLahanButton('Sawah B'),
@@ -121,23 +121,31 @@ class HomePage extends StatelessWidget {
             // Keluar Button
             GestureDetector(
               onTap: () {
-                Get.toNamed(
-                      '/sign-in',
-                    );
+                Get.toNamed('/sign-in');
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.exit_to_app, color: Colors.black),
-                  SizedBox(width: 10),
-                  Text(
-                    'Keluar',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+              child: Container(
+                width: 160, // Increased width of the Tambah Lahan Button
+                height: 50, // Match parent width
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25), // Rounded corners
+                  color: greenColor, // Green background color
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.exit_to_app, color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(
+                      'Keluar',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // White text color
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -148,20 +156,25 @@ class HomePage extends StatelessWidget {
 
   Widget buildLahanButton(String lahanName) {
     return Container(
-      width: 160, // Increased width of the Lahan buttons
+      width: 120, // Increased width of the Lahan buttons
       height: 50, // Increased height of the Lahan buttons
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25), // Rounded corners
         color: Colors.grey[300],
       ),
-      child: Center(
-        child: Text(
-          lahanName,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+      child: Row(
+        children: [
+          SizedBox(width: 10), // Add padding to the left of the icon
+          Icon(Icons.landscape, color: greenColor), // Material icon
+          SizedBox(width: 10), // Add space between icon and text
+          Text(
+            lahanName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
