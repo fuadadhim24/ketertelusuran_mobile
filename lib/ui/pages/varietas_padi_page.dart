@@ -420,7 +420,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          // Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
+                          Get.toNamed('/read-more');// Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
                         },
                         child: Row(
                           children: [
