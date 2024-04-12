@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/searchContainer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -63,7 +64,7 @@ class _KetertelusuranPageState extends State<KetertelusuranPage> {
             ],
           ),
         ),
-        body: Container(),
+        body: buildMapPanel(),
       ),
     );
   }
@@ -429,6 +430,12 @@ class _KetertelusuranPageState extends State<KetertelusuranPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildMapPanel(){
+    return Container(
+      child: MapGoogle(),
     );
   }
 }

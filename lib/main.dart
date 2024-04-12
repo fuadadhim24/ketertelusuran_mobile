@@ -16,6 +16,7 @@ import 'package:ketertelusuran_mobile/ui/pages/sign_up_success.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/lupa_password.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 
 void main() => runApp(const MyApp());
 
@@ -46,3 +47,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
