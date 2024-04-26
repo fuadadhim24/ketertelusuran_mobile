@@ -1,18 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
+import 'package:http/http.dart' as http;
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key});
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  SignInPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: ListView(
@@ -61,7 +65,7 @@ class SignInPage extends StatelessWidget {
                 CustomFormField(
                   title: 'Alamat Email',
                   typeFormField: 0,
-                  controller: emailController,
+                  controller: _emailController,
                 ),
                 const SizedBox(
                   height: 36,
@@ -71,7 +75,7 @@ class SignInPage extends StatelessWidget {
                   title: 'Password',
                   obscureText: true,
                   typeFormField: 1,
-                  controller: passwordController,
+                  controller: _passwordController,
                 ),
                 const SizedBox(
                   height: 16,
@@ -95,20 +99,21 @@ class SignInPage extends StatelessWidget {
                 CustomFilledButton(
                   title: 'Masuk',
                   onPressed: () {
-                    if (emailController.text.isEmpty &&
-                        passwordController.text.isEmpty) {
+                    if (_emailController.text.isEmpty &&
+                        _passwordController.text.isEmpty) {
                       _showWarningSnackBar(
                           context, 'Alamat Email dan Password belum terisi');
-                    } else if (emailController.text.isEmpty) {
+                    } else if (_emailController.text.isEmpty) {
                       _showWarningSnackBar(
                           context, 'Alamat Email belum terisi');
-                    } else if (passwordController.text.isEmpty) {
+                    } else if (_passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
                       _showSuccessSnackBar(context);
-                      Get.toNamed(
-                        '/home',
-                      );
+                      signIn();
+                      // Get.toNamed(
+                      //   '/home',
+                      // );
                     }
                   },
                 ),
@@ -163,5 +168,26 @@ class SignInPage extends StatelessWidget {
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void signIn() async{
+    String url = Global.serverUrl+Global.mobile+Global.signInPath;
+
+    final Map<String, dynamic> queryParams = {
+      "email" : _emailController,
+      "password" : _passwordController,
+    };
+
+    try{
+      http.Response response = await http.post(Uri.parse(url).replace(queryParameters: queryParams));
+      if(response.statusCode == 200){
+        var user = jsonDecode(response.body); //return type list<map>
+        debugPrint(response.body);
+      }else{
+        debugPrint("Invalid email or password");
+      }
+    }catch(error){
+      debugPrint('Gagal');
+    }
   }
 }

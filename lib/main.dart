@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const SplashPage()),
         GetPage(name: '/onboarding', page: () => const OnBoardingPage()),
-        GetPage(name: '/sign-in', page: () => const SignInPage()),
+        GetPage(name: '/sign-in', page: () => SignInPage()),
         GetPage(name: '/sign-up', page: () => const SignUpPage()),
         GetPage(name: '/sign-up-set-profile', page: () => const SignUpSetProfilePage()),
         GetPage(name: '/sign-up-set-ktp', page: () => const SignUpSetKtpPage()),
