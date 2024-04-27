@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
+import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key});
@@ -215,24 +216,30 @@ class HomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                height: 24,
-                width: 24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/ic_notification.png',
+              GestureDetector(
+                onTap: () {
+                  // Routing ke halaman NotifikasiPage
+                  Get.toNamed('/notifikasi');
+                },
+                child: Container(
+                  height: 24,
+                  width: 24,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/ic_notification.png',
+                      ),
                     ),
                   ),
-                ),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    width: 11,
-                    height: 11,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: RedColor,
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      width: 11,
+                      height: 11,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: RedColor,
+                      ),
                     ),
                   ),
                 ),

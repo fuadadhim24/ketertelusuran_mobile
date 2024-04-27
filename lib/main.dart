@@ -5,6 +5,7 @@ import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
 import 'package:ketertelusuran_mobile/ui/pages/grade_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/ketertelusuran.dart';
+import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/password_baru.dart';
 import 'package:ketertelusuran_mobile/ui/pages/read_more.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/lupa-password', page: () => const LupaPasswordPage()),
         GetPage(name: '/password-baru', page:() => const PasswordBaruPage()),
         GetPage(name: '/read-more', page:() => const ReadMorePage()),
+         GetPage(name: '/notifikasi', page:()=> const NotifikasiPage()),
       ],
     );
   }
