@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/services/auth.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
@@ -122,7 +123,8 @@ class HomePage extends StatelessWidget {
             // Keluar Button
             GestureDetector(
               onTap: () {
-                Get.toNamed('/sign-in');
+                Auth authOption = Auth();
+                authOption.signOut();
               },
               child: Container(
                 width: 160, // Increased width of the Tambah Lahan Button
