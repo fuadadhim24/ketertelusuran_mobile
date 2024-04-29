@@ -1,23 +1,43 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as getX;
+import 'package:ketertelusuran_mobile/services/auth.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
-import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ketertelusuran_mobile/services/auth.dart';
+// import 'package:email_validator/email_validator.dart';
 
-class SignInPage extends StatelessWidget {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+class SignInPage extends StatefulWidget {
   SignInPage({Key? key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SignInPage> createState() => _SignInPageState();
+}
 
+class _SignInPageState extends State<SignInPage> {
+  TextEditingController _emailController = TextEditingController();
+
+  TextEditingController _passwordController = TextEditingController();
+
+  final dio = Dio();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Auth authOption = Auth();
+    authOption.endSession();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(
@@ -84,7 +104,7 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      Get.toNamed('/lupa-password');
+                      getX.Get.toNamed('/lupa-password');
                     },
                     child: Text(
                       'Lupa Password?',
@@ -109,8 +129,11 @@ class SignInPage extends StatelessWidget {
                     } else if (_passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
-                      _showSuccessSnackBar(context);
-                      signIn();
+                      signIn(
+                        context,
+                        _emailController.text.toString(),
+                        _passwordController.text.toString(),
+                      );
                       // Get.toNamed(
                       //   '/home',
                       // );
@@ -126,7 +149,7 @@ class SignInPage extends StatelessWidget {
           CustomTextButton(
             title: 'Buat Akun Baru',
             onPressed: () {
-              Get.toNamed(
+              getX.Get.toNamed(
                 '/sign-up',
               );
             },
@@ -136,7 +159,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk menampilkan notifikasi snack bar saat berhasil login
+  // Fungsi untuk menampilkan notifikasi snack bar saat berhasil
   void _showSuccessSnackBar(BuildContext context) {
     final snackBar = SnackBar(
       content: Text('Berhasil Masuk!'),
@@ -170,24 +193,30 @@ class SignInPage extends StatelessWidget {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void signIn() async{
-    String url = Global.serverUrl+Global.mobile+Global.signInPath;
-
-    final Map<String, dynamic> queryParams = {
-      "email" : _emailController,
-      "password" : _passwordController,
-    };
-
-    try{
-      http.Response response = await http.post(Uri.parse(url).replace(queryParameters: queryParams));
-      if(response.statusCode == 200){
-        var user = jsonDecode(response.body); //return type list<map>
-        debugPrint(response.body);
-      }else{
-        debugPrint("Invalid email or password");
+  void signIn(context, String email, password) async {
+    final url = Global.serverUrl + Global.signInPath;
+    final finalUrl = url + '?email=' + email + '&password=' + password;
+    Response response;
+    response = await dio.get(finalUrl);
+    final body = response.data;
+    var stringResponse = body.toString();
+    var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+    if (response.statusCode == 200) {
+      if (body.containsKey('data')) {
+        saveSession(email);
+        _showSuccessSnackBar(context);
+        getX.Get.toNamed('/home');
+      } else {
+        _showWarningSnackBar(context, responseData);
       }
-    }catch(error){
-      debugPrint('Gagal');
+    } else {
+      _showWarningSnackBar(context, responseData);
     }
+  }
+
+  saveSession(String email) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString("email", email);
+    await pref.setBool("is_signIn", true);
   }
 }
