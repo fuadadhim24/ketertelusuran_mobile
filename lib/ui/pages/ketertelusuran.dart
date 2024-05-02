@@ -20,7 +20,7 @@ class _KetertelusuranPageState extends State<KetertelusuranPage> {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Varietas Padi',
+          'Ketertelusuran',
           style: BlackTextStyle.copyWith(
             fontWeight: semiBold,
             fontSize: 20,
