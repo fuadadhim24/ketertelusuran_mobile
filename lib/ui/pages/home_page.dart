@@ -63,30 +63,34 @@ class HomePage extends StatelessWidget {
               ),
             ),
             // Tambah Lahan Button
-            Container(
-              width: 180, // Increased width of the Tambah Lahan Button
-              height: 50, // Increased height of the Tambah Lahan Button
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25), // Rounded corners
-                color: greenColor,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(Icons.landscape, color: Colors.white),
-                  Text(
-                    'Tambah Lahan',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+            InkWell(
+              onTap: () {
+                Get.toNamed('/tambah-lahan');
+              },
+              child: Container(
+                width: 180, // Increased width of the Tambah Lahan Button
+                height: 50, // Increased height of the Tambah Lahan Button
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25), // Rounded corners
+                  color: greenColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(Icons.landscape, color: Colors.white),
+                    Text(
+                      'Tambah Lahan',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Icon(Icons.add, color: Colors.white),
-                ],
+                    Icon(Icons.add, color: Colors.white),
+                  ],
+                ),
               ),
-            ),
-            // Pembatas
+            ), // Pembatas
             Container(
               height: 1,
               width: double.infinity,
