@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 
-class NotifikasiPage extends StatelessWidget {
+class NotifikasiPage extends StatefulWidget {
   const NotifikasiPage({Key? key}) : super(key: key);
+
+  @override
+  _NotifikasiPageState createState() => _NotifikasiPageState();
+}
+
+class _NotifikasiPageState extends State<NotifikasiPage> {
+  int selectedOption = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +18,7 @@ class NotifikasiPage extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 88,
         centerTitle: true,
-        title: Text(
-          'Notifikasi'
-          ),
+        title: Text('Notifikasi'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -37,24 +38,9 @@ class NotifikasiPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/notifikasi');
-                  },
-                  child: Text('Hari Ini'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/notifikasi');
-                  },
-                  child: Text('Minggu Lalu'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/notifikasi');
-                  },
-                  child: Text('Akan Datang'),
-                ),
+                buildOption('Hari ini', isSelected: selectedOption == 0),
+                buildOption('Besok', isSelected: selectedOption == 1),
+                buildOption('Akan Datang', isSelected: selectedOption == 2),
               ],
             ),
             SizedBox(height: 20),
@@ -89,6 +75,31 @@ class NotifikasiPage extends StatelessWidget {
     );
   }
 
+  Widget buildOption(String option, {bool isSelected = false}) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedOption = ['Hari ini', 'Besok', 'Akan Datang'].indexOf(option);
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 17),
+        decoration: BoxDecoration(
+          color: isSelected ? greenColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(13),
+        ),
+        child: Text(
+          option,
+          style: TextStyle(
+            color: isSelected ? whiteContainerColor : txtBlackColor,
+            fontWeight: semiBold,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildNotifikasiItem({
     required String judul,
     required String isi,
@@ -96,10 +107,8 @@ class NotifikasiPage extends StatelessWidget {
   }) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor:
-            greenColor, // Ubah warna latar belakang menjadi hijau
-        child: Icon(Icons.notifications,
-            color: Colors.white), // Ubah warna ikon menjadi putih
+        backgroundColor: greenColor, // Ubah warna latar belakang menjadi hijau
+        child: Icon(Icons.notifications, color: Colors.white), // Ubah warna ikon menjadi putih
       ),
       title: Text(judul),
       subtitle: Row(
