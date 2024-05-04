@@ -657,103 +657,37 @@ class HomePage extends StatelessWidget {
                 const SizedBox(
                   height: 36,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 36,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: whiteBackgroundColor,
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ExpansionTile(
+                        maintainState: true,
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        title: Text("Perawatan $index"),
                         children: [
-                          Text(
-                            'Bersih ilalang',
-                            style: BlackTextStyle.copyWith(
-                              fontWeight: semiBold,
-                              fontSize: 11,
-                            ),
+                          const Text(
+                            "Jenis Perawatan: Pemupukan",
+                            textAlign: TextAlign.left,
                           ),
-                          const SizedBox(
-                            width: 5,
+                          const Text(
+                            "Nama Perawatan: NPK 32",
+                            textAlign: TextAlign.left,
                           ),
-                          Text(
-                            '10.30',
-                            style: BlackTextStyle.copyWith(
-                              fontWeight: semiBold,
-                              fontSize: 11,
-                            ),
+                          const Text(
+                            "Jumlah: 10",
+                            textAlign: TextAlign.left,
+                          ),
+                          const Text(
+                            "Kebutuhan: Mempercepat Pertumbuhan",
+                            textAlign: TextAlign.left,
                           ),
                         ],
                       ),
-                      Text(
-                        'Edit',
-                        style: BlackTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: 11,
-                          color: RedColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 36,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: whiteBackgroundColor,
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Bersih ilalang',
-                            style: BlackTextStyle.copyWith(
-                              fontWeight: semiBold,
-                              fontSize: 11,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '10.30',
-                            style: BlackTextStyle.copyWith(
-                              fontWeight: semiBold,
-                              fontSize: 11,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Edit',
-                        style: BlackTextStyle.copyWith(
-                          fontWeight: semiBold,
-                          fontSize: 11,
-                          color: RedColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 15,
