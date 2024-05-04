@@ -655,7 +655,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 18,
                 ),
                 ListView.builder(
                   shrinkWrap: true,
