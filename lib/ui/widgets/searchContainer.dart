@@ -82,14 +82,17 @@ class _SearchContainerState extends State<SearchContainer> {
           ],
         ),
         SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            buildOption('Semua', isSelected: selectedOption == 0),
-            buildOption('Potensial', isSelected: selectedOption == 1),
-            buildOption('Selalu', isSelected: selectedOption == 2),
-            buildOption('Jarang', isSelected: selectedOption == 3),
-          ],
+        Container(
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              buildOption('Semua', isSelected: selectedOption == 0),
+              buildOption('Req', isSelected: selectedOption == 1),
+              buildOption('Selalu', isSelected: selectedOption == 2),
+              buildOption('Jarang', isSelected: selectedOption == 3),
+            ],
+          ),
         ),
       ],
     );

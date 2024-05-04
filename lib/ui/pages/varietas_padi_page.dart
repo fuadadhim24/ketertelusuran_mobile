@@ -322,7 +322,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             buildOption('Semua', isSelected: selectedOption == 0),
-            buildOption('Potensial', isSelected: selectedOption == 1),
+            buildOption('Req', isSelected: selectedOption == 1),
             buildOption('Selalu', isSelected: selectedOption == 2),
             buildOption('Jarang', isSelected: selectedOption == 3),
           ],

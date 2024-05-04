@@ -20,7 +20,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Varietas Padi',
+          'Analisis SPK',
           style: BlackTextStyle.copyWith(
             fontWeight: semiBold,
             fontSize: 20,
@@ -415,7 +415,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                             Text(
                               'Baca Selengkapnya',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: greenColor,
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios, size: 12),
@@ -433,7 +433,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
     );
   }
 
-  Widget buildMapPanel(){
+  Widget buildMapPanel() {
     return Container(
       child: MapGoogle(),
     );
