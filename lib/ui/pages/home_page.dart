@@ -473,17 +473,17 @@ class HomePage extends StatelessWidget {
                 },
               ),
               CustomHomeService(
-                title: 'Grade',
+                title: 'Pencatatan',
                 iconUrl: 'assets/ic_grade.png',
                 onTap: () {
-                  Get.toNamed('/grade');
+                  Get.toNamed('/pencatatan');
                 },
               ),
               CustomHomeService(
-                title: 'Ketertelusuran',
+                title: 'Analisis SPK',
                 iconUrl: 'assets/ic_ketertelusuran.png',
                 onTap: () {
-                  Get.toNamed('/ketertelusuran');
+                  Get.toNamed('/analisis-spk');
                 },
               ),
             ],
@@ -515,7 +515,7 @@ class HomePage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    'Pencatatan',
+                    'Optimalisasi jaminan mutu',
                     style: BlackTextStyle.copyWith(
                       fontSize: 12,
                     ),
@@ -574,19 +574,24 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Jadwal Anda',
+                      'Riwayat Pencatatan',
                       style: BlackTextStyle.copyWith(
                         fontSize: 16,
                         fontWeight: semiBold,
                       ),
                     ),
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/ic_add_circle.png',
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/pencatatan');
+                      },
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/ic_add_circle.png',
+                            ),
                           ),
                         ),
                       ),
@@ -594,7 +599,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 35,
+                  height: 22,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -650,18 +655,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Hari Ini',
-                  style: BlackTextStyle.copyWith(
-                    fontWeight: semiBold,
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(
-                  height: 10,
+                  height: 36,
                 ),
                 Container(
                   width: double.infinity,

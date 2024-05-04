@@ -427,7 +427,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                             Text(
                               'Baca Selengkapnya',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: greenColor,
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios, size: 12),

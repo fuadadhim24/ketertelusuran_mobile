@@ -205,7 +205,7 @@ class _SignInPageState extends State<SignInPage> {
       if (body.containsKey('data')) {
         saveSession(email);
         _showSuccessSnackBar(context);
-        getX.Get.toNamed('/home');
+        getX.Get.offNamed('/home');
       } else {
         _showWarningSnackBar(context, responseData);
       }

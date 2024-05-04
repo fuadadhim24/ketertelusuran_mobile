@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
 class ReadMorePage extends StatelessWidget {
   const ReadMorePage({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class ReadMorePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Get.toNamed('/varietas-padi');
+            Get.back();
           },
         ),
       ),
@@ -43,9 +44,16 @@ class ReadMorePage extends StatelessWidget {
               height: 200,
               // Isi gambar berita di sini
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 24),
+            CustomFilledButton(
+              title: 'Pilih Varietas Padi',
+              onPressed: () {
+                Get.toNamed('/tambah-varietas-padi');
+              },
+            ),
+            SizedBox(height: 32),
             Text(
-              'Varietas Padi',
+              'Ciherang',
               style: TextStyle(
                 fontFamily: 'NYTCheltenham',
                 fontWeight: FontWeight.bold,
@@ -72,9 +80,9 @@ class ReadMorePage extends StatelessWidget {
                 color: Colors.grey[600],
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 3),
             Text(
-              'Ditambahkan pada tanggal 7 April 2024',
+              'Ditambahkan pada 7 April 2024',
               style: TextStyle(
                 fontFamily: 'NYTFutura',
                 fontSize: 14,
@@ -83,14 +91,14 @@ class ReadMorePage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Divider(),
-            SizedBox(height: 20),
+            SizedBox(height: 8),
             Text(
-              'Baca Informasi Lainnya',
+              'Foto Varietas Padi',
               style: TextStyle(
                 fontFamily: 'NYTFutura',
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: Colors.blue,
+                color: greenColor,
               ),
             ),
             SizedBox(height: 20),
@@ -115,6 +123,7 @@ class ReadMorePage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 32),
           ],
         ),
       ),
@@ -124,9 +133,7 @@ class ReadMorePage extends StatelessWidget {
   String _generateArticleDescription() {
     return '''Varietas padi adalah berbagai jenis atau varietas dari tanaman padi yang ditanam di berbagai daerah di seluruh dunia. Setiap varietas padi memiliki karakteristik unik yang membedakannya dari varietas lainnya. Beberapa varietas padi dikenal karena ketahanannya terhadap penyakit tertentu atau kondisi lingkungan yang ekstrem.
 
-Memilih varietas padi yang tepat merupakan langkah penting dalam meningkatkan hasil panen dan produktivitas pertanian. Petani perlu mempertimbangkan berbagai faktor seperti kondisi tanah, iklim, dan kebutuhan pasar sebelum memutuskan varietas yang akan ditanam. Beberapa varietas padi unggulan telah dikembangkan melalui riset dan seleksi genetik untuk meningkatkan hasil panen dan kualitas gabah.
-
-Dalam beberapa tahun terakhir, terjadi peningkatan jumlah varietas padi baru yang dirilis ke pasar. Ini disebabkan oleh perkembangan teknologi pertanian dan penemuan baru dalam bidang genetika tanaman. Varietas padi baru sering kali memiliki keunggulan tertentu seperti daya tahan terhadap hama dan penyakit, kemampuan adaptasi terhadap perubahan iklim, atau hasil panen yang lebih tinggi.''';
+Memilih varietas padi yang tepat merupakan langkah penting.''';
   }
 
   Widget _buildInfoCard({required String imageUrl, required String title}) {

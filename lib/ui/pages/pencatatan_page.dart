@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 
-class GradePage extends StatelessWidget {
-  const GradePage({super.key});
+class PencatatanPage extends StatelessWidget {
+  const PencatatanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class GradePage extends StatelessWidget {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Grade',
+          'Pencatatan',
           style: BlackTextStyle.copyWith(
             fontSize: 20,
             fontWeight: semiBold,
@@ -175,7 +176,7 @@ class GradePage extends StatelessWidget {
             height: 16,
           ),
           Text(
-            'Data ketertelusuran Lahan A',
+            'Data ketertelusuran',
             style: BlackTextStyle.copyWith(
               fontSize: 10,
               fontWeight: semiBold,
@@ -186,56 +187,39 @@ class GradePage extends StatelessWidget {
             height: 4,
           ),
           Text(
-            'Derajat Sosoh',
+            'Lahan A',
             style: BlackTextStyle.copyWith(
               fontSize: 10,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(
-            height: 52,
+            height: 42,
+          ),
+          const CustomDropDownFormField(),
+          const SizedBox(
+            height: 36,
           ),
           const CustomFormField(
-            title: 'Kadar Air',
+            title: 'Nama Perawatan',
             typeFormField: 0,
           ),
           const SizedBox(
             height: 36,
           ),
           const CustomFormField(
-            title: 'Beras Kepala',
+            title: 'Jumlah',
             typeFormField: 0,
           ),
           const SizedBox(
             height: 36,
           ),
           const CustomFormField(
-            title: 'Butir Patah',
+            title: 'Kebutuhan',
             typeFormField: 0,
           ),
           const SizedBox(
-            height: 36,
-          ),
-          const CustomFormField(
-            title: 'Total Butir Menir, Merah, Kuning/ Rusak, Kapur',
-            typeFormField: 0,
-          ),
-          const SizedBox(
-            height: 36,
-          ),
-          const CustomFormField(
-            title: 'Butir Gabah',
-            typeFormField: 0,
-          ),
-          const SizedBox(
-            height: 36,
-          ),
-          const CustomFormField(
-            title: 'Benda Lain',
-            typeFormField: 0,
-          ),
-          const SizedBox(
-            height: 24,
+            height: 48,
           ),
           CustomFilledButton(
             title: 'Submit',
