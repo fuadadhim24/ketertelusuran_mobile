@@ -7,6 +7,7 @@ import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/password_baru.dart';
+import 'package:ketertelusuran_mobile/ui/pages/pilih_lokasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/read_more.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifikasi', page: () => const NotifikasiPage()),
         GetPage(name: '/tambah-lahan', page: () => const TambahLahanPage()),
         GetPage(name: '/tambah-varietas-padi', page: () => const TambahVarietasPadiPage()),
+        GetPage(name: '/pilih-titik-lokasi-lahan', page: () => const PilihLokasiPage()),
       ],
     );
   }

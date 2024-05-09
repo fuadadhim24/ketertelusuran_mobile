@@ -44,6 +44,7 @@ class CustomTextButton extends StatelessWidget {
   final String title;
   final double width;
   final double height;
+  final bool color;
   final VoidCallback? onPressed;
 
   const CustomTextButton({
@@ -51,6 +52,7 @@ class CustomTextButton extends StatelessWidget {
     required this.title,
     this.width = double.infinity,
     this.height = 24,
+    this.color = false,
     this.onPressed,
   });
 
@@ -66,9 +68,13 @@ class CustomTextButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: GreyTextStyle.copyWith(
-            fontSize: 16,
-          ),
+          style: color
+              ? greenTextStyle.copyWith(
+                  fontSize: 16,
+                )
+              : GreyTextStyle.copyWith(
+                  fontSize: 16,
+                ),
         ),
       ),
     );

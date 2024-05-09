@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/services/auth.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
@@ -65,7 +66,10 @@ class HomePage extends StatelessWidget {
             // Tambah Lahan Button
             InkWell(
               onTap: () {
-                Get.toNamed('/tambah-lahan');
+                Get.toNamed('/tambah-lahan')?.then((value) => {
+                      TambahLahanPage.resultLatitude = null,
+                      TambahLahanPage.resultLongitude = null,
+                    });
               },
               child: Container(
                 width: 180, // Increased width of the Tambah Lahan Button

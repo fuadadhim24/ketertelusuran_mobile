@@ -12,7 +12,6 @@ import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ketertelusuran_mobile/services/auth.dart';
-// import 'package:email_validator/email_validator.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key});
