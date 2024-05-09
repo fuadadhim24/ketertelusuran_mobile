@@ -52,8 +52,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/read-more', page: () => const ReadMorePage()),
         GetPage(name: '/notifikasi', page: () => const NotifikasiPage()),
         GetPage(name: '/tambah-lahan', page: () => const TambahLahanPage()),
-        GetPage(name: '/tambah-varietas-padi', page: () => const TambahVarietasPadiPage()),
-        GetPage(name: '/pilih-titik-lokasi-lahan', page: () => const PilihLokasiPage()),
+        GetPage(
+            name: '/tambah-varietas-padi',
+            page: () => const TambahVarietasPadiPage()),
+        GetPage(
+            name: '/pilih-titik-lokasi-lahan',
+            page: () => const PilihLokasiPage()),
       ],
     );
   }

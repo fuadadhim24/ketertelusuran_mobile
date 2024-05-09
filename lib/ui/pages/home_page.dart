@@ -20,42 +20,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String namaLahan = '';
+  String detailLokasi = '';
+  String luas = '';
+  String latitude = '';
+  String longitude = '';
+  String jenisTanah = '';
   List<dynamic> lahanList = [];
   final dio = Dio();
 
   @override
   void initState() {
     // TODO: implement initState
-    readLahan();
     super.initState();
+    readLahan();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: whiteBackgroundColor,
-      drawer: buildSidebar(), // Menggunakan Drawer untuk sidebar
-      body: Row(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
+    return FutureBuilder(
+        future: readLahan(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+              backgroundColor: whiteBackgroundColor,
+              drawer: buildSidebar(), // Menggunakan Drawer untuk sidebar
+              body: Row(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                      ),
+                      children: [
+                        buildHomeHeading(context),
+                        buildCultivation(),
+                        buildServices(context),
+                        buildNotes(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              children: [
-                buildHomeHeading(context),
-                buildCultivation(),
-                buildServices(context),
-                buildNotes(),
-                SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   Widget buildSidebar() {
@@ -189,27 +205,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildLahanButton(String lahanName) {
-    return Container(
-      width: 120, // Increased width of the Lahan buttons
-      height: 50, // Increased height of the Lahan buttons
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25), // Rounded corners
-        color: Colors.grey[300],
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 10), // Add padding to the left of the icon
-          Icon(Icons.landscape, color: greenColor), // Material icon
-          SizedBox(width: 10), // Add space between icon and text
-          Text(
-            lahanName,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return GestureDetector(
+      child: Container(
+        width: 120, // Increased width of the Lahan buttons
+        height: 50, // Increased height of the Lahan buttons
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25), // Rounded corners
+          color: Colors.grey[300],
+        ),
+        child: Row(
+          children: [
+            SizedBox(width: 10), // Add padding to the left of the icon
+            Icon(Icons.landscape, color: greenColor), // Material icon
+            SizedBox(width: 10), // Add space between icon and text
+            Text(
+              lahanName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      onTap: () => lahanChoosed,
     );
   }
 
@@ -242,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Text(
-                'Sawah A',
+                namaLahan,
                 textAlign: TextAlign.center,
                 style: BlackTextStyle.copyWith(
                   fontSize: 20,
@@ -496,7 +515,8 @@ class _HomePageState extends State<HomePage> {
                 iconUrl: 'assets/ic_varietas.png',
                 onTap: () {
                   // Routing ke halaman VarietasPadiPage
-                  Get.toNamed('/varietas-padi');
+                  debugTesting();
+                  // Get.toNamed('/varietas-padi');
                 },
               ),
               CustomHomeService(
@@ -760,7 +780,7 @@ class _HomePageState extends State<HomePage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void readLahan() async {
+  Future<void> readLahan() async {
     final url = Global.serverUrl + Global.readLahanPath;
     final finalUrl = url;
     Response response;
@@ -772,12 +792,54 @@ class _HomePageState extends State<HomePage> {
       if (body.containsKey('data')) {
         // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
         lahanList = body['data'];
-        debugPrint(jsonEncode(body));
+        lahanDefault();
+        // debugPrint(jsonEncode(body));
+        // debugPrint('lahanList : $lahanList');
       } else {
         _showWarningSnackBar(context, responseData);
       }
     } else {
       _showWarningSnackBar(context, responseData);
     }
+  }
+
+  void lahanDefault() {
+    if (lahanList.isNotEmpty) {
+      // Ambil nilai dari elemen pertama dalam lahanList
+      namaLahan = lahanList[0]['nama_lahan'];
+      detailLokasi = lahanList[0]['detail_lokasi'];
+      luas = lahanList[0]['luas'];
+      latitude = lahanList[0]['latitude'];
+      longitude = lahanList[0]['longitude'];
+      jenisTanah = lahanList[0]['jenis_tanah'];
+    } else {
+      debugPrint('data lahan pertama tidak bisa didapatkan');
+    }
+  }
+
+  void lahanChoosed(String chosenNamaLahan) {
+    var chosenLahan = lahanList.firstWhere(
+      (lahan) => lahan['nama_lahan'] == chosenNamaLahan,
+      orElse: () =>
+          _showWarningSnackBar(context, 'Data lahan tidak berhasil didapatkan'),
+    );
+
+    if (chosenLahan != null) {
+      namaLahan = chosenLahan['nama_lahan'];
+      detailLokasi = chosenLahan['detail_lokasi'];
+      luas = chosenLahan['luas'];
+      latitude = chosenLahan['latitude'];
+      longitude = chosenLahan['longitude'];
+      jenisTanah = chosenLahan['jenis_tanah'];
+    }
+  }
+
+  void debugTesting() {
+    debugPrint(namaLahan);
+    debugPrint(detailLokasi);
+    debugPrint(luas);
+    debugPrint(latitude);
+    debugPrint(longitude);
+    debugPrint(jenisTanah);
   }
 }
