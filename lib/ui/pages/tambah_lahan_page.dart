@@ -26,6 +26,14 @@ class _TambahLahanPage extends State<TambahLahanPage> {
   TextEditingController _detailLokasiController = TextEditingController();
   TextEditingController _luasController = TextEditingController();
   TextEditingController _jenisTanahController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // readLahan();
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -273,4 +281,5 @@ class _TambahLahanPage extends State<TambahLahanPage> {
       _showWarningSnackBar(context, 'Error $e');
     }
   }
+
 }

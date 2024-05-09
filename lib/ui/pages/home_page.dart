@@ -1,17 +1,34 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/auth.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<dynamic> lahanList = [];
+  final dio = Dio();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    readLahan();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,12 +135,18 @@ class HomePage extends StatelessWidget {
             ),
             // List Lahan Sawah
             SizedBox(height: 20),
-            buildLahanButton('Sawah A'),
-            buildLahanButton('Sawah B'),
-            buildLahanButton('Sawah C'),
-            buildLahanButton('Sawah D'),
-            buildLahanButton('Sawah E'),
-            // You can add more lahan buttons here
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: lahanList.map((lahan) {
+                  // Ambil nama lahan dari objek lahan
+                  final String namaLahan = lahan['nama_lahan'];
+
+                  // Bangun tombol untuk setiap nama lahan
+                  return buildLahanButton(namaLahan);
+                }).toList(),
+              ),
+            ),
 
             // Spacer
             Spacer(),
@@ -702,5 +725,59 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: Colors.red, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void readLahan() async {
+    final url = Global.serverUrl + Global.readLahanPath;
+    final finalUrl = url;
+    Response response;
+    response = await dio.get(finalUrl);
+    final body = response.data;
+    var stringResponse = body.toString();
+    var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+    if (response.statusCode == 200) {
+      if (body.containsKey('data')) {
+        // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+        lahanList = body['data'];
+        debugPrint(jsonEncode(body));
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      _showWarningSnackBar(context, responseData);
+    }
   }
 }
