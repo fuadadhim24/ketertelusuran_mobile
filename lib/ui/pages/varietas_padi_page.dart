@@ -37,28 +37,35 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
           ),
         ),
       ),
-      body: ListView(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(
           horizontal: 14,
         ),
-        children: [
-          // buildHomeHeading(),
-          SizedBox(
-            height: 10,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              buildNotes(),
+              SizedBox(
+                height: 5,
+              ),
+              buildSearchContainer(),
+              SizedBox(
+                height: 5,
+              ),
+              Expanded(
+                child: buildVarietasPadiContent(),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+            ],
           ),
-          buildNotes(),
-          SizedBox(
-            height: 30,
-          ),
-          buildSearchContainer(),
-          SizedBox(
-            height: 5,
-          ),
-          buildVarietasPadiContent(),
-          SizedBox(
-            height: 30,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -116,10 +123,9 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 12,
+              vertical: 5,
             ),
             width: double.infinity,
-            constraints: const BoxConstraints(minHeight: 189),
             decoration: BoxDecoration(
               color: whiteContainerColor,
               borderRadius: BorderRadius.circular(13),
@@ -138,7 +144,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                   height: 10,
                 ),
                 Text(
-                  'Pemilihan Jenis Benih tergantung dari musim yang berlangsung di daerah anda pada 4 bulan kedepan.',
+                  'Pilih jenis benih varietas padi sesuai musim di daerah anda pada 4 bulan kedepan.',
                   style: BlackTextStyle.copyWith(
                     fontSize: 12,
                   ),
@@ -222,16 +228,18 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                           children: [
                             Icon(
                               Icons.cloud,
-                              color:
-                                  !isRainySeason ? whiteContainerColor : txtBlackColor,
+                              color: !isRainySeason
+                                  ? whiteContainerColor
+                                  : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Musim Kemarau',
                               style: TextStyle(
-                                color:
-                                    !isRainySeason ? whiteContainerColor : txtBlackColor,
+                                color: !isRainySeason
+                                    ? whiteContainerColor
+                                    : txtBlackColor,
                                 fontWeight: semiBold,
                                 fontSize: 14,
                               ),
@@ -336,7 +344,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
       onTap: () {
         setState(() {
           selectedOption =
-              ['Semua', 'Potensial', 'Selalu', 'Jarang'].indexOf(option);
+              ['Semua', 'Req', 'Selalu', 'Jarang'].indexOf(option);
         });
       },
       child: AnimatedContainer(
@@ -360,8 +368,8 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
   Widget buildVarietasPadiContent() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 5, // Ganti dengan jumlah konten yang diinginkan
+      physics: ScrollPhysics(),
+      itemCount: 5,
       itemBuilder: (context, index) {
         return buildContentCard();
       },
@@ -379,15 +387,6 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
           children: [
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: whiteBackgroundColor,
-                  ),
-                ),
-                SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,7 +419,8 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/read-more');// Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
+                          Get.toNamed(
+                              '/read-more'); // Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
                         },
                         child: Row(
                           children: [

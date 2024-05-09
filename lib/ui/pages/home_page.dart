@@ -541,8 +541,8 @@ class _HomePageState extends State<HomePage> {
                 iconUrl: 'assets/ic_varietas.png',
                 onTap: () {
                   // Routing ke halaman VarietasPadiPage
-                  debugTesting();
-                  // Get.toNamed('/varietas-padi');
+                  // debugTesting();
+                  Get.toNamed('/varietas-padi');
                 },
               ),
               CustomHomeService(
