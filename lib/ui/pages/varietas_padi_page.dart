@@ -128,7 +128,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
             width: double.infinity,
             decoration: BoxDecoration(
               color: whiteContainerColor,
-              borderRadius: BorderRadius.circular(13),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,18 +162,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                         decoration: BoxDecoration(
                           color:
                               isRainySeason ? greenColor : whiteContainerColor,
-                          borderRadius: BorderRadius.circular(13),
-                          border: isRainySeason
-                              ? Border.all(
-                                  color: greenColor,
-                                  strokeAlign: BorderSide.strokeAlignInside,
-                                  width: 0.5,
-                                )
-                              : Border.all(
-                                  color: txtBlackColor,
-                                  strokeAlign: BorderSide.strokeAlignInside,
-                                  width: 0.5,
-                                ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -210,18 +199,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                         decoration: BoxDecoration(
                           color:
                               !isRainySeason ? greenColor : whiteContainerColor,
-                          borderRadius: BorderRadius.circular(13),
-                          border: isRainySeason
-                              ? Border.all(
-                                  color: greenColor,
-                                  strokeAlign: BorderSide.strokeAlignInside,
-                                  width: 0.5,
-                                )
-                              : Border.all(
-                                  color: txtBlackColor,
-                                  strokeAlign: BorderSide.strokeAlignInside,
-                                  width: 0.5,
-                                ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -343,8 +321,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption =
-              ['Semua', 'Req', 'Selalu', 'Jarang'].indexOf(option);
+          selectedOption = ['Semua', 'Req', 'Selalu', 'Jarang'].indexOf(option);
         });
       },
       child: AnimatedContainer(
