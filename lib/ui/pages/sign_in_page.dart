@@ -20,12 +20,15 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin {
   TextEditingController _emailController = TextEditingController();
 
   TextEditingController _passwordController = TextEditingController();
 
   final dio = Dio();
+
+  late AnimationController _animationController;
+  late Animation<Color?> _animation;
 
   @override
   void initState() {
@@ -33,6 +36,22 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     Auth authOption = Auth();
     authOption.endSession();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500), // Durasi animasi
+    );
+    _animation = ColorTween(begin: Colors.white, end: Colors.black)
+        .animate(_animationController)
+      ..addListener(() {
+        setState(
+            () {}); // Untuk membangunkan tampilan ketika nilai animasi berubah
+      });
+  }
+
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -161,18 +180,24 @@ class _SignInPageState extends State<SignInPage> {
   // Fungsi untuk menampilkan notifikasi snack bar saat berhasil
   void _showSuccessSnackBar(BuildContext context) {
     final snackBar = SnackBar(
-      content: Text('Berhasil Masuk!'),
-      duration: Duration(seconds: 2), // Durasi notifikasi
-      backgroundColor: greenColor, // Warna latar belakang notifikasi
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      content: Row(
+        children: [
+          Icon(Icons.check,
+              color: _animation.value), // Ikon centang dengan animasi warna
+          SizedBox(width: 10),
+          Text(
+            'Berhasil Masuk!',
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
       ),
-      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
-      margin: EdgeInsets.symmetric(
-          vertical: 20, horizontal: 60), // Menerapkan margin
+      duration: Duration(seconds: 2),
+      backgroundColor: greenColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
     );
-    ScaffoldMessenger.of(context)
-        .showSnackBar(snackBar); // Menampilkan notifikasi
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
