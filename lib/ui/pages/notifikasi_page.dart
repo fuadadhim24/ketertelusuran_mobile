@@ -11,61 +11,95 @@ class NotifikasiPage extends StatefulWidget {
 
 class _NotifikasiPageState extends State<NotifikasiPage> {
   int selectedOption = 0;
+  bool allRead = false; // Flag to track if all notifications are read
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 88,
+        toolbarHeight: 50,
         centerTitle: true,
         title: Text('Notifikasi'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Center(
-              child: Text(
-                'Pengingat',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildOption('Hari ini', isSelected: selectedOption == 0),
-                buildOption('Besok', isSelected: selectedOption == 1),
-                buildOption('Akan Datang', isSelected: selectedOption == 2),
+                Center(
+                  child: Text(
+                    'Pengingat',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildOption('Hari ini', isSelected: selectedOption == 0),
+                    buildOption('Besok', isSelected: selectedOption == 1),
+                    buildOption('Akan Datang', isSelected: selectedOption == 2),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(
+                          10,
+                          (index) => Column(
+                                children: [
+                                  buildNotifikasiItem(
+                                    judul: 'Judul Notifikasi ${index + 1}',
+                                    isi: 'Isi notifikasi ${index + 1}',
+                                    tanggal:
+                                        '${index + 24} April 2024', // Contoh tanggal
+                                    sudahDibaca: allRead,
+                                  ),
+                                  if (index < 9)
+                                    Divider(), // Add divider between items except the last one
+                                ],
+                              )),
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    buildNotifikasiItem(
-                      judul: 'Judul Notifikasi 1',
-                      isi: 'Isi notifikasi 1',
-                      tanggal: '24 April 2024', // Contoh tanggal
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    allRead = true; // Mark all notifications as read
+                  });
+                },
+                onDoubleTap: () {
+                  setState(() {
+                    allRead = false; // Mark all notifications as unread
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'Pengingat telah dibaca semua',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: greenColor,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 10.0,
+                          color: Colors.black26,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    Divider(),
-                    buildNotifikasiItem(
-                      judul: 'Judul Notifikasi 2',
-                      isi: 'Isi notifikasi 2',
-                      tanggal: '25 April 2024', // Contoh tanggal
-                    ),
-                    Divider(),
-                    buildNotifikasiItem(
-                      judul: 'Judul Notifikasi 3',
-                      isi: 'Isi notifikasi 3',
-                      tanggal: '26 April 2024', // Contoh tanggal
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -104,26 +138,38 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
     required String judul,
     required String isi,
     required String tanggal,
+    required bool sudahDibaca,
   }) {
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: greenColor, // Ubah warna latar belakang menjadi hijau
-        child: Icon(Icons.notifications, color: Colors.white), // Ubah warna ikon menjadi putih
+        child: Icon(Icons.notifications,
+            color: Colors.white), // Ubah warna ikon menjadi putih
       ),
       title: Text(judul),
-      subtitle: Row(
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(isi),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(isi),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                tanggal,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              if (sudahDibaca)
                 Text(
-                  tanggal,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  'Sudah Dibaca',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: greenColor,
+                  ),
                 ),
-              ],
-            ),
+            ],
           ),
         ],
       ),
