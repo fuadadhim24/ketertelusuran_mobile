@@ -28,6 +28,8 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     setState(() {
       isRainySeason = !isRainySeason;
       selectedOption = 0;
+      debugPrint(jsonEncode(padiSearchedList));
+      // debugPrint(jsonEncode(padiList));
     });
   }
 
@@ -299,7 +301,8 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  searchPadi();
+                  // debugPrint(jsonEncode(padiList));
+                  // debugPrint(jsonEncode(padiList));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -308,7 +311,9 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                   ),
                   child: IconButton(
                     icon: Icon(Icons.filter_alt, color: whiteContainerColor),
-                    onPressed: () {},
+                    onPressed: () {
+                      searchPadi();
+                    },
                   ),
                 ),
               ),
@@ -586,15 +591,12 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
 
     // Menerapkan filter pada daftar padi berdasarkan teks pencarian
     List<dynamic> filteredList = padiList.where((padi) {
-      // Lakukan pencarian berdasarkan nama padi atau kategori
-      String namaPadi = padi['varietas'].toLowerCase();
-      String kategori = padi['kategori'].toLowerCase();
+      String namaVarietas = padi['varietas'].toLowerCase();
 
       // Return true jika nama padi atau kategori mengandung teks pencarian
-      return namaPadi.contains(searchText) || kategori.contains(searchText);
+      return namaVarietas.contains(searchText);
     }).toList();
-
-    // Perbarui daftar padi yang ditampilkan dengan hasil filter
+    debugPrint('cek 10');
     setState(() {
       padiSearchedList = filteredList;
     });
