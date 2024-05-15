@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
+import 'package:dio/dio.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
@@ -14,12 +16,18 @@ class VarietasPadiPage extends StatefulWidget {
 }
 
 class _VarietasPadiPageState extends State<VarietasPadiPage> {
+  TextEditingController _searchController = TextEditingController();
   bool isRainySeason = true; // Default is rainy season
+  bool search = false;
   int selectedOption = 0; // Default selected option is "Semua"
+  final dio = Dio();
+  List<dynamic> padiList = [];
+  List<dynamic> padiSearchedList = [];
 
   void toggleSeason() {
     setState(() {
       isRainySeason = !isRainySeason;
+      selectedOption = 0;
     });
   }
 
@@ -58,7 +66,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                 height: 5,
               ),
               Expanded(
-                child: buildVarietasPadiContent(),
+                child: buildVarietasPadiContent(context),
               ),
               SizedBox(
                 height: 25,
@@ -275,6 +283,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                     SizedBox(width: 10),
                     Expanded(
                       child: TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Cari Varietas Padi',
                           border: InputBorder.none,
@@ -288,16 +297,19 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
             SizedBox(width: 10),
             Expanded(
               flex: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: greenColor,
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.filter_alt, color: whiteContainerColor),
-                  onPressed: () {
-                    // Tambahkan aksi ketika tombol filter ditekan
-                  },
+              child: GestureDetector(
+                onTap: () {
+                  searchPadi();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: greenColor,
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.filter_alt, color: whiteContainerColor),
+                    onPressed: () {},
+                  ),
                 ),
               ),
             ),
@@ -342,18 +354,107 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     );
   }
 
-  Widget buildVarietasPadiContent() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return buildContentCard();
+  Widget buildVarietasPadiContent(BuildContext context) {
+    return FutureBuilder(
+      future: readPadi(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Tampilkan indikator loading saat menunggu data
+        } else if (snapshot.hasError) {
+          return Text(
+              'Error: ${snapshot.error}'); // Tampilkan pesan error jika terjadi kesalahan
+        } else {
+          if (_searchController.text.isEmpty) {
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: padiList
+                  .length, // Gunakan panjang daftar padi sebagai itemCount
+              itemBuilder: (context, index) {
+                return isRainySeason
+                    ? padiList[index]['jenis_musim'] == 'Hujan' &&
+                            (selectedOption == 0 ||
+                                (selectedOption == 1 &&
+                                    padiList[index]['kategori'] ==
+                                        'Rekomendasi') ||
+                                (selectedOption == 2 &&
+                                    padiList[index]['kategori'] == 'Selalu') ||
+                                (selectedOption == 3 &&
+                                    padiList[index]['kategori'] == 'Jarang'))
+                        ? buildContentCard(
+                            padiList[index]['varietas'],
+                            padiList[index]['kategori'],
+                            padiList[index]['karakteristik_hasil'],
+                          )
+                        : SizedBox()
+                    : padiList[index]['jenis_musim'] == 'Kemarau' &&
+                            (selectedOption == 0 ||
+                                (selectedOption == 1 &&
+                                    padiList[index]['kategori'] ==
+                                        'Rekomendasi') ||
+                                (selectedOption == 2 &&
+                                    padiList[index]['kategori'] == 'Selalu') ||
+                                (selectedOption == 3 &&
+                                    padiList[index]['kategori'] == 'Jarang'))
+                        ? buildContentCard(
+                            padiList[index]['varietas'],
+                            padiList[index]['kategori'],
+                            padiList[index]['karakteristik_hasil'],
+                          )
+                        : SizedBox();
+              },
+            );
+          } else {
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: padiSearchedList
+                  .length, // Gunakan panjang daftar padi sebagai itemCount
+              itemBuilder: (context, index) {
+                return isRainySeason
+                    ? padiSearchedList[index]['jenis_musim'] == 'Hujan' &&
+                            (selectedOption == 0 ||
+                                (selectedOption == 1 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Rekomendasi') ||
+                                (selectedOption == 2 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Selalu') ||
+                                (selectedOption == 3 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Jarang'))
+                        ? buildContentCard(
+                            padiSearchedList[index]['varietas'],
+                            padiSearchedList[index]['kategori'],
+                            padiSearchedList[index]['karakteristik_hasil'],
+                          )
+                        : SizedBox()
+                    : padiSearchedList[index]['jenis_musim'] == 'Kemarau' &&
+                            (selectedOption == 0 ||
+                                (selectedOption == 1 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Rekomendasi') ||
+                                (selectedOption == 2 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Selalu') ||
+                                (selectedOption == 3 &&
+                                    padiSearchedList[index]['kategori'] ==
+                                        'Jarang'))
+                        ? buildContentCard(
+                            padiSearchedList[index]['varietas'],
+                            padiSearchedList[index]['kategori'],
+                            padiSearchedList[index]['karakteristik_hasil'],
+                          )
+                        : SizedBox();
+              },
+            );
+          }
+        }
       },
     );
   }
 
-  Widget buildContentCard() {
+  Widget buildContentCard(namaPadi, kategori, karakteristikHasil) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       color: whiteContainerColor,
@@ -369,14 +470,14 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pulen',
+                        namaPadi,
                         style: TextStyle(
                           fontWeight: semiBold,
                         ),
                       ),
                       SizedBox(height: 5),
                       Text(
-                        'Unggulan/Jarang Dipakai', // Ganti dengan keterangan sesuai konten
+                        kategori, // Ganti dengan keterangan sesuai konten
                         style: BlackTextStyle.copyWith(
                           fontSize: 11,
                         ),
@@ -385,7 +486,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                       Container(
                         margin: EdgeInsets.only(right: 10),
                         child: Text(
-                          'Informasi singkat mengenai konten tersebut', // Ganti dengan informasi sesuai konten
+                          karakteristikHasil, // Ganti dengan informasi sesuai konten
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: BlackTextStyle.copyWith(
@@ -420,5 +521,82 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
         ),
       ),
     );
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: Colors.red, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  Future<void> readPadi() async {
+    if (padiList.isEmpty) {
+      final url = Global.serverUrl + Global.readPadiPath;
+      final finalUrl = url;
+      Response response;
+      response = await dio.get(finalUrl);
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+      if (response.statusCode == 200) {
+        if (body.containsKey('data')) {
+          // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+          padiList = body['data'];
+          // debugPrint(jsonEncode(body));
+          // debugPrint('lahanList : $lahanList');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    }
+  }
+
+  void searchPadi() {
+    // Mendapatkan teks yang dimasukkan pengguna pada TextField
+    String searchText = _searchController.text.toLowerCase();
+
+    // Menerapkan filter pada daftar padi berdasarkan teks pencarian
+    List<dynamic> filteredList = padiList.where((padi) {
+      // Lakukan pencarian berdasarkan nama padi atau kategori
+      String namaPadi = padi['varietas'].toLowerCase();
+      String kategori = padi['kategori'].toLowerCase();
+
+      // Return true jika nama padi atau kategori mengandung teks pencarian
+      return namaPadi.contains(searchText) || kategori.contains(searchText);
+    }).toList();
+
+    // Perbarui daftar padi yang ditampilkan dengan hasil filter
+    setState(() {
+      padiSearchedList = filteredList;
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
+import 'package:ketertelusuran_mobile/ui/pages/panen_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/pencatatan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/pilih-titik-lokasi-lahan',
             page: () => const PilihLokasiPage()),
+        GetPage(name: '/panen', page: () => const PanenPage()),
       ],
     );
   }

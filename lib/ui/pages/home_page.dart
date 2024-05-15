@@ -533,33 +533,57 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomHomeService(
-                title: 'Varietas Padi',
-                iconUrl: 'assets/ic_varietas.png',
-                onTap: () {
-                  // Routing ke halaman VarietasPadiPage
-                  // debugTesting();
-                  Get.toNamed('/varietas-padi');
-                },
-              ),
-              CustomHomeService(
-                title: 'Pencatatan',
-                iconUrl: 'assets/ic_grade.png',
-                onTap: () {
-                  Get.toNamed('/pencatatan');
-                },
-              ),
-              CustomHomeService(
-                title: 'Analisis SPK',
-                iconUrl: 'assets/ic_ketertelusuran.png',
-                onTap: () {
-                  Get.toNamed('/analisis-spk');
-                },
-              ),
-            ],
+          Container(
+            height: 101,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomHomeService(
+                      title: 'Varietas Padi',
+                      iconUrl: 'assets/ic_varietas.png',
+                      onTap: () {
+                        // Routing ke halaman VarietasPadiPage
+                        // debugTesting();
+                        Get.toNamed('/varietas-padi');
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    CustomHomeService(
+                      title: 'Pencatatan',
+                      iconUrl: 'assets/ic_grade.png',
+                      onTap: () {
+                        Get.toNamed('/pencatatan');
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    CustomHomeService(
+                      title: 'Analisis SPK',
+                      iconUrl: 'assets/ic_ketertelusuran.png',
+                      onTap: () {
+                        Get.toNamed('/analisis-spk');
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    CustomHomeService(
+                      title: 'Panen',
+                      iconUrl: 'assets/ic_lahan_big.png',
+                      onTap: () {
+                        Get.toNamed('/panen');
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
