@@ -153,7 +153,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            ), // Pembatas
+            ),
+            // Pembatas
             Container(
               height: 1,
               width: double.infinity,
@@ -189,10 +190,39 @@ class _HomePageState extends State<HomePage> {
                 }).toList(),
               ),
             ),
-
-            // Spacer
-            Spacer(),
-
+            // Jarak antara daftar sawah dan tombol Riwayat Produksi
+            SizedBox(height: 20),
+            // Riwayat Produksi Button
+            InkWell(
+              onTap: () {
+                Get.toNamed('/riwayat-produksi');
+              },
+              child: Container(
+                width: 180, // Increased width of the Riwayat Produksi Button
+                height: 50, // Increased height of the Riwayat Produksi Button
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25), // Rounded corners
+                  color: greenColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(Icons.history, color: Colors.white),
+                    Text(
+                      'Riwayat Produksi',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward, color: Colors.white),
+                  ],
+                ),
+              ),
+            ),
+            // Jarak antara tombol Riwayat Produksi dan tombol Keluar
+            SizedBox(height: 20),
             // Keluar Button
             GestureDetector(
               onTap: () {
@@ -200,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                 authOption.signOut();
               },
               child: Container(
-                width: 160, // Increased width of the Tambah Lahan Button
+                width: 160, // Increased width of the Keluar Button
                 height: 50, // Match parent width
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(

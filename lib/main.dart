@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
+import 'package:ketertelusuran_mobile/ui/pages/detail_produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/panen_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/pencatatan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
@@ -10,6 +11,7 @@ import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/password_baru.dart';
 import 'package:ketertelusuran_mobile/ui/pages/pilih_lokasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/read_more.dart';
+import 'package:ketertelusuran_mobile/ui/pages/riwayat_produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
@@ -60,6 +62,10 @@ class MyApp extends StatelessWidget {
             name: '/pilih-titik-lokasi-lahan',
             page: () => const PilihLokasiPage()),
         GetPage(name: '/panen', page: () => const PanenPage()),
+        GetPage(
+            name: '/riwayat-produksi', page: () => const RiwayatProduksiPage()),
+        GetPage(
+            name: '/detail-produksi', page: () => const DetailProduksiPage()),
       ],
     );
   }
