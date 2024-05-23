@@ -20,7 +20,7 @@ import 'package:ketertelusuran_mobile/ui/pages/sign_up_set_profile_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_success.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
-import 'package:ketertelusuran_mobile/ui/pages/tambah_varietas_padi_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/pembenihan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/lupa_password.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
@@ -52,12 +52,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/varietas-padi', page: () => const VarietasPadiPage()),
         GetPage(name: '/lupa-password', page: () => const LupaPasswordPage()),
         GetPage(name: '/password-baru', page: () => const PasswordBaruPage()),
-        GetPage(name: '/read-more', page: () => const ReadMorePage()),
+        GetPage(name: '/read-more', page: () => ReadMorePage()),
         GetPage(name: '/notifikasi', page: () => const NotifikasiPage()),
         GetPage(name: '/tambah-lahan', page: () => const TambahLahanPage()),
         GetPage(
             name: '/tambah-varietas-padi',
-            page: () => const TambahVarietasPadiPage()),
+            page: () => const PembenihanPage()),
         GetPage(
             name: '/pilih-titik-lokasi-lahan',
             page: () => const PilihLokasiPage()),

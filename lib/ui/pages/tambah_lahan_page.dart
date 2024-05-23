@@ -169,8 +169,6 @@ class _TambahLahanPage extends State<TambahLahanPage> {
           CustomFilledButton(
             title: 'Submit',
             onPressed: () {
-              TambahLahanPage.resultLatitude;
-              TambahLahanPage.resultLongitude;
               String? latitude = TambahLahanPage.resultLatitude;
               String? longitude = TambahLahanPage.resultLongitude;
 

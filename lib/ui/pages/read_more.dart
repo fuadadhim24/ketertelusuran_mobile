@@ -4,19 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
-class ReadMorePage extends StatelessWidget {
-  const ReadMorePage({Key? key}) : super(key: key);
+class ReadMorePage extends StatefulWidget {
+  ReadMorePage({super.key});
 
   @override
+  State<ReadMorePage> createState() => _ReadMorePageState();
+}
+
+class _ReadMorePageState extends State<ReadMorePage> {
+  String? id = VarietasPadiPage.id;
+  String? varietas = VarietasPadiPage.varietas;
+  String? karakteristikHasil = VarietasPadiPage.karakteristikHasil;
+  String? kategori = VarietasPadiPage.kategori;
+  String? deskripsi = VarietasPadiPage.deskripsi;
+  String? keunggulan = VarietasPadiPage.keunggulan;
+  String? jenisMusim = VarietasPadiPage.jenisMusim;
+  String? lamaTanam = VarietasPadiPage.lamaTanam;
+  String? ketahananHamaPenyakit = VarietasPadiPage.ketahananHamaPenyakit;
+  String? deletedAt = VarietasPadiPage.deletedAt;
+  String? createdAt = VarietasPadiPage.createdAt;
+  String? updateAt = VarietasPadiPage.updateAt;
+  @override
   Widget build(BuildContext context) {
+    // final padi = padiList.firstWhere((padi) => padi['id'] == id);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Baca Selengkapnya',
+          'Varietas Padi',
           style: TextStyle(
             fontFamily: 'NYTCheltenham',
             fontWeight: FontWeight.bold,
@@ -35,45 +54,100 @@ class ReadMorePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              width: double.infinity,
-              height: 200,
-              // Isi gambar berita di sini
-            ),
             SizedBox(height: 24),
+            Text(
+              varietas ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 24,
+                fontWeight: semiBold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              karakteristikHasil ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 20),
+            Divider(),
+            SizedBox(height: 8),
             CustomFilledButton(
               title: 'Pilih Varietas Padi',
               onPressed: () {
                 Get.toNamed('/tambah-varietas-padi');
               },
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 20),
             Text(
-              'Ciherang',
-              style: TextStyle(
-                fontFamily: 'NYTCheltenham',
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.black,
+              deskripsi ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 36),
             Text(
-              _generateArticleDescription(),
-              style: TextStyle(
-                fontFamily: 'NYTFutura',
+              'Keunggulan',
+              style: BlackTextStyle.copyWith(
                 fontSize: 16,
-                height: 1.5,
-                color: Colors.black87,
+                fontWeight: semiBold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              keunggulan ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 24),
+            Divider(),
+            SizedBox(height: 8),
+            Text(
+              'Jenis Musim',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: semiBold,
+              ),
+            ),
+            Text(
+              jenisMusim ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
               ),
             ),
             SizedBox(height: 20),
             Text(
-              'Penulis: Rizky Pradika',
+              'Durasi Tanam hingga panen',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: semiBold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              lamaTanam ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Ketahanan Pada Hama dan Penyakit',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: semiBold,
+              ),
+            ),
+            Text(
+              ketahananHamaPenyakit ?? '',
+              style: BlackTextStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              createdAt ?? '',
               style: TextStyle(
                 fontFamily: 'NYTFutura',
                 fontSize: 14,
@@ -82,45 +156,11 @@ class ReadMorePage extends StatelessWidget {
             ),
             SizedBox(height: 3),
             Text(
-              'Ditambahkan pada 7 April 2024',
+              updateAt ?? '',
               style: TextStyle(
                 fontFamily: 'NYTFutura',
                 fontSize: 14,
                 color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(height: 20),
-            Divider(),
-            SizedBox(height: 8),
-            Text(
-              'Foto Varietas Padi',
-              style: TextStyle(
-                fontFamily: 'NYTFutura',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: greenColor,
-              ),
-            ),
-            SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _buildInfoCard(
-                    imageUrl: 'assets/image1.jpg',
-                    title: 'Informasi 1',
-                  ),
-                  SizedBox(width: 20),
-                  _buildInfoCard(
-                    imageUrl: 'assets/image2.jpg',
-                    title: 'Informasi 2',
-                  ),
-                  SizedBox(width: 20),
-                  _buildInfoCard(
-                    imageUrl: 'assets/image3.jpg',
-                    title: 'Informasi 3',
-                  ),
-                ],
               ),
             ),
             SizedBox(height: 32),
@@ -130,36 +170,4 @@ class ReadMorePage extends StatelessWidget {
     );
   }
 
-  String _generateArticleDescription() {
-    return '''Varietas padi adalah berbagai jenis atau varietas dari tanaman padi yang ditanam di berbagai daerah di seluruh dunia. Setiap varietas padi memiliki karakteristik unik yang membedakannya dari varietas lainnya. Beberapa varietas padi dikenal karena ketahanannya terhadap penyakit tertentu atau kondisi lingkungan yang ekstrem.
-
-Memilih varietas padi yang tepat merupakan langkah penting.''';
-  }
-
-  Widget _buildInfoCard({required String imageUrl, required String title}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 150,
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          // Placeholder gambar
-        ),
-        SizedBox(height: 10),
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'NYTFutura',
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    );
-  }
 }

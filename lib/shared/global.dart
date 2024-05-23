@@ -8,4 +8,8 @@ class Global {
 
   //varietas padi
   static const String readPadiPath = '/padi/read.php';
+  
+  //varietas padi
+  static const String produksiPath = '/produksi';
+  static const String pembenihanPath = '/pembenihan/create.php';
 }

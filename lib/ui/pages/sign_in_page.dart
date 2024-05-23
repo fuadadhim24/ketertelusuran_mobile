@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ketertelusuran_mobile/services/auth.dart';
 
 class SignInPage extends StatefulWidget {
+  static String? idUser;
   SignInPage({Key? key});
 
   @override
@@ -22,10 +23,9 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin {
   TextEditingController _emailController = TextEditingController();
-
   TextEditingController _passwordController = TextEditingController();
-
   final dio = Dio();
+  List<dynamic> userList = [];
 
   late AnimationController _animationController;
   late Animation<Color?> _animation;
@@ -228,6 +228,9 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     if (response.statusCode == 200) {
       if (body.containsKey('data')) {
         saveSession(email);
+        userList = body['data'];
+        String id = userList[0]['id'];
+        SignInPage.idUser = id;
         _showSuccessSnackBar(context);
         getX.Get.offNamed('/home');
       } else {

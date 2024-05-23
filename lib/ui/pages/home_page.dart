@@ -13,6 +13,7 @@ import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
 class HomePage extends StatefulWidget {
+  static String idLahan = '';
   const HomePage({Key? key});
 
   @override
@@ -572,7 +573,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomHomeService(
-                      title: 'Varietas Padi',
+                      title: 'Pembenihan',
                       iconUrl: 'assets/ic_varietas.png',
                       onTap: () {
                         // Routing ke halaman VarietasPadiPage
@@ -887,6 +888,7 @@ class _HomePageState extends State<HomePage> {
   void lahanDefault() {
     if (lahanList.isNotEmpty) {
       // Ambil nilai dari elemen pertama dalam lahanList
+      HomePage.idLahan = lahanList[0]['id'];
       namaLahan = lahanList[0]['nama_lahan'];
       detailLokasi = lahanList[0]['detail_lokasi'];
       luas = lahanList[0]['luas'];
@@ -908,6 +910,7 @@ class _HomePageState extends State<HomePage> {
       debugPrint(namaLahan);
       debugPrint(detailLokasi);
       setState(() {
+        HomePage.idLahan = chosenLahan['id'];
         namaLahan = chosenLahan['nama_lahan'];
         detailLokasi = chosenLahan['detail_lokasi'];
         luas = chosenLahan['luas'];
@@ -922,6 +925,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void debugTesting() {
+    debugPrint(HomePage.idLahan);
     debugPrint(namaLahan);
     debugPrint(detailLokasi);
     debugPrint(luas);

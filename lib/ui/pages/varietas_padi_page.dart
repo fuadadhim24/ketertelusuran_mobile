@@ -9,6 +9,18 @@ import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class VarietasPadiPage extends StatefulWidget {
+  static String? id;
+  static String? varietas;
+  static String? karakteristikHasil;
+  static String? kategori;
+  static String? deskripsi;
+  static String? keunggulan;
+  static String? jenisMusim;
+  static String? lamaTanam;
+  static String? ketahananHamaPenyakit;
+  static String? deletedAt;
+  static String? createdAt;
+  static String? updateAt;
   const VarietasPadiPage({Key? key}) : super(key: key);
 
   @override
@@ -22,13 +34,14 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
   int selectedOption = 0; // Default selected option is "Semua"
   final dio = Dio();
   List<dynamic> padiList = [];
+  List<dynamic> padiChoosedList = [];
   List<dynamic> padiSearchedList = [];
 
   void toggleSeason() {
     setState(() {
       isRainySeason = !isRainySeason;
       selectedOption = 0;
-      debugPrint(jsonEncode(padiSearchedList));
+      // debugPrint(jsonEncode(padiSearchedList));
       // debugPrint(jsonEncode(padiList));
     });
   }
@@ -387,6 +400,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                                 (selectedOption == 3 &&
                                     padiList[index]['kategori'] == 'Jarang'))
                         ? buildContentCard(
+                            padiList[index]['id'],
                             padiList[index]['varietas'],
                             padiList[index]['kategori'],
                             padiList[index]['karakteristik_hasil'],
@@ -402,6 +416,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                                 (selectedOption == 3 &&
                                     padiList[index]['kategori'] == 'Jarang'))
                         ? buildContentCard(
+                            padiList[index]['id'],
                             padiList[index]['varietas'],
                             padiList[index]['kategori'],
                             padiList[index]['karakteristik_hasil'],
@@ -429,6 +444,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                                     padiSearchedList[index]['kategori'] ==
                                         'Jarang'))
                         ? buildContentCard(
+                            padiSearchedList[index]['id'],
                             padiSearchedList[index]['varietas'],
                             padiSearchedList[index]['kategori'],
                             padiSearchedList[index]['karakteristik_hasil'],
@@ -446,6 +462,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                                     padiSearchedList[index]['kategori'] ==
                                         'Jarang'))
                         ? buildContentCard(
+                            padiSearchedList[index]['id'],
                             padiSearchedList[index]['varietas'],
                             padiSearchedList[index]['kategori'],
                             padiSearchedList[index]['karakteristik_hasil'],
@@ -459,7 +476,7 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
     );
   }
 
-  Widget buildContentCard(namaPadi, kategori, karakteristikHasil) {
+  Widget buildContentCard(id, namaPadi, kategori, karakteristikHasil) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       color: whiteContainerColor,
@@ -502,8 +519,18 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(
-                              '/read-more'); // Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
+                          // Menerapkan filter pada daftar padi berdasarkan teks pencarian
+                          padiChoosedList = padiList.where((padi) {
+                            String idVarietas = padi['id'];
+
+                            return idVarietas.contains(id);
+                          }).toList();
+                          // debugPrint(jsonEncode(padiList));
+                          // debugPrint(jsonEncode(padiChoosedList));
+                          // The argument type 'String' can't be assigned to the parameter type 'int'
+                          // debugPrint(VarietasPadiPage._id);
+                          setPadiChoosed();
+                          Get.toNamed('/read-more');
                         },
                         child: Row(
                           children: [
@@ -596,9 +623,27 @@ class _VarietasPadiPageState extends State<VarietasPadiPage> {
       // Return true jika nama padi atau kategori mengandung teks pencarian
       return namaVarietas.contains(searchText);
     }).toList();
-    debugPrint('cek 10');
+    // debugPrint('cek 10');
     setState(() {
       padiSearchedList = filteredList;
+      selectedOption = 0;
     });
+  }
+
+  void setPadiChoosed() {
+    VarietasPadiPage.id = padiChoosedList[0]['id'].toString();
+    VarietasPadiPage.varietas = padiChoosedList[0]['varietas'].toString();
+    VarietasPadiPage.karakteristikHasil =
+        padiChoosedList[0]['karakteristik_hasil'].toString();
+    VarietasPadiPage.kategori = padiChoosedList[0]['kategori'].toString();
+    VarietasPadiPage.deskripsi = padiChoosedList[0]['deskripsi'].toString();
+    VarietasPadiPage.keunggulan = padiChoosedList[0]['keunggulan'].toString();
+    VarietasPadiPage.jenisMusim = padiChoosedList[0]['jenis_musim'].toString();
+    VarietasPadiPage.lamaTanam = padiChoosedList[0]['lama_tanam'].toString();
+    VarietasPadiPage.ketahananHamaPenyakit =
+        padiChoosedList[0]['ketahanan_hama_penyakit'].toString();
+    VarietasPadiPage.deletedAt = padiChoosedList[0]['deleted_at'].toString();
+    VarietasPadiPage.createdAt = padiChoosedList[0]['created_at'].toString();
+    VarietasPadiPage.updateAt = padiChoosedList[0]['updated_at'].toString();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:ketertelusuran_mobile/ui/pages/pembenihan_page.dart';
 
 class CustomFormField extends StatefulWidget {
   final String title;
@@ -123,7 +124,9 @@ class _CustomStringFormFieldState extends State<CustomStringFormField> {
 
 class CustomDatePicker extends StatefulWidget {
   final String title;
-  const CustomDatePicker({required this.title, super.key});
+  final ValueChanged<String>? onDatePicked;
+  
+  const CustomDatePicker({required this.title, this.onDatePicked, super.key});
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -166,11 +169,18 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           print(
               formattedDate); //formatted date output using intl package =>  2022-07-04
           //You can format date as per your need
-
           setState(() {
             dateController.text =
                 formattedDate; //set foratted date to TextField value.
+            // PembenihanPage.resultDate = formattedDate;
+            // String? result = PembenihanPage.resultDate;
+            // debugPrint('$result, $formattedDate');
           });
+
+          // Memanggil callback dan meneruskan nilai yang dipilih
+          if (widget.onDatePicked != null) {
+            widget.onDatePicked!(formattedDate);
+          }
         } else {
           _showWarningSnackBar(context, widget.title + ' belum dipilih');
         }
