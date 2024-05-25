@@ -11,5 +11,9 @@ class Global {
   
   //varietas padi
   static const String produksiPath = '/produksi';
-  static const String pembenihanPath = '/pembenihan/create.php';
+  static const String penyemaianPath = '/penyemaian/create.php';
+
+  //main
+  static const String mainPath = '/main';
+  static const String homePagePath = '/home_page.php';
 }

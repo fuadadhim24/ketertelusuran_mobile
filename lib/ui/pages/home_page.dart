@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/auth.dart';
+import 'package:ketertelusuran_mobile/services/fase.dart';
+import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
@@ -14,6 +16,11 @@ import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
 class HomePage extends StatefulWidget {
   static String idLahan = '';
+  static List<dynamic> lahanList = [];
+  static List<dynamic> produksiList = [];
+  static Map<String, dynamic> produksiChoosedList = {};
+  static List<dynamic> faseDanPerlakuanList = [];
+  static List<dynamic> pencatatanList = [];
   const HomePage({Key? key});
 
   @override
@@ -28,7 +35,6 @@ class _HomePageState extends State<HomePage> {
   String latitude = '';
   String longitude = '';
   String jenisTanah = '';
-  List<dynamic> lahanList = [];
   final dio = Dio();
 
   @override
@@ -65,7 +71,7 @@ class _HomePageState extends State<HomePage> {
             ),
           )
         : FutureBuilder(
-            future: readLahan(),
+            future: readHomePage(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Scaffold(
@@ -182,11 +188,10 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: lahanList.map((lahan) {
+                children: HomePage.lahanList.map((lahan) {
                   // Ambil nama lahan dari objek lahan
                   final String namaLahan = lahan['nama_lahan'];
 
-                  // Bangun tombol untuk setiap nama lahan
                   return buildLahanButton(namaLahan);
                 }).toList(),
               ),
@@ -573,12 +578,24 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomHomeService(
-                      title: 'Pembenihan',
-                      iconUrl: 'assets/ic_varietas.png',
+                      title: 'Penyemaian',
+                      iconUrl: 'assets/ic_seedling.png',
                       onTap: () {
                         // Routing ke halaman VarietasPadiPage
                         // debugTesting();
                         Get.toNamed('/varietas-padi');
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    CustomHomeService(
+                      title: 'Penanaman',
+                      iconUrl: 'assets/ic_varietas.png',
+                      onTap: () {
+                        // Routing ke halaman VarietasPadiPage
+                        // debugTesting();
+                        Get.toNamed('/penanaman');
                       },
                     ),
                     SizedBox(
@@ -773,7 +790,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          '10 hari',
+                          Produksi.currentDays != null
+                              ? 'hari ke -' + Produksi.currentDays.toString()
+                              : '_',
                           style: BlackTextStyle.copyWith(
                             fontSize: 11,
                           ),
@@ -872,11 +891,54 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       if (body.containsKey('data')) {
         // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
-        _isLoaded = true;
-        lahanList = body['data'];
-        lahanDefault();
         // debugPrint(jsonEncode(body));
         // debugPrint('lahanList : $lahanList');
+
+        HomePage.lahanList = body['data'];
+        lahanDefault();
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      _showWarningSnackBar(context, responseData);
+    }
+  }
+
+  // produksi, pencatatan, fase dan perlakuan
+  Future<void> readHomePage() async {
+    readLahan();
+    final url = Global.serverUrl + Global.mainPath + Global.homePagePath;
+    final finalUrl = url;
+    Response response;
+    response = await dio.get(finalUrl);
+    final body = response.data;
+    var stringResponse = body.toString();
+    var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+    if (response.statusCode == 200) {
+      if (body.containsKey('produksi') &&
+          body.containsKey('pencatatan') &&
+          body.containsKey('fase_dan_perlakuan_utama')) {
+        // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+        _isLoaded = true;
+        HomePage.produksiList = body['produksi']['produksi'];
+        HomePage.pencatatanList = body['pencatatan']['pencatatan'];
+        HomePage.faseDanPerlakuanList =
+            body['fase_dan_perlakuan_utama']['fase_dan_perlakuan_utama'];
+        if (HomePage.produksiList.isNotEmpty &&
+            HomePage.pencatatanList.isNotEmpty &&
+            HomePage.faseDanPerlakuanList.isNotEmpty) {
+          // debugPrint(HomePage.produksiList.toString());
+          // debugPrint(HomePage.idLahan);
+          // debugPrint(HomePage.faseDanPerlakuanList.toString());
+
+          // FASE
+          Fase.readFaseChoosed();
+
+          // PRODUKSI
+          Produksi.readProduksiChoosed(HomePage.idLahan);
+
+          _isLoaded = true;
+        }
       } else {
         _showWarningSnackBar(context, responseData);
       }
@@ -886,22 +948,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   void lahanDefault() {
-    if (lahanList.isNotEmpty) {
+    if (HomePage.lahanList.isNotEmpty) {
       // Ambil nilai dari elemen pertama dalam lahanList
-      HomePage.idLahan = lahanList[0]['id'];
-      namaLahan = lahanList[0]['nama_lahan'];
-      detailLokasi = lahanList[0]['detail_lokasi'];
-      luas = lahanList[0]['luas'];
-      latitude = lahanList[0]['latitude'];
-      longitude = lahanList[0]['longitude'];
-      jenisTanah = lahanList[0]['jenis_tanah'];
+      HomePage.idLahan = HomePage.lahanList[0]['id'];
+      namaLahan = HomePage.lahanList[0]['nama_lahan'];
+      detailLokasi = HomePage.lahanList[0]['detail_lokasi'];
+      luas = HomePage.lahanList[0]['luas'];
+      latitude = HomePage.lahanList[0]['latitude'];
+      longitude = HomePage.lahanList[0]['longitude'];
+      jenisTanah = HomePage.lahanList[0]['jenis_tanah'];
     } else {
       debugPrint('data lahan pertama tidak bisa didapatkan');
     }
   }
 
   void lahanChoosed(String chosenNamaLahan) {
-    var chosenLahan = lahanList.firstWhere(
+    var chosenLahan = HomePage.lahanList.firstWhere(
       (lahan) => lahan['nama_lahan'] == chosenNamaLahan,
       orElse: () => null,
     );

@@ -6,11 +6,12 @@ import 'package:get/get.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/penyemaian_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class VarietasPadiPage extends StatefulWidget {
   static String? id;
-  static String? varietas;
+  static String varietas = '';
   static String? karakteristikHasil;
   static String? kategori;
   static String? deskripsi;

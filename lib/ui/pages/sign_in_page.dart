@@ -15,6 +15,10 @@ import 'package:ketertelusuran_mobile/services/auth.dart';
 
 class SignInPage extends StatefulWidget {
   static String? idUser;
+  static String? namaUser;
+  static String? emailUser;
+  static String? profilePhotoPathUser;
+  static List<dynamic> userList = [];
   SignInPage({Key? key});
 
   @override
@@ -25,7 +29,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final dio = Dio();
-  List<dynamic> userList = [];
 
   late AnimationController _animationController;
   late Animation<Color?> _animation;
@@ -228,10 +231,17 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     if (response.statusCode == 200) {
       if (body.containsKey('data')) {
         saveSession(email);
-        userList = body['data'];
-        String id = userList[0]['id'];
-        SignInPage.idUser = id;
         _showSuccessSnackBar(context);
+        SignInPage.idUser = body['data']['id'];
+        SignInPage.namaUser = body['data']['name'];
+        SignInPage.emailUser = body['data']['email'];
+        SignInPage.profilePhotoPathUser = body['data']['profile_photo_path'];
+        debugPrint(SignInPage.idUser);
+        debugPrint(SignInPage.namaUser);
+        debugPrint(SignInPage.emailUser);
+        debugPrint(SignInPage.profilePhotoPathUser);
+        
+        // SignInPage.idUser = id;
         getX.Get.offNamed('/home');
       } else {
         _showWarningSnackBar(context, responseData);

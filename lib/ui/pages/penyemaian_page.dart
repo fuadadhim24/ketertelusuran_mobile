@@ -3,25 +3,28 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/services/validator.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/penanaman_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 
-class PembenihanPage extends StatefulWidget {
+class PenyemaianPage extends StatefulWidget {
   static String? resultDateKedaluwarsa;
-  static String? resultDatePembenihan;
-  const PembenihanPage({super.key});
+  static String? resultDatePenyemaian;
+  static String varietasPadi = '';
+  const PenyemaianPage({super.key});
 
   @override
-  State<PembenihanPage> createState() => _PembenihanPageState();
+  State<PenyemaianPage> createState() => _PenyemaianPageState();
 }
 
-class _PembenihanPageState extends State<PembenihanPage> {
+class _PenyemaianPageState extends State<PenyemaianPage> {
   TextEditingController sumberBenihController = TextEditingController();
   TextEditingController tingkatKemurnianController = TextEditingController();
   TextEditingController tingkatVigorController = TextEditingController();
@@ -33,7 +36,7 @@ class _PembenihanPageState extends State<PembenihanPage> {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Pembenihan',
+          'Penyemaian',
           style: BlackTextStyle.copyWith(
             fontWeight: semiBold,
             fontSize: 20,
@@ -51,93 +54,6 @@ class _PembenihanPageState extends State<PembenihanPage> {
     );
   }
 
-  Widget buildHeadingKetertelusuran() {
-    return Container(
-      padding: const EdgeInsets.only(
-        top: 17,
-        bottom: 5,
-      ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 14,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 21,
-                    ),
-                    Text(
-                      'Pilih Lokasi Lahan',
-                      style: BlackTextStyle.copyWith(
-                        fontWeight: semiBold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      'Tekan pada map untuk menentukan titik lokasi',
-                      style: BlackTextStyle.copyWith(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 35,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildMapPanel() {
-    return Container(
-      child: MapGoogle(),
-    );
-  }
-
-  Widget buildInputLahan() {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 14,
-      ),
-      child: Column(
-        children: [
-          CustomFormField(title: 'Nama Lahan', typeFormField: 0),
-          const SizedBox(
-            height: 36,
-          ),
-          CustomFormField(title: 'Detail Lokasi', typeFormField: 0),
-          const SizedBox(
-            height: 36,
-          ),
-          CustomFormField(title: 'Luas', typeFormField: 0),
-          const SizedBox(
-            height: 36,
-          ),
-          CustomFormField(title: 'Jenis Tanah', typeFormField: 0),
-          const SizedBox(
-            height: 36,
-          ),
-          CustomFilledButton(
-            title: 'Submit',
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget buildMainForm() {
     return Column(
       children: [
@@ -145,7 +61,7 @@ class _PembenihanPageState extends State<PembenihanPage> {
           height: 16,
         ),
         CustomStringFormField(
-            title: 'Benih Varietas Padi', stringInitialValue: 'Ciherang'),
+                title: 'Benih Varietas Padi', stringInitialValue: VarietasPadiPage.varietas),
         SizedBox(
           height: 36,
         ),
@@ -158,8 +74,9 @@ class _PembenihanPageState extends State<PembenihanPage> {
           height: 36,
         ),
         CustomDatePicker(
-          title: 'Tanggal Kedaluwarsa Benih', onDatePicked: (date) {
-            PembenihanPage.resultDateKedaluwarsa = date;
+          title: 'Tanggal Kedaluwarsa Benih',
+          onDatePicked: (date) {
+            PenyemaianPage.resultDateKedaluwarsa = date;
           },
         ),
         SizedBox(
@@ -182,8 +99,9 @@ class _PembenihanPageState extends State<PembenihanPage> {
           height: 36,
         ),
         CustomDatePicker(
-          title: 'Tanggal Pembenihan', onDatePicked: (date) {
-            PembenihanPage.resultDatePembenihan = date;
+          title: 'Tanggal Penyemaian',
+          onDatePicked: (date) {
+            PenyemaianPage.resultDatePenyemaian = date;
           },
         ),
         SizedBox(
@@ -205,22 +123,41 @@ class _PembenihanPageState extends State<PembenihanPage> {
             String tingkatKemurnian =
                 tingkatKemurnianController.text.toString();
             String tingkatVigor = tingkatVigorController.text.toString();
-            String? resultTanggalKedaluwarsa = PembenihanPage.resultDateKedaluwarsa;
-            String? resultTanggalPembenihan = PembenihanPage.resultDatePembenihan;
+            String? resultTanggalKedaluwarsa =
+                PenyemaianPage.resultDateKedaluwarsa;
+            String? resultTanggalPenyemaian =
+                PenyemaianPage.resultDatePenyemaian;
             String jumlahBenih = jumlahBenihController.text.toString();
             String? idPadi = VarietasPadiPage.id;
             String? idLahan = HomePage.idLahan;
             String? idUser = SignInPage.idUser;
-            createPembenihan(
-                sumberBenih,
-                resultTanggalKedaluwarsa,
-                tingkatKemurnian,
-                tingkatVigor,
-                resultTanggalPembenihan,
-                jumlahBenih,
-                idPadi,
-                idLahan,
-                idUser);
+            if (resultTanggalKedaluwarsa != null) {
+              if (resultTanggalPenyemaian != null) {
+                if (Validator.validateString(sumberBenih) &&
+                    Validator.validateInt(tingkatKemurnian) &&
+                    Validator.validateInt(tingkatVigor) &&
+                    Validator.validateInt(jumlahBenih)) {
+                  createPenyemaian(
+                      sumberBenih,
+                      resultTanggalKedaluwarsa,
+                      tingkatKemurnian,
+                      tingkatVigor,
+                      resultTanggalPenyemaian,
+                      jumlahBenih,
+                      idPadi,
+                      idLahan,
+                      idUser);
+                }else{
+                  _showWarningSnackBar(context, 'Silakan isi semua data pada form yang disediakan');
+                }
+              } else {
+                _showWarningSnackBar(
+                    context, 'Silakan pilih tanggal penyemaian');
+              }
+            } else {
+              _showWarningSnackBar(
+                  context, 'Silakan pilih tanggal kedaluwarsa benih');
+            }
             // debugPrint(
             //     '$sumberBenih, $result, $tingkatKemurnian, $tingkatVigor');
           },
@@ -262,24 +199,24 @@ class _PembenihanPageState extends State<PembenihanPage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void createPembenihan(
+  void createPenyemaian(
       sumberBenih,
       tanggalKedaluwarsa,
       tingkatKemurnian,
       tingkatVigor,
-      tanggalPembenihan,
+      tanggalPenyemaian,
       jumlahBenih,
       idPadi,
       idLahan,
       idUser) async {
-    final url = Global.serverUrl + Global.produksiPath + Global.pembenihanPath;
+    final url = Global.serverUrl + Global.produksiPath + Global.penyemaianPath;
     final headers = {'Content-Type': 'application/json'};
     final data = {
       'sumber_benih': sumberBenih,
       'tanggal_kedaluwarsa': tanggalKedaluwarsa,
       'tingkat_kemurnian': tingkatKemurnian,
       'tingkat_vigor': tingkatVigor,
-      'tanggal_tanam': tanggalPembenihan,
+      'tanggal_penyemaian': tanggalPenyemaian,
       'jumlah_benih': jumlahBenih,
       'id_padi': idPadi,
       'id_lahan': idLahan,
@@ -297,7 +234,7 @@ class _PembenihanPageState extends State<PembenihanPage> {
       if (response.statusCode == 200) {
         final responseData = response.data;
         if (responseData.containsKey('success')) {
-          _showSuccessSnackBar(context, 'Pembenihan berhasil ditambahkan!');
+          _showSuccessSnackBar(context, 'Penyemaian berhasil ditambahkan!');
           Get.offNamed('/home');
         } else {
           _showWarningSnackBar(context, responseData);

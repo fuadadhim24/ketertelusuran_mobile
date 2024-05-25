@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:intl/intl.dart';
-import 'package:ketertelusuran_mobile/ui/pages/pembenihan_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/penyemaian_page.dart';
 
 class CustomFormField extends StatefulWidget {
   final String title;
