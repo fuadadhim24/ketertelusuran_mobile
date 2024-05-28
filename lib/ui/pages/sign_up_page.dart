@@ -1,18 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
+import 'package:dio/dio.dart' as dioP;
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+  @override
+  State<SignUpPage> createState() => _SignUpPage();
+}
+
+class _SignUpPage extends State<SignUpPage> {
+  final dio = dioP.Dio();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // createusers();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController fullNameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(
@@ -85,7 +101,7 @@ class SignUpPage extends StatelessWidget {
                   height: 24,
                 ),
                 CustomFilledButton(
-                  title: 'Berikutnya',
+                  title: 'Sign Up',
                   onPressed: () {
                     if (fullNameController.text.isEmpty &&
                         emailController.text.isEmpty &&
@@ -112,8 +128,12 @@ class SignUpPage extends StatelessWidget {
                           context, 'Alamat email belum terisi');
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
+                    } else if (!_validateEmail(emailController.text)) {
+                      _showWarningSnackBar(context,
+                          'Alamat email harus berakhir dengan @gmail.com');
                     } else {
-                      Get.toNamed('/sign-up-success');
+                      createUsers(fullNameController.text, emailController.text,
+                          passwordController.text);
                     }
                   },
                 ),
@@ -137,6 +157,11 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
+  // Fungsi untuk memvalidasi email
+  bool _validateEmail(String email) {
+    return email.endsWith('@gmail.com');
+  }
+
   // Fungsi untuk menampilkan notifikasi snack bar peringatan
   void _showWarningSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
@@ -150,5 +175,50 @@ class SignUpPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void createUsers(name, email, password) async {
+    final url = Global.serverUrl + Global.signUpPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {"name": name, "email": email, "password": password};
+    try {
+      final response = await dioP.Dio().post(
+        url,
+        data: jsonEncode(data),
+        options: dioP.Options(headers: headers),
+      );
+
+      debugPrint(response.toString());
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData.containsKey('success')) {
+          _showSuccessSnackBar(context, 'Akun berhasil dibuat!');
+          Get.offNamed('/sign-up-success');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal Membuat Akun!');
+      }
+    } catch (e) {
+      _showWarningSnackBar(context, 'Error $e');
+    }
   }
 }
