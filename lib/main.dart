@@ -16,8 +16,6 @@ import 'package:ketertelusuran_mobile/ui/pages/riwayat_produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/onboarding_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
-import 'package:ketertelusuran_mobile/ui/pages/sign_up_set_ktp_page.dart';
-import 'package:ketertelusuran_mobile/ui/pages/sign_up_set_profile_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_success.dart';
 import 'package:ketertelusuran_mobile/ui/pages/splash_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
@@ -41,10 +39,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/onboarding', page: () => const OnBoardingPage()),
         GetPage(name: '/sign-in', page: () => SignInPage()),
         GetPage(name: '/sign-up', page: () => const SignUpPage()),
-        GetPage(
-            name: '/sign-up-set-profile',
-            page: () => const SignUpSetProfilePage()),
-        GetPage(name: '/sign-up-set-ktp', page: () => const SignUpSetKtpPage()),
         GetPage(
             name: '/sign-up-success', page: () => const SignUpSuccessPage()),
         GetPage(name: '/home', page: () => const HomePage()),

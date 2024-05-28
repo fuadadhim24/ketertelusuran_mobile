@@ -113,7 +113,7 @@ class SignUpPage extends StatelessWidget {
                     } else if (passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
                     } else {
-                      Get.toNamed('/sign-up-set-profile');
+                      Get.toNamed('/sign-up-success');
                     }
                   },
                 ),
