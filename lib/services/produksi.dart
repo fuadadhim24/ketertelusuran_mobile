@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 
 class Produksi{
@@ -7,12 +8,19 @@ class Produksi{
   static Future<void> readProduksiChoosed(idLahan) async {
     Produksi.produksiChoosedList = HomePage.produksiList.firstWhere(
       (produksi) => produksi['id_lahan'] == idLahan,
-      orElse: () => ['null'],
+      orElse: () => {'null':'null'},
     );
-    // debugPrint(Produksi.produksiChoosedList.toString());
-    String tanggalProduksiString = produksiChoosedList['tanggal_produksi'];
-    currentDays = calculateCurrentDays(tanggalProduksiString)+1;
+    if(Produksi.produksiChoosedList.containsKey('null')){
+      currentDays = 0;
+      Fase.namaFase ="";
+    }else{
+      // debugPrint(Produksi.produksiChoosedList.toString());
+      String tanggalProduksiString = produksiChoosedList['tanggal_produksi'];
+      currentDays = calculateCurrentDays(tanggalProduksiString)+1;
+      // FASE
+      Fase.readFaseChoosed();
     // debugPrint(currentDays.toString());
+    }
   }
 
   static int calculateCurrentDays(tanggalProduksiString){

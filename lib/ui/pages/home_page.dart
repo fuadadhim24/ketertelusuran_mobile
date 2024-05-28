@@ -453,7 +453,7 @@ class _HomePageState extends State<HomePage> {
                             height: 15,
                           ),
                           Text(
-                            'Penanaman',
+                            Fase.namaFase != "" ? Fase.namaFase : 'Lahan tidak digunakan',
                             style: BlackTextStyle.copyWith(
                               fontSize: 12,
                             ),
@@ -766,7 +766,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          Fase.namaFase,
+                          Fase.namaFase != "" ? ('Fase '+Fase.namaFase) : '__',
                           style: BlackTextStyle.copyWith(
                             fontSize: 11,
                           ),
@@ -790,9 +790,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          Produksi.currentDays != null
-                              ? 'hari ke -' + Produksi.currentDays.toString()
-                              : '_',
+                          Produksi.currentDays != 0
+                              ? 'Hari ke -' + Produksi.currentDays.toString()
+                              : '__',
                           style: BlackTextStyle.copyWith(
                             fontSize: 11,
                           ),
@@ -933,8 +933,7 @@ class _HomePageState extends State<HomePage> {
 
           // PRODUKSI
           await Produksi.readProduksiChoosed(HomePage.idLahan);
-          // FASE
-          Fase.readFaseChoosed();
+          
 
 
           _isLoaded = true;
@@ -979,8 +978,12 @@ class _HomePageState extends State<HomePage> {
         latitude = chosenLahan['latitude'];
         longitude = chosenLahan['longitude'];
         jenisTanah = chosenLahan['jenis_tanah'];
-        Get.back();
+
+        // PRODUKSI
+        Produksi.readProduksiChoosed(HomePage.idLahan);
+        
       });
+      Get.back();
     } else {
       _showWarningSnackBar(context, 'Gagal mendapatkan data lahan spesifik');
     }
