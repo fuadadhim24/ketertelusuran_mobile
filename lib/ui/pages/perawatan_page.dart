@@ -5,8 +5,8 @@ import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 
-class PencatatanPage extends StatelessWidget {
-  const PencatatanPage({super.key});
+class PerawatanPage extends StatelessWidget {
+  const PerawatanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class PencatatanPage extends StatelessWidget {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Pencatatan',
+          'Perawatan',
           style: BlackTextStyle.copyWith(
             fontSize: 20,
             fontWeight: semiBold,

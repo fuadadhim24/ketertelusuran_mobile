@@ -5,7 +5,7 @@ import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
 import 'package:ketertelusuran_mobile/ui/pages/detail_produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/panen_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/penanaman_page.dart';
-import 'package:ketertelusuran_mobile/ui/pages/pencatatan_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/perawatan_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             name: '/sign-up-success', page: () => const SignUpSuccessPage()),
         GetPage(name: '/home', page: () => const HomePage()),
         GetPage(name: '/penanaman', page: () => const PenanamanPage()),
-        GetPage(name: '/pencatatan', page: () => const PencatatanPage()),
+        GetPage(name: '/perawatan', page: () => const PerawatanPage()),
         GetPage(name: '/analisis-spk', page: () => const AnalisisSpkPage()),
         GetPage(name: '/varietas-padi', page: () => const VarietasPadiPage()),
         GetPage(name: '/lupa-password', page: () => const LupaPasswordPage()),

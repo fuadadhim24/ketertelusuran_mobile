@@ -602,10 +602,10 @@ class _HomePageState extends State<HomePage> {
                       width: 5,
                     ),
                     CustomHomeService(
-                      title: 'Pencatatan',
+                      title: 'Perawatan',
                       iconUrl: 'assets/ic_grade.png',
                       onTap: () {
-                        Get.toNamed('/pencatatan');
+                        Get.toNamed('/perawatan');
                       },
                     ),
                     SizedBox(
