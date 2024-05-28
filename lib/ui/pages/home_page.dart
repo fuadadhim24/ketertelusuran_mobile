@@ -766,7 +766,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          'Fase Penanaman',
+                          Fase.namaFase,
                           style: BlackTextStyle.copyWith(
                             fontSize: 11,
                           ),
@@ -931,11 +931,11 @@ class _HomePageState extends State<HomePage> {
           // debugPrint(HomePage.idLahan);
           // debugPrint(HomePage.faseDanPerlakuanList.toString());
 
+          // PRODUKSI
+          await Produksi.readProduksiChoosed(HomePage.idLahan);
           // FASE
           Fase.readFaseChoosed();
 
-          // PRODUKSI
-          Produksi.readProduksiChoosed(HomePage.idLahan);
 
           _isLoaded = true;
         }

@@ -4,7 +4,7 @@ import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 class Produksi{
   static Map<String, dynamic> produksiChoosedList={};
   static int? currentDays;
-  static void readProduksiChoosed(idLahan) {
+  static Future<void> readProduksiChoosed(idLahan) async {
     Produksi.produksiChoosedList = HomePage.produksiList.firstWhere(
       (produksi) => produksi['id_lahan'] == idLahan,
       orElse: () => ['null'],
@@ -13,7 +13,6 @@ class Produksi{
     String tanggalProduksiString = produksiChoosedList['tanggal_produksi'];
     currentDays = calculateCurrentDays(tanggalProduksiString)+1;
     // debugPrint(currentDays.toString());
-
   }
 
   static int calculateCurrentDays(tanggalProduksiString){
