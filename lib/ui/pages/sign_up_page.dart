@@ -131,6 +131,9 @@ class _SignUpPage extends State<SignUpPage> {
                     } else if (!_validateEmail(emailController.text)) {
                       _showWarningSnackBar(context,
                           'Alamat email harus berakhir dengan @gmail.com');
+                    } else if (!_validatePassword(passwordController.text)) {
+                      _showWarningSnackBar(context,
+                          'Password harus terdiri dari kombinasi huruf dan angka dengan panjang minimal 6 karakter');
                     } else {
                       createUsers(fullNameController.text, emailController.text,
                           passwordController.text);
@@ -160,6 +163,12 @@ class _SignUpPage extends State<SignUpPage> {
   // Fungsi untuk memvalidasi email
   bool _validateEmail(String email) {
     return email.endsWith('@gmail.com');
+  }
+
+  // Fungsi untuk memvalidasi password
+  bool _validatePassword(String password) {
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,99}$');
+    return passwordRegex.hasMatch(password);
   }
 
   // Fungsi untuk menampilkan notifikasi snack bar peringatan
