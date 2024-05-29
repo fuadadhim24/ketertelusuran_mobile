@@ -149,6 +149,12 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                           context, 'Alamat Email belum terisi');
                     } else if (_passwordController.text.isEmpty) {
                       _showWarningSnackBar(context, 'Password belum terisi');
+                    } else if (!_validateEmail(_emailController.text)) {
+                      _showWarningSnackBar(context,
+                          'Alamat email harus berakhir dengan @gmail.com');
+                    } else if (!_validatePassword(_passwordController.text)) {
+                      _showWarningSnackBar(context,
+                          'Password harus terdiri dari kombinasi huruf dan angka dengan panjang minimal 6 karakter');
                     } else {
                       signIn(
                         context,
@@ -178,6 +184,17 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
         ],
       ),
     );
+  }
+
+  // Fungsi untuk memvalidasi email
+  bool _validateEmail(String email) {
+    return email.endsWith('@gmail.com');
+  }
+
+  // Fungsi untuk memvalidasi password
+  bool _validatePassword(String password) {
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,99}$');
+    return passwordRegex.hasMatch(password);
   }
 
   // Fungsi untuk menampilkan notifikasi snack bar saat berhasil
@@ -240,7 +257,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
         debugPrint(SignInPage.namaUser);
         debugPrint(SignInPage.emailUser);
         debugPrint(SignInPage.profilePhotoPathUser);
-        
+
         // SignInPage.idUser = id;
         getX.Get.offNamed('/home');
       } else {
