@@ -19,6 +19,7 @@ class Fase {
     currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDay);
 
     namaFase = currentPhase.values.first[0]['nama_fase'];
+    // debugPrint(HomePage.faseDanPerlakuanList.toString());
     // debugPrint(currentPhase.toString());
     // debugPrint(totalDurasi.toString());
     // debugPrint(categorizedValuesMap.toString());
@@ -56,6 +57,11 @@ class Fase {
   static Map<String, List<Map<String, dynamic>>> faseCategorize(
       List<dynamic> list) {
     Map<String, List<Map<String, dynamic>>> categorizedValues = {};
+    // Define the order of phases
+    List<String> phaseOrder = ['Penyemaian', 'Penanaman', 'Perawatan', 'Panen'];
+
+    // Sorting and creating the sortedFaseCategorized map
+    Map<String, List<Map<String, dynamic>>> sortedFaseCategorized = {};
 
     list.forEach((value) {
       String faseName = value['nama_fase'];
@@ -67,9 +73,32 @@ class Fase {
       categorizedValues[faseName]?.add(value);
     });
 
-    return categorizedValues;
+    // Sort the categorized values
+    Map<String, List<Map<String, dynamic>>> sortedCategorizedValues =
+        sortCategorizedValues(categorizedValues, phaseOrder);
+
+    // debugPrint(sortedCategorizedValues.toString());
+    return sortedCategorizedValues;
   }
-  
+
+  static Map<String, List<Map<String, dynamic>>> sortCategorizedValues(
+      Map<String, List<Map<String, dynamic>>> categorizedValues,
+      List<String> phaseOrder) {
+    // Create a map to store sorted values
+    Map<String, List<Map<String, dynamic>>> sortedValues = {};
+
+    // Iterate through the phase order
+    phaseOrder.forEach((phase) {
+      // Check if the categorized values contain the phase
+      if (categorizedValues.containsKey(phase)) {
+        // Add the phase and its values to the sorted map
+        sortedValues[phase] = categorizedValues[phase]!;
+      }
+    });
+
+    return sortedValues;
+  }
+
   static Map<String, List<Map<String, dynamic>>> currentPhaseList(
       Map<String, List<Map<String, dynamic>>> phases, currentDay) {
     Map<String, List<Map<String, dynamic>>> currentPhase = {};

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
@@ -152,7 +154,9 @@ class PanenPage extends StatelessWidget {
                   width: 9,
                 ),
                 Text(
-                  '120 hari',
+                  Produksi.currentDays != 0
+                              ? 'Hari ke -' + Produksi.currentDays.toString()
+                              : '__',
                   style: WhiteTextStyle.copyWith(
                     fontSize: 10,
                   ),
@@ -187,41 +191,37 @@ class PanenPage extends StatelessWidget {
             height: 4,
           ),
           Text(
-            'Lahan A',
+            HomePage.namaLahan,
             style: BlackTextStyle.copyWith(
               fontSize: 10,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(
-            height: 42,
-          ),
-          const CustomDropDownFormField(),
-          const SizedBox(
             height: 36,
           ),
           const CustomFormField(
-            title: 'Nama Perawatan',
+            title: 'Jumlah Panen',
             typeFormField: 0,
           ),
           const SizedBox(
             height: 36,
           ),
           const CustomFormField(
-            title: 'Jumlah',
+            title: 'Metode Panen',
             typeFormField: 0,
           ),
           const SizedBox(
             height: 36,
           ),
           const CustomFormField(
-            title: 'Kebutuhan',
+            title: 'Catatan',
             typeFormField: 0,
           ),
           const SizedBox(
             height: 36,
           ),
-          CustomDatePicker(title: 'Tanggal Perlakuan'),
+          CustomDatePicker(title: 'Tanggal Panen'),
           const SizedBox(
             height: 18,
           ),

@@ -160,7 +160,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
-            lastDate: DateTime.now());
+            lastDate: DateTime.now().add(Duration(days: 365 * 20)));
         if (pickedDate != null) {
           print(
               pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000

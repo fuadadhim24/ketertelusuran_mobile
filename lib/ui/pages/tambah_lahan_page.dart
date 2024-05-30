@@ -268,7 +268,7 @@ class _TambahLahanPage extends State<TambahLahanPage> {
         final responseData = response.data;
         if (responseData.containsKey('success')) {
           _showSuccessSnackBar(context, 'Lahan berhasil ditambahkan!');
-          Get.offNamed('/home');
+          Get.offAllNamed('/home');
         } else {
           _showWarningSnackBar(context, responseData);
         }

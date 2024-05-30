@@ -229,7 +229,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
       if (response.statusCode == 200) {
         final responseData = response.data;
         if (responseData.containsKey('success')) {
-          _showSuccessSnackBar(context, 'Penyemaian berhasil ditambahkan!');
+          _showSuccessSnackBar(context, 'Penanaman berhasil ditambahkan!');
           Get.offNamed('/home');
         } else {
           _showWarningSnackBar(context, responseData);

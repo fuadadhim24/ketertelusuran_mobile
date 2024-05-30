@@ -16,11 +16,17 @@ import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
 class HomePage extends StatefulWidget {
   static String idLahan = '';
+  static String detailLokasi = '';
+  static String luas = '';
+  static String latitude = '';
+  static String longitude = '';
+  static String jenisTanah = '';
   static List<dynamic> lahanList = [];
   static List<dynamic> produksiList = [];
   static Map<String, dynamic> produksiChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
+  static String namaLahan = '';
   const HomePage({Key? key});
 
   @override
@@ -29,12 +35,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _isLoaded = false;
-  String namaLahan = '';
-  String detailLokasi = '';
-  String luas = '';
-  String latitude = '';
-  String longitude = '';
-  String jenisTanah = '';
   final dio = Dio();
 
   @override
@@ -323,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Text(
-                namaLahan,
+                HomePage.namaLahan,
                 textAlign: TextAlign.center,
                 style: BlackTextStyle.copyWith(
                   fontSize: 20,
@@ -452,9 +452,16 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 15,
                           ),
+                          Fase.namaFase != "" ? 
                           Text(
-                            Fase.namaFase != "" ? Fase.namaFase : 'Lahan tidak digunakan',
+                            Fase.namaFase,
                             style: BlackTextStyle.copyWith(
+                              fontSize: 12,
+                            ),
+                          ) :
+                          Text(
+                            'Lahan tidak digunakan',
+                            style: redTextStyle.copyWith(
                               fontSize: 12,
                             ),
                           ),
@@ -950,12 +957,12 @@ class _HomePageState extends State<HomePage> {
     if (HomePage.lahanList.isNotEmpty) {
       // Ambil nilai dari elemen pertama dalam lahanList
       HomePage.idLahan = HomePage.lahanList[0]['id'];
-      namaLahan = HomePage.lahanList[0]['nama_lahan'];
-      detailLokasi = HomePage.lahanList[0]['detail_lokasi'];
-      luas = HomePage.lahanList[0]['luas'];
-      latitude = HomePage.lahanList[0]['latitude'];
-      longitude = HomePage.lahanList[0]['longitude'];
-      jenisTanah = HomePage.lahanList[0]['jenis_tanah'];
+      HomePage.namaLahan = HomePage.lahanList[0]['nama_lahan'];
+      HomePage.detailLokasi = HomePage.lahanList[0]['detail_lokasi'];
+      HomePage.luas = HomePage.lahanList[0]['luas'];
+      HomePage.latitude = HomePage.lahanList[0]['latitude'];
+      HomePage.longitude = HomePage.lahanList[0]['longitude'];
+      HomePage.jenisTanah = HomePage.lahanList[0]['jenis_tanah'];
     } else {
       debugPrint('data lahan pertama tidak bisa didapatkan');
     }
@@ -968,16 +975,16 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (chosenLahan != null) {
-      debugPrint(namaLahan);
-      debugPrint(detailLokasi);
+      debugPrint(HomePage.namaLahan);
+      debugPrint(HomePage.detailLokasi);
       setState(() {
         HomePage.idLahan = chosenLahan['id'];
-        namaLahan = chosenLahan['nama_lahan'];
-        detailLokasi = chosenLahan['detail_lokasi'];
-        luas = chosenLahan['luas'];
-        latitude = chosenLahan['latitude'];
-        longitude = chosenLahan['longitude'];
-        jenisTanah = chosenLahan['jenis_tanah'];
+        HomePage.namaLahan = chosenLahan['nama_lahan'];
+        HomePage.detailLokasi = chosenLahan['detail_lokasi'];
+        HomePage.luas = chosenLahan['luas'];
+        HomePage.latitude = chosenLahan['latitude'];
+        HomePage.longitude = chosenLahan['longitude'];
+        HomePage.jenisTanah = chosenLahan['jenis_tanah'];
 
         // PRODUKSI
         Produksi.readProduksiChoosed(HomePage.idLahan);
@@ -991,11 +998,11 @@ class _HomePageState extends State<HomePage> {
 
   void debugTesting() {
     debugPrint(HomePage.idLahan);
-    debugPrint(namaLahan);
-    debugPrint(detailLokasi);
-    debugPrint(luas);
-    debugPrint(latitude);
-    debugPrint(longitude);
-    debugPrint(jenisTanah);
+    debugPrint(HomePage.namaLahan);
+    debugPrint(HomePage.detailLokasi);
+    debugPrint(HomePage.luas);
+    debugPrint(HomePage.latitude);
+    debugPrint(HomePage.longitude);
+    debugPrint(HomePage.jenisTanah);
   }
 }
