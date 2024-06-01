@@ -602,7 +602,11 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         // Routing ke halaman VarietasPadiPage
                         // debugTesting();
-                        Get.toNamed('/penanaman');
+                        if(Fase.namaFase != ""){
+                          Get.toNamed('/penanaman');
+                        }else{
+                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        }
                       },
                     ),
                     SizedBox(
@@ -612,7 +616,11 @@ class _HomePageState extends State<HomePage> {
                       title: 'Perawatan',
                       iconUrl: 'assets/ic_grade.png',
                       onTap: () {
-                        Get.toNamed('/perawatan');
+                        if(Fase.namaFase != ""){
+                          Get.toNamed('/perawatan');
+                        }else{
+                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        }
                       },
                     ),
                     SizedBox(
@@ -632,7 +640,11 @@ class _HomePageState extends State<HomePage> {
                       title: 'Panen',
                       iconUrl: 'assets/ic_lahan_big.png',
                       onTap: () {
-                        Get.toNamed('/panen');
+                        if(Fase.namaFase != ""){
+                          Get.toNamed('/panen');
+                        }else{
+                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        }
                       },
                     ),
                   ],

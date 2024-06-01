@@ -77,7 +77,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
 class CustomStringFormField extends StatefulWidget {
   final String title;
-  final String stringInitialValue;
+  final String? stringInitialValue;
   final TextEditingController? controller;
 
   const CustomStringFormField({
@@ -97,7 +97,7 @@ class _CustomStringFormFieldState extends State<CustomStringFormField> {
   @override
   void initState() {
     super.initState();
-    stringInitialValue = widget.stringInitialValue;
+    stringInitialValue = widget.stringInitialValue!;
   }
 
   @override

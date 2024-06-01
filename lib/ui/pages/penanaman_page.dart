@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
+import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/services/validator.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
@@ -10,12 +11,11 @@ import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 
 class PenanamanPage extends StatefulWidget {
-  static String? resultDateKedaluwarsa;
-  static String? resultDatePenyemaian;
   const PenanamanPage({super.key});
 
   @override
@@ -23,10 +23,59 @@ class PenanamanPage extends StatefulWidget {
 }
 
 class _PenanamanPageState extends State<PenanamanPage> {
-  TextEditingController sumberBenihController = TextEditingController();
-  TextEditingController tingkatKemurnianController = TextEditingController();
-  TextEditingController tingkatVigorController = TextEditingController();
-  TextEditingController jumlahBenihController = TextEditingController();
+  String? selectedLahan;
+  String? resultDatePenanaman;
+  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
+  List<dynamic> padiList = [];
+  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? namaPadi;
+  List<dynamic> lahanList =
+      HomePage.lahanList; // Ini adalah inisialisasi variabel lahanList
+  List<dynamic> produksiList = HomePage.produksiList;
+  List<String> lahanUnUsed = [];
+  List<String> lahanUsed = [];
+  List<String> itemsLahan = []; // Inisialisasi itemsLahan sebagai list kosong
+
+  void convertLahanList() {
+    debugPrint(produksiList.toString());
+    debugPrint(lahanList.toString());
+    produksiList.forEach((element) {
+      // Mengambil nilai id_lahan dari element
+      var idLahan = element['id_lahan'];
+      var lahan = lahanList.firstWhere(
+        (lahan) => lahan['id'] == idLahan,
+        orElse: () => null,
+      );
+
+      // Jika lahan ditemukan, tambahkan nama_lahan ke lahanUnUsed
+      if (lahan != null) {
+        lahanUsed.add(lahan['nama_lahan'].toString());
+      }
+    });
+    debugPrint('lahanUsed: $lahanUsed');
+    for (var lahan in lahanList) {
+      // Mengambil nama lahan dari masing-masing data lahan
+      var nama_lahan = lahan["nama_lahan"];
+
+      // Memeriksa apakah nama lahan tidak ada dalam LahanUsed
+      if (!lahanUsed.contains(nama_lahan)) {
+        // Menambahkan nama lahan ke LahanUnUsed
+        lahanUnUsed.add(nama_lahan);
+      }
+    }
+    debugPrint('lahanUnUsed: $lahanUnUsed');
+
+    itemsLahan = lahanUnUsed.toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readPadi();
+    convertLahanList();
+  }
+
+  bool changeLahan = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +90,28 @@ class _PenanamanPageState extends State<PenanamanPage> {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-        ),
-        children: [
-          buildMainForm(),
-        ],
+      body: FutureBuilder<void>(
+        future: readPadi(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+              ),
+              children: [
+                buildMainForm(),
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -59,102 +123,69 @@ class _PenanamanPageState extends State<PenanamanPage> {
           height: 16,
         ),
         CustomStringFormField(
-            title: 'Benih Varietas Padi', stringInitialValue: 'Ciherang'),
-        SizedBox(
-          height: 36,
-        ),
-        CustomFormField(
-          title: 'Sumber Benih',
-          typeFormField: 0,
-          controller: sumberBenihController,
-        ),
+            title: 'Benih Varietas Padi', stringInitialValue: namaPadi),
         SizedBox(
           height: 36,
         ),
         CustomDatePicker(
-          title: 'Tanggal Kedaluwarsa Benih',
+          title: 'Tanggal Penanaman',
           onDatePicked: (date) {
-            PenanamanPage.resultDateKedaluwarsa = date;
+            resultDatePenanaman = date;
           },
         ),
         SizedBox(
           height: 36,
         ),
-        CustomFormField(
-          title: 'Tingkat Kemurnian (%)',
-          typeFormField: 0,
-          controller: tingkatKemurnianController,
-        ),
+        changeLahan == false
+            ? CustomTextButton(
+                title: 'Apakah anda ingin mengganti lahan?',
+                onPressed: () {
+                  setState(() {
+                    changeLahan = true;
+                  });
+                },
+              )
+            : CustomTextButton(
+                title: 'Batal ganti lahan',
+                onPressed: () {
+                  setState(() {
+                    changeLahan = false;
+                  });
+                },
+              ),
         SizedBox(
           height: 36,
         ),
-        CustomFormField(
-          title: 'Tingkat Vigor (%)',
-          typeFormField: 0,
-          controller: tingkatVigorController,
-        ),
-        SizedBox(
-          height: 36,
-        ),
-        CustomDatePicker(
-          title: 'Tanggal Penyemaian',
-          onDatePicked: (date) {
-            PenanamanPage.resultDatePenyemaian = date;
-          },
-        ),
-        SizedBox(
-          height: 36,
-        ),
-        CustomFormField(
-          title: 'Jumlah Benih',
-          typeFormField: 0,
-          controller: jumlahBenihController,
-        ),
+        changeLahan != false
+            ? CustomDropDownFormField(
+                initialValue: 'Lahan saat ini: ' + HomePage.namaLahan,
+                items: itemsLahan,
+                onValueChanged: (value) => {selectedLahan = value},
+              )
+            : SizedBox(
+                height: 36,
+              ),
         SizedBox(
           height: 48,
         ),
         CustomFilledButton(
-          title: 'Buat Produksi',
+          title: 'Tanam',
           onPressed: () {
-            // Get.offAllNamed('/home');
-            String sumberBenih = sumberBenihController.text.toString();
-            String tingkatKemurnian =
-                tingkatKemurnianController.text.toString();
-            String tingkatVigor = tingkatVigorController.text.toString();
-            String? resultTanggalKedaluwarsa =
-                PenanamanPage.resultDateKedaluwarsa;
-            String? resultTanggalPenyemaian =
-                PenanamanPage.resultDatePenyemaian;
-            String jumlahBenih = jumlahBenihController.text.toString();
-            String? idPadi = VarietasPadiPage.id;
-            String? idLahan = HomePage.idLahan;
-            String? idUser = SignInPage.idUser;
-            if (resultTanggalKedaluwarsa != null) {
-              if (resultTanggalPenyemaian != null) {
-              } else {
-                _showWarningSnackBar(
-                    context, 'Silakan pilih tanggal penyemaian');
-              }
+            if (changeLahan != true) {
+              createPenanaman(idProduksi, resultDatePenanaman);
             } else {
-              _showWarningSnackBar(
-                  context, 'Silakan pilih tanggal kedaluwarsa benih');
+              // Mencari data berdasarkan nama_lahan
+              var hasilPencarian = lahanList
+                  .where((lahan) => lahan["nama_lahan"] == selectedLahan);
+
+              // Mendapatkan id dari hasil pencarian
+              var idLahan =
+                  hasilPencarian.isNotEmpty ? hasilPencarian.first["id"] : null;
+              // debugPrint(selectedLahan);
+              // debugPrint(lahanList.toString());
+              createPenanamanChangeLahan(
+                  idProduksi, resultDatePenanaman, idLahan);
             }
-            if (Validator.validateString(sumberBenih) &&
-                Validator.validateInt(tingkatKemurnian) &&
-                Validator.validateInt(tingkatVigor) &&
-                Validator.validateInt(jumlahBenih)) {}
-            createPenyemaian(
-                sumberBenih,
-                resultTanggalKedaluwarsa,
-                tingkatKemurnian,
-                tingkatVigor,
-                resultTanggalPenyemaian,
-                jumlahBenih,
-                idPadi,
-                idLahan,
-                idUser);
-            // debugPrint(
-            //     '$sumberBenih, $result, $tingkatKemurnian, $tingkatVigor');
           },
         ),
       ],
@@ -194,28 +225,12 @@ class _PenanamanPageState extends State<PenanamanPage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void createPenyemaian(
-      sumberBenih,
-      tanggalKedaluwarsa,
-      tingkatKemurnian,
-      tingkatVigor,
-      tanggalPenyemaian,
-      jumlahBenih,
-      idPadi,
-      idLahan,
-      idUser) async {
-    final url = Global.serverUrl + Global.produksiPath + Global.penyemaianPath;
+  void createPenanaman(idProduksi, tanggalPenanaman) async {
+    final url = Global.serverUrl + Global.penanamanPath;
     final headers = {'Content-Type': 'application/json'};
     final data = {
-      'sumber_benih': sumberBenih,
-      'tanggal_kedaluwarsa': tanggalKedaluwarsa,
-      'tingkat_kemurnian': tingkatKemurnian,
-      'tingkat_vigor': tingkatVigor,
-      'tanggal_penyemaian': tanggalPenyemaian,
-      'jumlah_benih': jumlahBenih,
-      'id_padi': idPadi,
-      'id_lahan': idLahan,
-      'id_user': idUser,
+      'id_produksi': idProduksi,
+      'tanggal_penanaman': tanggalPenanaman,
     };
 
     try {
@@ -224,7 +239,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
         data: jsonEncode(data),
         options: Options(headers: headers),
       );
-      debugPrint(jsonEncode(data));
+      // debugPrint(jsonEncode(data));
 
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -235,10 +250,101 @@ class _PenanamanPageState extends State<PenanamanPage> {
           _showWarningSnackBar(context, responseData);
         }
       } else {
-        _showWarningSnackBar(context, 'Gagal menambahkan lahan');
+        _showWarningSnackBar(context, 'Gagal menambahkan data penanaman');
       }
     } catch (e) {
       _showWarningSnackBar(context, 'Error $e');
     }
+    void populateItemsFromLahanList() {
+      itemsLahan = HomePage.lahanList.map<String>((lahan) {
+        // Ambil nama lahan dari objek lahan dan tambahkan ke dalam list
+        return lahan['nama_lahan'];
+      }).toList();
+    }
+  }
+
+  void createPenanamanChangeLahan(idProduksi, tanggalPenanaman, idLahan) async {
+    final url = Global.serverUrl + Global.penanamanPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {
+      'id_produksi': idProduksi,
+      'tanggal_penanaman': tanggalPenanaman,
+      'id_lahan': idLahan,
+    };
+
+    try {
+      final response = await Dio().post(
+        url,
+        data: jsonEncode(data),
+        options: Options(headers: headers),
+      );
+      // debugPrint(jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData.containsKey('success')) {
+          _showSuccessSnackBar(context, 'Penanaman berhasil ditambahkan!');
+          Get.offNamed('/home');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal menambahkan data penanaman');
+      }
+    } catch (e) {
+      _showWarningSnackBar(context, 'Error $e');
+    }
+    void populateItemsFromLahanList() {
+      itemsLahan = HomePage.lahanList.map<String>((lahan) {
+        // Ambil nama lahan dari objek lahan dan tambahkan ke dalam list
+        return lahan['nama_lahan'];
+      }).toList();
+    }
+  }
+
+  Future<void> readPadi() async {
+    if (padiList.isEmpty) {
+      final url = Global.serverUrl + Global.readPadiPath;
+      final finalUrl = url;
+      Response response;
+      response = await Dio().get(finalUrl);
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+      if (response.statusCode == 200) {
+        if (body.containsKey('data')) {
+          // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+          padiList = body['data'];
+          debugPrint('produksiList : $produksiList');
+          debugPrint('lahanList : $lahanList');
+          // debugPrint(padiList.toString());
+          // debugPrint(Produksi.produksiChoosedList.toString());
+          choosedPadi();
+          // debugPrint(jsonEncode(body));
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      choosedPadi();
+    }
+  }
+
+  void choosedPadi() {
+    var choosedPadi = padiList.firstWhere(
+        (padi) => padi['id'].toString() == idPadi,
+        orElse: () => null);
+
+    // Jika padi dengan idPadiSearch ditemukan, set variabel namaPadi
+    if (choosedPadi != null) {
+      namaPadi = choosedPadi['varietas'].toString();
+    } else {
+      // Jika tidak ditemukan, set namaPadi ke null atau string kosong, sesuai kebutuhan aplikasi Anda
+      namaPadi = 'Anda belum menentukan penyemaian'; // atau namaPadi = '';
+    }
+    // debugPrint(choosedPadi.toString());
+    // debugPrint(idPadi.toString());
   }
 }

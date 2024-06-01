@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 
@@ -75,7 +77,12 @@ class _ReadMorePageState extends State<ReadMorePage> {
             CustomFilledButton(
               title: 'Pilih Varietas Padi',
               onPressed: () {
-                Get.toNamed('/tambah-varietas-padi');
+                if (Fase.namaFase != "") {
+                  _showWarningSnackBar(context, 'Lahan sedang digunakan');
+                  Get.close(2);
+                } else {
+                  Get.toNamed('/tambah-varietas-padi');
+                }
               },
             ),
             SizedBox(height: 20),
@@ -170,4 +177,19 @@ class _ReadMorePageState extends State<ReadMorePage> {
     );
   }
 
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: Colors.red, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
 }

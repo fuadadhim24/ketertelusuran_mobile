@@ -7,8 +7,14 @@ import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 
-class PerawatanPage extends StatelessWidget {
+class PerawatanPage extends StatefulWidget {
   const PerawatanPage({super.key});
+
+  @override
+  State<PerawatanPage> createState() => _PerawatanPageState();
+}
+
+class _PerawatanPageState extends State<PerawatanPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +161,8 @@ class PerawatanPage extends StatelessWidget {
                 ),
                 Text(
                   Produksi.currentDays != 0
-                              ? 'Hari ke -' + Produksi.currentDays.toString()
-                              : '__',
+                      ? 'Hari ke -' + Produksi.currentDays.toString()
+                      : '__',
                   style: WhiteTextStyle.copyWith(
                     fontSize: 10,
                   ),
@@ -200,7 +206,7 @@ class PerawatanPage extends StatelessWidget {
           const SizedBox(
             height: 42,
           ),
-          const CustomDropDownFormField(),
+          const CustomDropDownFormField(initialValue: 'Pilih jenis perawatan',items: ['pemupukan', 'penyiraman']),
           const SizedBox(
             height: 36,
           ),

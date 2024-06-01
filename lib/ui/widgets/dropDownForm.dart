@@ -2,7 +2,14 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDownFormField extends StatefulWidget {
-  const CustomDropDownFormField({super.key});
+  final List<String> items;
+  final String initialValue;
+  final Function(String?)? onValueChanged;
+  const CustomDropDownFormField(
+      {super.key,
+      required this.items,
+      required this.initialValue,
+      this.onValueChanged});
 
   @override
   State<CustomDropDownFormField> createState() =>
@@ -10,10 +17,6 @@ class CustomDropDownFormField extends StatefulWidget {
 }
 
 class _CustomDropDownFormFieldState extends State<CustomDropDownFormField> {
-  final List<String> items = [
-    'Pemupukan',
-    'Penyiraman',
-  ];
   String? selectedValue;
 
   final _formKey = GlobalKey<FormState>();
@@ -36,11 +39,11 @@ class _CustomDropDownFormFieldState extends State<CustomDropDownFormField> {
               ),
               // Add more decoration..
             ),
-            hint: const Text(
-              'Pilih Jenis Perawatan',
+            hint: Text(
+              widget.initialValue,
               style: TextStyle(fontSize: 14),
             ),
-            items: items
+            items: widget.items
                 .map((item) => DropdownMenuItem<String>(
                       value: item,
                       child: Text(
@@ -53,15 +56,19 @@ class _CustomDropDownFormFieldState extends State<CustomDropDownFormField> {
                 .toList(),
             validator: (value) {
               if (value == null) {
-                return 'Please select gender.';
+                return 'Silakan pilih lahan.';
               }
               return null;
             },
             onChanged: (value) {
-              //Do something when selected item is changed.
+              setState(() {
+                selectedValue = value;
+                widget.onValueChanged!(value);
+              });
             },
             onSaved: (value) {
               selectedValue = value.toString();
+              widget.onValueChanged!(value);
             },
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.only(right: 8),

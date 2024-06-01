@@ -8,6 +8,9 @@ class Global {
   static const String createLahanPath = '/lahan/create.php';
   static const String readLahanPath = '/lahan/read.php';
 
+  // penanaman
+  static const String penanamanPath = '/penanaman/update.php';
+
   //varietas padi
   static const String readPadiPath = '/padi/read.php';
   
