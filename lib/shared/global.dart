@@ -22,6 +22,9 @@ class Global {
   // perawatan
   static const String perawatanPath = 'pencatatan/create.php';
 
+  //panen
+  static const String panenPath = 'panen/create.php';
+
   //main
   static const String mainPath = '/main';
   static const String homePagePath = '/home_page.php';

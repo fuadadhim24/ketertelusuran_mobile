@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
@@ -18,6 +20,12 @@ class PanenPage extends StatefulWidget {
 }
 
 class _PanenPageState extends State<PanenPage> {
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController metodePanenController = TextEditingController();
+  TextEditingController catatanController = TextEditingController();
+  String? resultDatePanen;
+  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
+  
   String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
   String? namaPadi;
 
@@ -228,34 +236,39 @@ class _PanenPageState extends State<PanenPage> {
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Jumlah Panen',
-            typeFormField: 0,
+            typeFormField: 0, controller: quantityController,
           ),
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Metode Panen',
-            typeFormField: 0,
+            typeFormField: 0, controller: metodePanenController,
           ),
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Catatan',
-            typeFormField: 0,
+            typeFormField: 0, controller: catatanController,
           ),
           const SizedBox(
             height: 36,
           ),
-          CustomDatePicker(title: 'Tanggal Panen'),
+          CustomDatePicker(title: 'Tanggal Panen', onDatePicked: (date) { resultDatePanen = date;},),
           const SizedBox(
             height: 18,
           ),
           CustomFilledButton(
             title: 'Submit',
             onPressed: () {
+              String quantity = quantityController.text;
+              String metodePanen = metodePanenController.text;
+              String catatan = catatanController.text;
+
+              createPanen(quantity, metodePanen, catatan, idProduksi, resultDatePanen);
               Get.back();
             },
           ),
@@ -336,5 +349,41 @@ class _PanenPageState extends State<PanenPage> {
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void createPanen(quantity, metodePanen, catatan, idProduksi,
+      tanggalPanen) async {
+    final url = Global.serverUrl + Global.panenPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {
+      'quantity': quantity,
+      'metode_panen': metodePanen,
+      'catatan': catatan,
+      'id_produksi': idProduksi,
+      'tanggal_panen': tanggalPanen
+    };
+
+    try {
+      final response = await Dio().post(
+        url,
+        data: jsonEncode(data),
+        options: Options(headers: headers),
+      );
+      // debugPrint(jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData.containsKey('success')) {
+          _showSuccessSnackBar(context, 'Panen berhasil ditambahkan!');
+          Get.offNamed('/home');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal menambahkan data panen');
+      }
+    } catch (e) {
+      _showWarningSnackBar(context, 'Error $e');
+    }
   }
 }

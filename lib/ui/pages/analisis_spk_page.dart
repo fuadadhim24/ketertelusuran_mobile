@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ketertelusuran_mobile/services/fase.dart';
+import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
@@ -160,7 +162,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     ),
                   ),
                   Text(
-                    'Fase Penanaman',
+                    Fase.namaFase != "" ? ('Fase '+Fase.namaFase) : '__',
                     style: BlackTextStyle.copyWith(
                       fontSize: 11,
                     ),
@@ -184,7 +186,9 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     ),
                   ),
                   Text(
-                    '10 hari',
+                    Produksi.currentDays != 0
+                              ? 'Hari ke -' + Produksi.currentDays.toString()
+                              : '__',
                     style: BlackTextStyle.copyWith(
                       fontSize: 11,
                     ),

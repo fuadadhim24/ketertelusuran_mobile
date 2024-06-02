@@ -406,7 +406,7 @@ class _PerawatanPageState extends State<PerawatanPage> {
           _showWarningSnackBar(context, responseData);
         }
       } else {
-        _showWarningSnackBar(context, 'Gagal menambahkan data perawwata');
+        _showWarningSnackBar(context, 'Gagal menambahkan data perawwatan');
       }
     } catch (e) {
       _showWarningSnackBar(context, 'Error $e');

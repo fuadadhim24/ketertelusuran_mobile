@@ -886,7 +886,6 @@ class _HomePageState extends State<HomePage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
   void _showWarningSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       content: Text(message),
@@ -927,7 +926,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // produksi, pencatatan, fase dan perlakuan
   Future<void> readHomePage() async {
     readLahan();
     final url = Global.serverUrl + Global.mainPath + Global.homePagePath;
@@ -1021,7 +1019,6 @@ class _HomePageState extends State<HomePage> {
     debugPrint(HomePage.longitude);
     debugPrint(HomePage.jenisTanah);
   }
-
   
   Future<void> readPadi() async {
     if (padiList.isEmpty) {
