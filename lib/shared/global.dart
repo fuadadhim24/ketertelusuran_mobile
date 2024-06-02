@@ -11,12 +11,16 @@ class Global {
   // penanaman
   static const String penanamanPath = '/penanaman/update.php';
 
+
   //varietas padi
   static const String readPadiPath = '/padi/read.php';
   
-  //varietas padi
+  //produksi
   static const String produksiPath = '/produksi';
   static const String penyemaianPath = '/penyemaian/create.php';
+
+  // perawatan
+  static const String perawatanPath = 'pencatatan/create.php';
 
   //main
   static const String mainPath = '/main';

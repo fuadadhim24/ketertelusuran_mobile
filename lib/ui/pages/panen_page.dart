@@ -1,14 +1,27 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/produksi.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/buttons.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 
-class PanenPage extends StatelessWidget {
-  const PanenPage({super.key});
+class PanenPage extends StatefulWidget {
+
+  PanenPage({super.key});
+
+  @override
+  State<PanenPage> createState() => _PanenPageState();
+}
+
+class _PanenPageState extends State<PanenPage> {
+  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? namaPadi;
+
+  List<dynamic> padiList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +37,28 @@ class PanenPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-        ),
-        children: [
-          buildFormContent(context),
-        ],
+      body: FutureBuilder<void>(
+        future: readPadi(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+              ),
+              children: [
+                buildFormContent(context),
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -102,14 +130,14 @@ class PanenPage extends StatelessWidget {
   Widget buildHeadingContent() {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: 18,
+        horizontal: 7,
         vertical: 10,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: 100,
+            width: 120,
             height: 24,
             decoration: BoxDecoration(
               color: greenColor,
@@ -127,7 +155,7 @@ class PanenPage extends StatelessWidget {
                   width: 9,
                 ),
                 Text(
-                  'Ciherang',
+                  namaPadi!,
                   style: WhiteTextStyle.copyWith(
                     fontSize: 10,
                   ),
@@ -155,8 +183,8 @@ class PanenPage extends StatelessWidget {
                 ),
                 Text(
                   Produksi.currentDays != 0
-                              ? 'Hari ke -' + Produksi.currentDays.toString()
-                              : '__',
+                      ? 'Hari ke -' + Produksi.currentDays.toString()
+                      : '__',
                   style: WhiteTextStyle.copyWith(
                     fontSize: 10,
                   ),
@@ -234,5 +262,79 @@ class PanenPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> readPadi() async {
+    if (padiList.isEmpty) {
+      final url = Global.serverUrl + Global.readPadiPath;
+      final finalUrl = url;
+      Response response;
+      response = await Dio().get(finalUrl);
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+      if (response.statusCode == 200) {
+        if (body.containsKey('data')) {
+          // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+          padiList = body['data'];
+          choosedPadi();
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      choosedPadi();
+    }
+  }
+
+  void choosedPadi() {
+    var choosedPadi = padiList.firstWhere(
+        (padi) => padi['id'].toString() == idPadi,
+        orElse: () => null);
+
+    // Jika padi dengan idPadiSearch ditemukan, set variabel namaPadi
+    if (choosedPadi != null) {
+      namaPadi = choosedPadi['varietas'].toString();
+    } else {
+      // Jika tidak ditemukan, set namaPadi ke null atau string kosong, sesuai kebutuhan aplikasi Anda
+      namaPadi = 'Anda belum menentukan penyemaian'; // atau namaPadi = '';
+    }
+    // debugPrint(choosedPadi.toString());
+    // debugPrint(idPadi.toString());
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: Colors.red, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 }

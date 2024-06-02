@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/pilih-titik-lokasi-lahan',
             page: () => const PilihLokasiPage()),
-        GetPage(name: '/panen', page: () => const PanenPage()),
+        GetPage(name: '/panen', page: () => PanenPage()),
         GetPage(
             name: '/riwayat-produksi', page: () => const RiwayatProduksiPage()),
         GetPage(

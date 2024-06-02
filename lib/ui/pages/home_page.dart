@@ -27,6 +27,7 @@ class HomePage extends StatefulWidget {
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
   static String namaLahan = '';
+  static String? namaPadi;
   const HomePage({Key? key});
 
   @override
@@ -34,11 +35,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  List<dynamic> padiList = [];
   bool _isLoaded = false;
   final dio = Dio();
 
   @override
   void initState() {
+    readPadi();
     // TODO: implement initState
     super.initState();
   }
@@ -1016,5 +1020,52 @@ class _HomePageState extends State<HomePage> {
     debugPrint(HomePage.latitude);
     debugPrint(HomePage.longitude);
     debugPrint(HomePage.jenisTanah);
+  }
+
+  
+  Future<void> readPadi() async {
+    if (padiList.isEmpty) {
+      final url = Global.serverUrl + Global.readPadiPath;
+      final finalUrl = url;
+      Response response;
+      response = await Dio().get(finalUrl);
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+      if (response.statusCode == 200) {
+        if (body.containsKey('data')) {
+          // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
+          padiList = body['data'];
+          // debugPrint('produksiList : $produksiList');
+          // debugPrint('lahanList : $lahanList');
+          // debugPrint(padiList.toString());
+          // debugPrint(Produksi.produksiChoosedList.toString());
+          choosedPadi();
+          // debugPrint(jsonEncode(body));
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      choosedPadi();
+    }
+  }
+
+  void choosedPadi() {
+    var choosedPadi = padiList.firstWhere(
+        (padi) => padi['id'].toString() == idPadi,
+        orElse: () => null);
+
+    // Jika padi dengan idPadiSearch ditemukan, set variabel namaPadi
+    if (choosedPadi != null) {
+      HomePage.namaPadi = choosedPadi['varietas'].toString();
+    } else {
+      // Jika tidak ditemukan, set namaPadi ke null atau string kosong, sesuai kebutuhan aplikasi Anda
+      HomePage.namaPadi = 'Anda belum menentukan penyemaian'; // atau namaPadi = '';
+    }
+    // debugPrint(choosedPadi.toString());
+    // debugPrint(idPadi.toString());
   }
 }

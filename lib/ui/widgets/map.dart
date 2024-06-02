@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 
 class MapGoogle extends StatefulWidget {
   const MapGoogle({super.key});
@@ -11,15 +12,24 @@ class MapGoogle extends StatefulWidget {
 
 class _MapGoogleState extends State<MapGoogle> {
   late GoogleMapController mapController;
-  final LatLng _center = const LatLng(-8.157980, 113.724701);
-  final double offsetLat = -0.008; // Sesuaikan offset sesuai kebutuhan
+  double? latitude;
+  double? longitude;
+  late LatLng _center;
+  final double offsetLat = -0.008;
+  // double? latitude = double.tryParse(HomePage.latitude);  
+  // double? longitude = double.tryParse(HomePage.longitude);  
+  // final LatLng _center = LatLng(latitude!, longitude!);
+  // final double offsetLat = -0.008; // Sesuaikan offset sesuai kebutuhan
 
   late LatLng targetLatLng;
 
   @override
   void initState() {
-    super.initState();
+    latitude = double.tryParse(HomePage.latitude);  
+    longitude = double.tryParse(HomePage.longitude);  
+    _center = LatLng(latitude ?? 0, longitude ?? 0);
     targetLatLng = LatLng(_center.latitude + offsetLat, _center.longitude);
+    super.initState();
   }
 
   void _onMapCreated(GoogleMapController controller) {

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
@@ -17,6 +20,12 @@ class PerawatanPage extends StatefulWidget {
 }
 
 class _PerawatanPageState extends State<PerawatanPage> {
+  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
+  static String? resultDatePerawatan;
+  TextEditingController namaPerawatanController = TextEditingController();
+  TextEditingController jumlahController = TextEditingController();
+  TextEditingController kebutuhanController = TextEditingController();
+  String? selectedJenisPerawatan;
   String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
   String? namaPadi;
   List<dynamic> padiList = [];
@@ -233,40 +242,58 @@ class _PerawatanPageState extends State<PerawatanPage> {
           const SizedBox(
             height: 42,
           ),
-          const CustomDropDownFormField(
-              initialValue: 'Pilih jenis perawatan',
-              items: ['pemupukan', 'penyiraman']),
+          CustomDropDownFormField(
+            initialValue: 'Pilih jenis perawatan',
+            items: ['pemupukan', 'penyiraman'],
+            onValueChanged: (value) => {selectedJenisPerawatan = value},
+          ),
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Nama Perawatan',
             typeFormField: 0,
+            controller: namaPerawatanController,
           ),
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Jumlah',
             typeFormField: 0,
+            controller: jumlahController,
           ),
           const SizedBox(
             height: 36,
           ),
-          const CustomFormField(
+          CustomFormField(
             title: 'Kebutuhan',
             typeFormField: 0,
+            controller: kebutuhanController,
           ),
           const SizedBox(
             height: 36,
           ),
-          CustomDatePicker(title: 'Tanggal Perlakuan'),
+          CustomDatePicker(
+            title: 'Tanggal Perawatan',
+            onDatePicked: (value) {
+              resultDatePerawatan = value;
+            },
+          ),
           const SizedBox(
             height: 18,
           ),
           CustomFilledButton(
             title: 'Submit',
             onPressed: () {
+              String? tanggalPerawatan = resultDatePerawatan;
+              String? jenisPerawatan = selectedJenisPerawatan;
+              String namaPerawatan = namaPerawatanController.text;
+              String jumlah = jumlahController.text;
+              String kebutuhan = kebutuhanController.text;
+
+              createPerawatan(jenisPerawatan, namaPerawatan, jumlah, kebutuhan,
+                  tanggalPerawatan, idProduksi);
               Get.back();
             },
           ),
@@ -347,5 +374,42 @@ class _PerawatanPageState extends State<PerawatanPage> {
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void createPerawatan(jenisPerawatan, namaPerawatan, jumlah, kebutuhan,
+      tanggalPerawatan, idProduksi) async {
+    final url = Global.serverUrl + Global.perawatanPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {
+      'jenis_perawatan': jenisPerawatan,
+      'nama_perawatan': namaPerawatan,
+      'jumlah': jumlah,
+      'kebutuhan': kebutuhan,
+      'tanggal_perawatan': tanggalPerawatan,
+      'id_produksi': idProduksi
+    };
+
+    try {
+      final response = await Dio().post(
+        url,
+        data: jsonEncode(data),
+        options: Options(headers: headers),
+      );
+      // debugPrint(jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData.containsKey('success')) {
+          _showSuccessSnackBar(context, 'Perawatan berhasil ditambahkan!');
+          Get.offNamed('/home');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal menambahkan data perawwata');
+      }
+    } catch (e) {
+      _showWarningSnackBar(context, 'Error $e');
+    }
   }
 }
