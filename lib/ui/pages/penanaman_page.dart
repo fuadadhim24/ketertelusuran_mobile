@@ -37,8 +37,6 @@ class _PenanamanPageState extends State<PenanamanPage> {
   List<String> itemsLahan = []; // Inisialisasi itemsLahan sebagai list kosong
 
   void convertLahanList() {
-    debugPrint(produksiList.toString());
-    debugPrint(lahanList.toString());
     produksiList.forEach((element) {
       // Mengambil nilai id_lahan dari element
       var idLahan = element['id_lahan'];
@@ -52,7 +50,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
         lahanUsed.add(lahan['nama_lahan'].toString());
       }
     });
-    debugPrint('lahanUsed: $lahanUsed');
+    // debugPrint('lahanUsed: $lahanUsed');
     for (var lahan in lahanList) {
       // Mengambil nama lahan dari masing-masing data lahan
       var nama_lahan = lahan["nama_lahan"];
@@ -63,7 +61,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
         lahanUnUsed.add(nama_lahan);
       }
     }
-    debugPrint('lahanUnUsed: $lahanUnUsed');
+    // debugPrint('lahanUnUsed: $lahanUnUsed');
 
     itemsLahan = lahanUnUsed.toList();
   }
@@ -315,8 +313,8 @@ class _PenanamanPageState extends State<PenanamanPage> {
         if (body.containsKey('data')) {
           // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
           padiList = body['data'];
-          debugPrint('produksiList : $produksiList');
-          debugPrint('lahanList : $lahanList');
+          // debugPrint('produksiList : $produksiList');
+          // debugPrint('lahanList : $lahanList');
           // debugPrint(padiList.toString());
           // debugPrint(Produksi.produksiChoosedList.toString());
           choosedPadi();

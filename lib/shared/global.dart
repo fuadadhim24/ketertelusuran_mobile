@@ -11,7 +11,6 @@ class Global {
   // penanaman
   static const String penanamanPath = '/penanaman/update.php';
 
-
   //varietas padi
   static const String readPadiPath = '/padi/read.php';
   
@@ -20,10 +19,11 @@ class Global {
   static const String penyemaianPath = '/penyemaian/create.php';
 
   // perawatan
-  static const String perawatanPath = 'pencatatan/create.php';
+  static const String perawatanPath = '/pencatatan/create.php';
 
   //panen
-  static const String panenPath = 'panen/create.php';
+  static const String panenPath = '/panen/create.php';
+  static const String readPanenPath = '/panen/read.php';
 
   //main
   static const String mainPath = '/main';

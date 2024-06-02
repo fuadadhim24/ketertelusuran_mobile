@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
   static String longitude = '';
   static String jenisTanah = '';
   static List<dynamic> lahanList = [];
+  static List<dynamic> panenList = [];
   static List<dynamic> produksiList = [];
   static Map<String, dynamic> produksiChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
@@ -927,6 +928,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> readHomePage() async {
+    await readPanen();
     readLahan();
     final url = Global.serverUrl + Global.mainPath + Global.homePagePath;
     final finalUrl = url;
@@ -953,7 +955,7 @@ class _HomePageState extends State<HomePage> {
           // debugPrint(HomePage.faseDanPerlakuanList.toString());
 
           // PRODUKSI
-          await Produksi.readProduksiChoosed(HomePage.idLahan);
+          await Produksi.readProduksiPanenChoosed(HomePage.idLahan, HomePage.panenList);
           
 
 
@@ -978,7 +980,7 @@ class _HomePageState extends State<HomePage> {
       HomePage.longitude = HomePage.lahanList[0]['longitude'];
       HomePage.jenisTanah = HomePage.lahanList[0]['jenis_tanah'];
     } else {
-      debugPrint('data lahan pertama tidak bisa didapatkan');
+      // debugPrint('data lahan pertama tidak bisa didapatkan');
     }
   }
 
@@ -987,10 +989,11 @@ class _HomePageState extends State<HomePage> {
       (lahan) => lahan['nama_lahan'] == chosenNamaLahan,
       orElse: () => null,
     );
+    // debugPrint(chosenLahan.toString());
 
     if (chosenLahan != null) {
-      debugPrint(HomePage.namaLahan);
-      debugPrint(HomePage.detailLokasi);
+      // debugPrint(HomePage.namaLahan);
+      // debugPrint(HomePage.detailLokasi);
       setState(() {
         HomePage.idLahan = chosenLahan['id'];
         HomePage.namaLahan = chosenLahan['nama_lahan'];
@@ -1001,7 +1004,7 @@ class _HomePageState extends State<HomePage> {
         HomePage.jenisTanah = chosenLahan['jenis_tanah'];
 
         // PRODUKSI
-        Produksi.readProduksiChoosed(HomePage.idLahan);
+        Produksi.readProduksiPanenChoosed(HomePage.idLahan, HomePage.panenList);
         
       });
       Get.back();
@@ -1064,5 +1067,25 @@ class _HomePageState extends State<HomePage> {
     }
     // debugPrint(choosedPadi.toString());
     // debugPrint(idPadi.toString());
+  }
+
+  Future<void> readPanen() async {
+    final url = Global.serverUrl + Global.readPanenPath;
+    final finalUrl = url;
+    Response response;
+    response = await dio.get(finalUrl);
+    final body = response.data;
+    var stringResponse = body.toString();
+    var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+    if (response.statusCode == 200) {
+      if (body.containsKey('data')) {
+        HomePage.panenList = body['data'];
+        // debugPrint(HomePage.panenList.toString());
+      } else {
+        _showWarningSnackBar(context, responseData);
+      }
+    } else {
+      _showWarningSnackBar(context, responseData);
+    }
   }
 }

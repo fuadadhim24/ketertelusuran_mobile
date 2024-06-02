@@ -3,7 +3,6 @@ import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 
 class Fase {
-  static int? currentDay = Produksi.currentDays;
   static String? currentPhaseName;
 
   static double? totalDurasi;
@@ -11,14 +10,15 @@ class Fase {
   static String namaFase = "";
   static Map<String, List<Map<String, dynamic>>> categorizedValuesMap = {};
   static Map<String, List<Map<String, dynamic>>> currentPhase = {};
-  static Future<void> readFaseChoosed() async {
+  static Future<void> readFaseChoosed(currentDays) async {
     // debugPrint(HomePage.faseDanPerlakuanList.toString());
     totalDurasi = hitungTotalDurasi(HomePage.faseDanPerlakuanList);
     categorizedValuesMap = faseCategorize(HomePage.faseDanPerlakuanList);
     totalPhase = hitungTotalFase(HomePage.faseDanPerlakuanList);
-    currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDay);
+    currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDays);
 
     namaFase = currentPhase.values.first[0]['nama_fase'];
+    // debugPrint(currentPhase.toString());
     // debugPrint(HomePage.faseDanPerlakuanList.toString());
     // debugPrint(currentPhase.toString());
     // debugPrint(totalDurasi.toString());
@@ -116,6 +116,7 @@ class Fase {
       int intMaxRangePhase = doubleRangePhase.toInt();
       maxRangePhase += intMaxRangePhase;
       // debugPrint("MinRangePhase: $minRangePhase");
+      // debugPrint("CurrentDay: $currentDay");
       if (minRangePhase < currentDay && currentDay < maxRangePhase) {
         currentPhase = {
           key: [phases[key]![0]]

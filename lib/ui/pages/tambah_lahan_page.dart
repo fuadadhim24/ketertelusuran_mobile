@@ -262,7 +262,7 @@ class _TambahLahanPage extends State<TambahLahanPage> {
         data: jsonEncode(data),
         options: dioP.Options(headers: headers),
       );
-      debugPrint(jsonEncode(data));
+      // debugPrint(jsonEncode(data));
 
       if (response.statusCode == 200) {
         final responseData = response.data;

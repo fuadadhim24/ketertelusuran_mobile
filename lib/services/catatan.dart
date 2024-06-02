@@ -9,6 +9,6 @@ class Catatan {
       (produksi) => produksi['id'] == idProduksi,
       orElse: () => null,
     );
-    debugPrint(catatanChoosed.toString());
+    // debugPrint(catatanChoosed.toString());
   }
 }
