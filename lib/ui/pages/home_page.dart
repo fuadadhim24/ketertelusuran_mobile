@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
   static List<dynamic> lahanList = [];
   static List<dynamic> panenList = [];
   static List<dynamic> produksiList = [];
+  static Map<String, dynamic> cuacaList = {};
   static Map<String, dynamic> produksiChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
@@ -37,6 +38,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String kelembaban = "";
+  String namaCuaca = "";
+  String kodeCuaca = "";
+  String tempC = "";
+  String alamat = "";
   List<dynamic> padiList = [];
   bool _isLoaded = false;
   final dio = Dio();
@@ -393,15 +399,15 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Sumbersari, Jember',
+                        alamat,
                         style: BlackTextStyle.copyWith(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: semiBold,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(
-                        height: 14,
+                        height: 8,
                       ),
                       Container(
                         width: 63,
@@ -412,17 +418,17 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 7,
+                        height: 5,
                       ),
                       Text(
-                        '37°',
+                        tempC + '°',
                         style: BlackTextStyle.copyWith(
                           fontSize: 32,
                           fontWeight: semiBold,
                         ),
                       ),
                       Text(
-                        'Terang Benderang',
+                        namaCuaca,
                         style: BlackTextStyle.copyWith(
                           fontSize: 10,
                         ),
@@ -457,19 +463,19 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 15,
                           ),
-                          Fase.namaFase != "" ? 
-                          Text(
-                            Fase.namaFase,
-                            style: BlackTextStyle.copyWith(
-                              fontSize: 12,
-                            ),
-                          ) :
-                          Text(
-                            'Lahan tidak digunakan',
-                            style: redTextStyle.copyWith(
-                              fontSize: 12,
-                            ),
-                          ),
+                          Fase.namaFase != ""
+                              ? Text(
+                                  Fase.namaFase,
+                                  style: BlackTextStyle.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                )
+                              : Text(
+                                  'Lahan tidak digunakan',
+                                  style: redTextStyle.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -489,7 +495,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Suhu',
+                            'Kelembaban',
                             style: BlackTextStyle.copyWith(
                               fontSize: 16,
                               fontWeight: semiBold,
@@ -499,14 +505,14 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '17°',
+                                kelembaban,
                                 style: BlackTextStyle.copyWith(
                                   fontSize: 36,
                                   fontWeight: semiBold,
                                 ),
                               ),
                               Text(
-                                'celcius',
+                                '%',
                                 style: BlackTextStyle.copyWith(
                                   fontSize: 12,
                                 ),
@@ -607,10 +613,11 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         // Routing ke halaman VarietasPadiPage
                         // debugTesting();
-                        if(Fase.namaFase != ""){
+                        if (Fase.namaFase != "") {
                           Get.toNamed('/penanaman');
-                        }else{
-                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        } else {
+                          _showWarningSnackBar(
+                              context, 'Lakukan penyemaian terlebih dahulu');
                         }
                       },
                     ),
@@ -621,10 +628,11 @@ class _HomePageState extends State<HomePage> {
                       title: 'Perawatan',
                       iconUrl: 'assets/ic_grade.png',
                       onTap: () {
-                        if(Fase.namaFase != ""){
+                        if (Fase.namaFase != "") {
                           Get.toNamed('/perawatan');
-                        }else{
-                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        } else {
+                          _showWarningSnackBar(
+                              context, 'Lakukan penyemaian terlebih dahulu');
                         }
                       },
                     ),
@@ -645,10 +653,11 @@ class _HomePageState extends State<HomePage> {
                       title: 'Panen',
                       iconUrl: 'assets/ic_lahan_big.png',
                       onTap: () {
-                        if(Fase.namaFase != ""){
+                        if (Fase.namaFase != "") {
                           Get.toNamed('/panen');
-                        }else{
-                          _showWarningSnackBar(context, 'Lakukan penyemaian terlebih dahulu');
+                        } else {
+                          _showWarningSnackBar(
+                              context, 'Lakukan penyemaian terlebih dahulu');
                         }
                       },
                     ),
@@ -790,7 +799,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          Fase.namaFase != "" ? ('Fase '+Fase.namaFase) : '__',
+                          Fase.namaFase != ""
+                              ? ('Fase ' + Fase.namaFase)
+                              : '__',
                           style: BlackTextStyle.copyWith(
                             fontSize: 11,
                           ),
@@ -929,7 +940,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> readHomePage() async {
     await readPanen();
-    readLahan();
+    await readLahan();
     final url = Global.serverUrl + Global.mainPath + Global.homePagePath;
     final finalUrl = url;
     Response response;
@@ -955,9 +966,8 @@ class _HomePageState extends State<HomePage> {
           // debugPrint(HomePage.faseDanPerlakuanList.toString());
 
           // PRODUKSI
-          await Produksi.readProduksiPanenChoosed(HomePage.idLahan, HomePage.panenList);
-          
-
+          await Produksi.readProduksiPanenChoosed(
+              HomePage.idLahan, HomePage.panenList);
 
           _isLoaded = true;
         }
@@ -967,6 +977,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       _showWarningSnackBar(context, responseData);
     }
+    await readCuaca(HomePage.latitude, HomePage.longitude);
   }
 
   void lahanDefault() {
@@ -1005,7 +1016,6 @@ class _HomePageState extends State<HomePage> {
 
         // PRODUKSI
         Produksi.readProduksiPanenChoosed(HomePage.idLahan, HomePage.panenList);
-        
       });
       Get.back();
     } else {
@@ -1022,7 +1032,7 @@ class _HomePageState extends State<HomePage> {
     debugPrint(HomePage.longitude);
     debugPrint(HomePage.jenisTanah);
   }
-  
+
   Future<void> readPadi() async {
     if (padiList.isEmpty) {
       final url = Global.serverUrl + Global.readPadiPath;
@@ -1063,7 +1073,8 @@ class _HomePageState extends State<HomePage> {
       HomePage.namaPadi = choosedPadi['varietas'].toString();
     } else {
       // Jika tidak ditemukan, set namaPadi ke null atau string kosong, sesuai kebutuhan aplikasi Anda
-      HomePage.namaPadi = 'Anda belum menentukan penyemaian'; // atau namaPadi = '';
+      HomePage.namaPadi =
+          'Anda belum menentukan penyemaian'; // atau namaPadi = '';
     }
     // debugPrint(choosedPadi.toString());
     // debugPrint(idPadi.toString());
@@ -1078,6 +1089,7 @@ class _HomePageState extends State<HomePage> {
     var stringResponse = body.toString();
     var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
     if (response.statusCode == 200) {
+      // debugPrint(body.toString());
       if (body.containsKey('data')) {
         HomePage.panenList = body['data'];
         // debugPrint(HomePage.panenList.toString());
@@ -1087,5 +1099,57 @@ class _HomePageState extends State<HomePage> {
     } else {
       _showWarningSnackBar(context, responseData);
     }
+  }
+
+  Future<void> readCuaca(lat, lon) async {
+    final url = Global.serverUrl + Global.readCuacaPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {
+      'lat': lat,
+      'lon': lon,
+    };
+
+    try {
+      final response = await Dio().get(
+        url,
+        data: jsonEncode(data),
+        options: Options(headers: headers),
+      );
+      // debugPrint(jsonEncode(data));
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+
+      if (response.statusCode == 200) {
+        if (body.containsKey('data')) {
+          HomePage.cuacaList = body['data'];
+          // debugPrint(HomePage.cuacaList.toString());
+          debugPrint(HomePage.cuacaList.values.toString());
+          setCuaca(HomePage.cuacaList);
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal mendapatkan data cuaca');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      _showWarningSnackBar(context, 'Error $e');
+    }
+  }
+
+  void setCuaca(Map<String, dynamic> cuacaList) {
+    List<dynamic> valuesList = cuacaList.values.toList();
+    setState(() {
+      namaCuaca = valuesList[2];
+      kodeCuaca = valuesList[1];
+      kelembaban = valuesList[3];
+      tempC = valuesList[4];
+      alamat = valuesList[6]+', '+ valuesList[7];
+      debugPrint(namaCuaca);
+      debugPrint(kodeCuaca.toString());
+      debugPrint(kelembaban.toString());
+      debugPrint(tempC.toString());
+    });
   }
 }

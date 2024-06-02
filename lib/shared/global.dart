@@ -28,4 +28,7 @@ class Global {
   //main
   static const String mainPath = '/main';
   static const String homePagePath = '/home_page.php';
+
+  // penanaman
+  static const String readCuacaPath = '/cuaca/read.php';
 }
