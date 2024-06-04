@@ -1,6 +1,9 @@
 class Global {
   static const String serverUrl = 'https://17januari23.000webhostapp.com';
+
+  // auth
   static const String signInPath = '/signIn.php';
+  static const String updatePasswordPath = '/auth/updatePassword.php';
 
   //Sign Up
   static const String signUpPath = '/sign_up.php';

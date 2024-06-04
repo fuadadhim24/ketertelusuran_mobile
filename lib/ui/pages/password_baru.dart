@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_up_page.dart';
@@ -8,6 +12,7 @@ import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 
 class PasswordBaruPage extends StatelessWidget {
   const PasswordBaruPage({Key? key});
+  static String email = "";
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,8 @@ class PasswordBaruPage extends StatelessWidget {
               ),
             ),
           ),
-          Center( // Menggunakan Center untuk posisi teks di tengah
+          Center(
+            // Menggunakan Center untuk posisi teks di tengah
             child: Text(
               'Buat Password Baru',
               style: BlackTextStyle.copyWith(
@@ -89,17 +95,26 @@ class PasswordBaruPage extends StatelessWidget {
                     String verifikasiPasswordBaru =
                         verifikasiPasswordBaruController.text;
 
-                    if (passwordBaru.isEmpty && verifikasiPasswordBaru.isEmpty) {
-                      _showWarningSnackBar(context, 'Password Baru dan Verifikasi Password Baru belum terisi.');
+                    if (passwordBaru.isEmpty &&
+                        verifikasiPasswordBaru.isEmpty) {
+                      _showWarningSnackBar(context,
+                          'Password Baru dan Verifikasi Password Baru belum terisi.');
                     } else if (passwordBaru.isEmpty) {
-                      _showWarningSnackBar(context, 'Password Baru belum terisi.');
+                      _showWarningSnackBar(
+                          context, 'Password Baru belum terisi.');
                     } else if (verifikasiPasswordBaru.isEmpty) {
-                      _showWarningSnackBar(context, 'Verifikasi Password Baru belum terisi.');
+                      _showWarningSnackBar(
+                          context, 'Verifikasi Password Baru belum terisi.');
                     } else if (passwordBaru != verifikasiPasswordBaru) {
-                      _showWarningSnackBar(context, 'Password Baru dan Verifikasi Password Baru harus sama.');
+                      _showWarningSnackBar(context,
+                          'Password Baru dan Verifikasi Password Baru harus sama.');
+                    } else if (!_validatePassword(passwordBaru)) {
+                      _showWarningSnackBar(context,
+                          'Password harus terdiri dari kombinasi huruf dan angka dengan panjang minimal 6 karakter');
                     } else {
-                      _showSuccessSnackBar(context);
-                      Get.toNamed('/sign-in');
+                      updatePassword(passwordBaru, email, context);
+                      // debugPrint('Password: $passwordBaru');
+                      // debugPrint('email: $email');
                     }
                   },
                 ),
@@ -109,7 +124,7 @@ class PasswordBaruPage extends StatelessWidget {
                 CustomTextButton(
                   title: 'Kembali ke Halaman Login',
                   onPressed: () {
-                    Get.toNamed('/sign-in');
+                    Get.offNamed('/sign-in');
                   },
                 ),
               ],
@@ -123,10 +138,15 @@ class PasswordBaruPage extends StatelessWidget {
     );
   }
 
+  bool _validatePassword(String password) {
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,99}$');
+    return passwordRegex.hasMatch(password);
+  }
+
   // Fungsi untuk menampilkan notifikasi snack bar saat berhasil login
-  void _showSuccessSnackBar(BuildContext context) {
+  void _showSuccessSnackBar(BuildContext context, title) {
     final snackBar = SnackBar(
-      content: Text('Berhasil Membuat Password Baru! Silahkan Login Kembali'),
+      content: Text(title),
       duration: Duration(seconds: 2), // Durasi notifikasi
       backgroundColor: greenColor, // Warna latar belakang notifikasi
       shape: RoundedRectangleBorder(
@@ -155,5 +175,38 @@ class PasswordBaruPage extends StatelessWidget {
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  void updatePassword(password, email, context) async {
+    final url = Global.serverUrl + Global.updatePasswordPath;
+    final headers = {'Content-Type': 'application/json'};
+    final data = {
+      'email': email,
+      'password': password,
+    };
+
+    try {
+      final response = await Dio().post(
+        url,
+        data: jsonEncode(data),
+        options: Options(headers: headers),
+      );
+      debugPrint(jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData.containsKey('success')) {
+          _showSuccessSnackBar(context,
+              'Berhasil Membuat Password Baru! Silahkan Login Kembali');
+          Get.offNamed('/sign-in');
+        } else {
+          _showWarningSnackBar(context, responseData);
+        }
+      } else {
+        _showWarningSnackBar(context, 'Gagal memperbarui password');
+      }
+    } catch (e) {
+      _showWarningSnackBar(context, 'Error $e');
+    }
   }
 }

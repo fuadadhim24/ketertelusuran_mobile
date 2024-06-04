@@ -149,7 +149,7 @@ class _SignUpPage extends State<SignUpPage> {
           CustomTextButton(
             title: 'Kembali ke Halaman Login',
             onPressed: () {
-              Get.toNamed('/sign-in');
+              Get.offNamed('/sign-in');
             },
           ),
           const SizedBox(
