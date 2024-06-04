@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/produksi.dart';
+import 'package:ketertelusuran_mobile/services/validator.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
@@ -20,13 +21,13 @@ class PerawatanPage extends StatefulWidget {
 }
 
 class _PerawatanPageState extends State<PerawatanPage> {
-  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
+  String? idProduksi = Produksi.produksiNonPanenChoosedList['id'].toString();
   static String? resultDatePerawatan;
   TextEditingController namaPerawatanController = TextEditingController();
   TextEditingController jumlahController = TextEditingController();
   TextEditingController kebutuhanController = TextEditingController();
   String? selectedJenisPerawatan;
-  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? idPadi = Produksi.produksiNonPanenChoosedList['id_padi'].toString();
   String? namaPadi;
   List<dynamic> padiList = [];
 
@@ -291,10 +292,30 @@ class _PerawatanPageState extends State<PerawatanPage> {
               String namaPerawatan = namaPerawatanController.text;
               String jumlah = jumlahController.text;
               String kebutuhan = kebutuhanController.text;
-
-              createPerawatan(jenisPerawatan, namaPerawatan, jumlah, kebutuhan,
-                  tanggalPerawatan, idProduksi);
-              Get.back();
+              if (jenisPerawatan != null) {
+                if (Validator.validateString(namaPerawatan)) {
+                  if (Validator.validateInt(jumlah)) {
+                    if (Validator.validateString(kebutuhan)) {
+                      if (tanggalPerawatan != null) {
+                        createPerawatan(jenisPerawatan, namaPerawatan, jumlah,
+                            kebutuhan, tanggalPerawatan, idProduksi);
+                        Get.back();
+                      } else {
+                        _showWarningSnackBar(
+                            context, 'Silakan pilih tanggal perawatan');
+                      }
+                    } else {
+                      _showWarningSnackBar(context, 'Silakan isi kebutuhan');
+                    }
+                  } else {
+                    _showWarningSnackBar(context, 'Silakan isi jumlah');
+                  }
+                } else {
+                  _showWarningSnackBar(context, 'Silakan isi nama perawatan');
+                }
+              } else {
+                _showWarningSnackBar(context, 'Pilih jenis perawatan');
+              }
             },
           ),
         ],

@@ -15,6 +15,7 @@ import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 
 class HomePage extends StatefulWidget {
+  static String idProduksi = '';
   static String idLahan = '';
   static String detailLokasi = '';
   static String luas = '';
@@ -25,7 +26,7 @@ class HomePage extends StatefulWidget {
   static List<dynamic> panenList = [];
   static List<dynamic> produksiList = [];
   static Map<String, dynamic> cuacaList = {};
-  static Map<String, dynamic> produksiChoosedList = {};
+  static Map<String, dynamic> produksiNonPanenChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
   static String namaLahan = '';
@@ -37,7 +38,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? idPadi = Produksi.produksiNonPanenChoosedList['id_padi'].toString();
   String kelembaban = "";
   String namaCuaca = "";
   String kodeCuaca = "";
@@ -1049,7 +1050,7 @@ class _HomePageState extends State<HomePage> {
           // debugPrint('produksiList : $produksiList');
           // debugPrint('lahanList : $lahanList');
           // debugPrint(padiList.toString());
-          // debugPrint(Produksi.produksiChoosedList.toString());
+          // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
           choosedPadi();
           // debugPrint(jsonEncode(body));
         } else {

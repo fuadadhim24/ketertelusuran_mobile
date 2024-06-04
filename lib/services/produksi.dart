@@ -20,19 +20,20 @@ class Produksi {
 
     //     }
     //   });
-    // Produksi.produksiNonPanenChoosedList = Produksi.produksiChoosedList.
+    // Produksi.produksiNonPanenChoosedList = Produksi.produksiNonPanenChoosedList.
     // debugPrint(panenList.toString());
     // debugPrint(Produksi.produksiChoosedList.toString());
     // debugPrint(Produksi.produksiAllChoosedList.toString());
     for (var produksi in HomePage.produksiList) {
       if (!panenList.any((panen) => panen['id_produksi'] == produksi['id'])) {
         produksiNonPanenChoosedList = produksi;
-        break; // Keluar dari loop setelah menemukan produksi yang cocok
       }
     }
+    // debugPrint(produksiNonPanenChoosedList.toString());
+    // debugPrint(idLahan.toString());
     if (produksiNonPanenChoosedList['id_lahan'] == idLahan) {
-      // debugPrint(Produksi.produksiChoosedList.toString());
-      String tanggalProduksiString = produksiChoosedList['tanggal_produksi'];
+      // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
+      String tanggalProduksiString = produksiNonPanenChoosedList['tanggal_produksi'];
       currentDays = calculateCurrentDays(tanggalProduksiString) + 1;
       // debugPrint('Current Days: $currentDays');
       // FASE

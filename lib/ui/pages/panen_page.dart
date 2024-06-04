@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/produksi.dart';
+import 'package:ketertelusuran_mobile/services/validator.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
@@ -12,7 +13,6 @@ import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/dropDownForm.dart';
 
 class PanenPage extends StatefulWidget {
-
   PanenPage({super.key});
 
   @override
@@ -24,9 +24,9 @@ class _PanenPageState extends State<PanenPage> {
   TextEditingController metodePanenController = TextEditingController();
   TextEditingController catatanController = TextEditingController();
   String? resultDatePanen;
-  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
-  
-  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? idProduksi = Produksi.produksiNonPanenChoosedList['id'].toString();
+
+  String? idPadi = Produksi.produksiNonPanenChoosedList['id_padi'].toString();
   String? namaPadi;
 
   List<dynamic> padiList = [];
@@ -238,26 +238,34 @@ class _PanenPageState extends State<PanenPage> {
           ),
           CustomFormField(
             title: 'Jumlah Panen',
-            typeFormField: 0, controller: quantityController,
+            typeFormField: 0,
+            controller: quantityController,
           ),
           const SizedBox(
             height: 36,
           ),
           CustomFormField(
             title: 'Metode Panen',
-            typeFormField: 0, controller: metodePanenController,
+            typeFormField: 0,
+            controller: metodePanenController,
           ),
           const SizedBox(
             height: 36,
           ),
           CustomFormField(
             title: 'Catatan',
-            typeFormField: 0, controller: catatanController,
+            typeFormField: 0,
+            controller: catatanController,
           ),
           const SizedBox(
             height: 36,
           ),
-          CustomDatePicker(title: 'Tanggal Panen', onDatePicked: (date) { resultDatePanen = date;},),
+          CustomDatePicker(
+            title: 'Tanggal Panen',
+            onDatePicked: (date) {
+              resultDatePanen = date;
+            },
+          ),
           const SizedBox(
             height: 18,
           ),
@@ -268,8 +276,25 @@ class _PanenPageState extends State<PanenPage> {
               String metodePanen = metodePanenController.text;
               String catatan = catatanController.text;
 
-              createPanen(quantity, metodePanen, catatan, idProduksi, resultDatePanen);
-              Get.back();
+              if (Validator.validateInt(quantity)) {
+                if (Validator.validateString(metodePanen)) {
+                  if (Validator.validateString(catatan)) {
+                    if (resultDatePanen != null) {
+                      createPanen(quantity, metodePanen, catatan, idProduksi,
+                          resultDatePanen);
+                    } else {
+                      _showWarningSnackBar(
+                          context, 'Silakan pilih tanggal panen');
+                    }
+                  } else {
+                    _showWarningSnackBar(context, 'Silakan isi catatan');
+                  }
+                } else {
+                  _showWarningSnackBar(context, 'Silakan isi metode panen');
+                }
+              } else {
+                _showWarningSnackBar(context, 'Silakan isi jumlah panen');
+              }
             },
           ),
         ],
@@ -351,8 +376,8 @@ class _PanenPageState extends State<PanenPage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void createPanen(quantity, metodePanen, catatan, idProduksi,
-      tanggalPanen) async {
+  void createPanen(
+      quantity, metodePanen, catatan, idProduksi, tanggalPanen) async {
     final url = Global.serverUrl + Global.panenPath;
     final headers = {'Content-Type': 'application/json'};
     final data = {

@@ -25,9 +25,9 @@ class PenanamanPage extends StatefulWidget {
 class _PenanamanPageState extends State<PenanamanPage> {
   String? selectedLahan;
   String? resultDatePenanaman;
-  String? idProduksi = Produksi.produksiChoosedList['id'].toString();
+  String? idProduksi = Produksi.produksiNonPanenChoosedList['id'].toString();
   List<dynamic> padiList = [];
-  String? idPadi = Produksi.produksiChoosedList['id_padi'].toString();
+  String? idPadi = Produksi.produksiNonPanenChoosedList['id_padi'].toString();
   String? namaPadi;
   List<dynamic> lahanList =
       HomePage.lahanList; // Ini adalah inisialisasi variabel lahanList
@@ -170,7 +170,12 @@ class _PenanamanPageState extends State<PenanamanPage> {
           title: 'Tanam',
           onPressed: () {
             if (changeLahan != true) {
-              createPenanaman(idProduksi, resultDatePenanaman);
+              if (resultDatePenanaman != null) {
+                createPenanaman(idProduksi, resultDatePenanaman);
+              } else {
+                _showWarningSnackBar(
+                    context, 'Silakan pilih tanggal penanaman');
+              }
             } else {
               // Mencari data berdasarkan nama_lahan
               var hasilPencarian = lahanList
@@ -181,8 +186,18 @@ class _PenanamanPageState extends State<PenanamanPage> {
                   hasilPencarian.isNotEmpty ? hasilPencarian.first["id"] : null;
               // debugPrint(selectedLahan);
               // debugPrint(lahanList.toString());
-              createPenanamanChangeLahan(
-                  idProduksi, resultDatePenanaman, idLahan);
+              if (resultDatePenanaman != null) {
+                if (idLahan != null) {
+                  createPenanamanChangeLahan(
+                      idProduksi, resultDatePenanaman, idLahan);
+                } else {
+                  _showWarningSnackBar(
+                      context, 'Pilih lahan yang ingin diganti');
+                }
+              } else {
+                _showWarningSnackBar(
+                    context, 'Silakan pilih tanggal penanaman');
+              }
             }
           },
         ),
@@ -241,6 +256,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
 
       if (response.statusCode == 200) {
         final responseData = response.data;
+        debugPrint(responseData.toString());
         if (responseData.containsKey('success')) {
           _showSuccessSnackBar(context, 'Penanaman berhasil ditambahkan!');
           Get.offNamed('/home');
@@ -316,7 +332,7 @@ class _PenanamanPageState extends State<PenanamanPage> {
           // debugPrint('produksiList : $produksiList');
           // debugPrint('lahanList : $lahanList');
           // debugPrint(padiList.toString());
-          // debugPrint(Produksi.produksiChoosedList.toString());
+          // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
           choosedPadi();
           // debugPrint(jsonEncode(body));
         } else {
