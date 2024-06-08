@@ -105,6 +105,7 @@ class LupaPasswordPage extends StatelessWidget {
                   obscureText: true,
                   typeFormField: 1,
                   controller: otpController,
+                  textInputType: TextInputType.number,
                 ),
                 const SizedBox(
                   height: 16,

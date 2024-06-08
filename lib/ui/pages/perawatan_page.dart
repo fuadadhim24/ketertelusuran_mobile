@@ -263,6 +263,7 @@ class _PerawatanPageState extends State<PerawatanPage> {
             title: 'Jumlah',
             typeFormField: 0,
             controller: jumlahController,
+            textInputType: TextInputType.number,
           ),
           const SizedBox(
             height: 36,

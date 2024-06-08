@@ -240,6 +240,7 @@ class _PanenPageState extends State<PanenPage> {
             title: 'Jumlah Panen',
             typeFormField: 0,
             controller: quantityController,
+            textInputType: TextInputType.number,
           ),
           const SizedBox(
             height: 36,

@@ -603,6 +603,8 @@ class _HomePageState extends State<HomePage> {
                         // Routing ke halaman VarietasPadiPage
                         // debugTesting();
                         Get.toNamed('/varietas-padi');
+                        // debugPrint(HomePage.cuacaList.toString());
+                        // debugPrint(HomePage.lahanList.toString());
                       },
                     ),
                     SizedBox(
@@ -978,7 +980,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       _showWarningSnackBar(context, responseData);
     }
-    await readCuaca(HomePage.latitude, HomePage.longitude);
+    await readCuaca2(HomePage.latitude, HomePage.longitude);
   }
 
   void lahanDefault() {
@@ -1102,41 +1104,83 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> readCuaca(lat, lon) async {
-    final url = Global.serverUrl + Global.readCuacaPath;
+  // Future<void> readCuaca(lat, lon) async {
+  //   final url = Global.serverUrl + Global.readCuacaPath;
+  //   final headers = {'Content-Type': 'application/json'};
+  //   final data = {
+  //     'lat': lat,
+  //     'lon': lon,
+  //   };
+
+  //   try {
+  //     final response = await Dio().get(
+  //       url,
+  //       data: jsonEncode(data),
+  //       options: Options(headers: headers),
+  //     );
+  //     // debugPrint(jsonEncode(data));
+  //     final body = response.data;
+  //     var stringResponse = body.toString();
+  //     var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+
+  //     if (response.statusCode == 200) {
+  //       if (body.containsKey('data')) {
+  //         HomePage.cuacaList = body['data'];
+  //         // debugPrint(HomePage.cuacaList.toString());
+  //         debugPrint(HomePage.cuacaList.values.toString());
+  //         setCuaca(HomePage.cuacaList);
+  //       } else {
+  //         _showWarningSnackBar(context, responseData);
+  //       }
+  //     } else {
+  //       _showWarningSnackBar(context, 'Gagal mendapatkan data cuaca');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     _showWarningSnackBar(context, 'Error $e');
+  //   }
+  // }
+
+  Future<void> readCuaca2(lat, lon) async {
+    final url = Global.serverUrl + Global.readCuaca2Path;
+    // double latitude = double.parse(lat);
+    // double longitude = double.parse(lon);
+    debugPrint(url);
+    debugPrint(lat);
+    debugPrint(lon);
+
     final headers = {'Content-Type': 'application/json'};
     final data = {
       'lat': lat,
       'lon': lon,
     };
 
-    try {
-      final response = await Dio().get(
-        url,
-        data: jsonEncode(data),
-        options: Options(headers: headers),
-      );
-      // debugPrint(jsonEncode(data));
-      final body = response.data;
-      var stringResponse = body.toString();
-      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
-
-      if (response.statusCode == 200) {
-        if (body.containsKey('data')) {
-          HomePage.cuacaList = body['data'];
-          // debugPrint(HomePage.cuacaList.toString());
-          debugPrint(HomePage.cuacaList.values.toString());
-          setCuaca(HomePage.cuacaList);
-        } else {
-          _showWarningSnackBar(context, responseData);
-        }
-      } else {
-        _showWarningSnackBar(context, 'Gagal mendapatkan data cuaca');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      _showWarningSnackBar(context, 'Error $e');
+    final response = await dio.get(
+      url,
+      data: jsonEncode(data),
+      options: Options(headers: headers),
+    );
+    // debugPrint(response.statusCode.toString());
+    if(response.statusCode ==200){
+        debugPrint('berhasil');
+    }else{
+      debugPrint('gagal lagi');
     }
+    // debugPrint(data.toString());
+    HomePage.cuacaList = response.data['data'];
+    // debugPrint(HomePage.cuacaList.toString());
+    debugPrint(HomePage.cuacaList.values.toString());
+    setCuaca(HomePage.cuacaList);
+
+    // if (response.statusCode == 200) {
+    //   HomePage.cuacaList = response.data['data'];
+    //   // debugPrint(HomePage.cuacaList.toString());
+    //   debugPrint(HomePage.cuacaList.values.toString());
+    //   setCuaca(HomePage.cuacaList);
+    //   debugPrint('cuaca sudah bisa bang');
+    // } else {
+    //   debugPrint('cuaca belum bisa');
+    // }
   }
 
   void setCuaca(Map<String, dynamic> cuacaList) {
@@ -1146,7 +1190,7 @@ class _HomePageState extends State<HomePage> {
       kodeCuaca = valuesList[1];
       kelembaban = valuesList[3];
       tempC = valuesList[4];
-      alamat = valuesList[6]+', '+ valuesList[7];
+      alamat = valuesList[6] + ', ' + valuesList[7];
       debugPrint(namaCuaca);
       debugPrint(kodeCuaca.toString());
       debugPrint(kelembaban.toString());

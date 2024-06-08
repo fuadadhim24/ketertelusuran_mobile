@@ -154,6 +154,7 @@ class _TambahLahanPage extends State<TambahLahanPage> {
             title: 'Luas',
             typeFormField: 0,
             controller: _luasController,
+            textInputType: TextInputType.number,
           ),
           const SizedBox(
             height: 36,

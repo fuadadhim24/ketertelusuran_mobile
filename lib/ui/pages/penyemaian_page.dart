@@ -86,6 +86,7 @@ class _PenyemaianPageState extends State<PenyemaianPage> {
           title: 'Tingkat Kemurnian (%)',
           typeFormField: 0,
           controller: tingkatKemurnianController,
+          textInputType: TextInputType.number,
         ),
         SizedBox(
           height: 36,
@@ -94,6 +95,7 @@ class _PenyemaianPageState extends State<PenyemaianPage> {
           title: 'Tingkat Vigor (%)',
           typeFormField: 0,
           controller: tingkatVigorController,
+          textInputType: TextInputType.number,
         ),
         SizedBox(
           height: 36,
@@ -111,6 +113,7 @@ class _PenyemaianPageState extends State<PenyemaianPage> {
           title: 'Jumlah Benih',
           typeFormField: 0,
           controller: jumlahBenihController,
+          textInputType: TextInputType.number,
         ),
         SizedBox(
           height: 48,
@@ -237,12 +240,14 @@ class _PenyemaianPageState extends State<PenyemaianPage> {
           _showSuccessSnackBar(context, 'Penyemaian berhasil ditambahkan!');
           Get.offNamed('/home');
         } else {
+          debugPrint(responseData.toString());
           _showWarningSnackBar(context, responseData);
         }
       } else {
         _showWarningSnackBar(context, 'Gagal menambahkan lahan');
       }
     } catch (e) {
+      debugPrint(e.toString());
       _showWarningSnackBar(context, 'Error $e');
     }
   }

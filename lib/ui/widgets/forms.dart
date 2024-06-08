@@ -7,6 +7,7 @@ class CustomFormField extends StatefulWidget {
   final String title;
   final bool obscureText;
   final int typeFormField;
+  final TextInputType? textInputType;
   final TextEditingController? controller;
 
   const CustomFormField({
@@ -15,6 +16,7 @@ class CustomFormField extends StatefulWidget {
     required this.typeFormField,
     this.obscureText = false,
     this.controller,
+    this.textInputType,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       children: [
         typeFormField == 1
             ? TextFormField(
+              keyboardType: widget.textInputType,
                 obscureText: obscureText,
                 controller: widget.controller,
                 decoration: InputDecoration(
@@ -60,6 +63,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 ),
               )
             : TextFormField(
+              keyboardType: widget.textInputType,
                 obscureText: obscureText,
                 controller: widget.controller,
                 decoration: InputDecoration(

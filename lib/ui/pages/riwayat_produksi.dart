@@ -6,10 +6,11 @@ import 'package:get/get.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
+import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/home_service_item.dart';
 
 class RiwayatProduksiPage extends StatefulWidget {
-  const RiwayatProduksiPage ({Key? key}) : super(key: key);
+  const RiwayatProduksiPage({Key? key}) : super(key: key);
 
   @override
   _RiwayatProduksiPage createState() => _RiwayatProduksiPage();
@@ -17,19 +18,19 @@ class RiwayatProduksiPage extends StatefulWidget {
 
 class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
   TextEditingController _searchController = TextEditingController();
-  bool isRainySeason = true; // Default is rainy season
+  bool isTanggalProduksi = true;
   bool search = false;
   int selectedOption = 0; // Default selected option is "Semua"
   final dio = Dio();
-  List<dynamic> padiList = [];
-  List<dynamic> padiSearchedList = [];
+  List<dynamic> produksiList = [];
+  List<dynamic> produksiSearchedList = [];
 
   void toggleSeason() {
     setState(() {
-      isRainySeason = !isRainySeason;
+      isTanggalProduksi = !isTanggalProduksi;
       selectedOption = 0;
-      debugPrint(jsonEncode(padiSearchedList));
-      // debugPrint(jsonEncode(padiList));
+      // debugPrint(jsonEncode(produksiSearchedList));
+      // debugPrint(jsonEncode(produksiList));
     });
   }
 
@@ -63,12 +64,14 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
               SizedBox(
                 height: 5,
               ),
-              buildSearchContainer(),
+              isTanggalProduksi
+                  ? buildSearchContainer()
+                  : CustomDatePicker(title: 'Pilih tanggal produksi'),
               SizedBox(
                 height: 5,
               ),
               Expanded(
-                child: buildVarietasPadiContent(context),
+                child: buildVarietasProduksiContent(context),
               ),
               SizedBox(
                 height: 25,
@@ -80,52 +83,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
     );
   }
 
-  Widget buildHomeHeading() {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 64,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: 24,
-                width: 24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/ic_back.png'),
-                  ),
-                ),
-              ),
-              Text(
-                'Varietas Padi',
-                textAlign: TextAlign.center,
-                style: BlackTextStyle.copyWith(
-                  fontSize: 20,
-                  fontWeight: semiBold,
-                ),
-              ),
-              Container(
-                height: 24,
-                width: 24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/ic_notification.png',
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-   Widget buildNotes() {
+  Widget buildNotes() {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,10 +118,12 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                       onTap: toggleSeason,
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        width: 150,
+                        width: MediaQuery.of(context).size.width / 2 -26,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: isRainySeason ? greenColor : whiteContainerColor,
+                          color: isTanggalProduksi
+                              ? greenColor
+                              : whiteContainerColor,
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
@@ -171,14 +131,18 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                           children: [
                             Icon(
                               Icons.numbers,
-                              color: isRainySeason ? whiteContainerColor : txtBlackColor,
+                              color: isTanggalProduksi
+                                  ? whiteContainerColor
+                                  : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Kode Produksi',
                               style: TextStyle(
-                                color: isRainySeason ? whiteContainerColor : txtBlackColor,
+                                color: isTanggalProduksi
+                                    ? whiteContainerColor
+                                    : txtBlackColor,
                                 fontWeight: semiBold,
                                 fontSize: 14,
                               ),
@@ -195,7 +159,9 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                         width: 150,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: !isRainySeason ? greenColor : whiteContainerColor,
+                          color: !isTanggalProduksi
+                              ? greenColor
+                              : whiteContainerColor,
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
@@ -203,14 +169,18 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                           children: [
                             Icon(
                               Icons.calendar_today,
-                              color: !isRainySeason ? whiteContainerColor : txtBlackColor,
+                              color: !isTanggalProduksi
+                                  ? whiteContainerColor
+                                  : txtBlackColor,
                               size: 20,
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Tanggal Produksi',
                               style: TextStyle(
-                                color: !isRainySeason ? whiteContainerColor : txtBlackColor,
+                                color: !isTanggalProduksi
+                                    ? whiteContainerColor
+                                    : txtBlackColor,
                                 fontWeight: semiBold,
                                 fontSize: 14,
                               ),
@@ -228,7 +198,6 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
       ),
     );
   }
-
 
   Widget buildSearchContainer() {
     return Container(
@@ -285,8 +254,8 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  // debugPrint(jsonEncode(padiList));
-                  // debugPrint(jsonEncode(padiList));
+                  // debugPrint(jsonEncode(produksiList));
+                  // debugPrint(jsonEncode(produksiList));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -296,7 +265,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                   child: IconButton(
                     icon: Icon(Icons.filter_alt, color: whiteContainerColor),
                     onPressed: () {
-                      searchPadi();
+                      searchProduksi();
                     },
                   ),
                 ),
@@ -343,9 +312,9 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
     );
   }
 
-  Widget buildVarietasPadiContent(BuildContext context) {
+  Widget buildVarietasProduksiContent(BuildContext context) {
     return FutureBuilder(
-      future: readPadi(),
+      future: readProduksi(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // Tampilkan indikator loading saat menunggu data
@@ -357,38 +326,42 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
             return ListView.builder(
               shrinkWrap: true,
               physics: ScrollPhysics(),
-              itemCount: padiList
-                  .length, // Gunakan panjang daftar padi sebagai itemCount
+              itemCount: produksiList
+                  .length, // Gunakan panjang daftar produksi sebagai itemCount
               itemBuilder: (context, index) {
-                return isRainySeason
-                    ? padiList[index]['jenis_musim'] == 'Hujan' &&
+                return isTanggalProduksi
+                    ? produksiList[index]['jenis_musim'] == 'Hujan' &&
                             (selectedOption == 0 ||
                                 (selectedOption == 1 &&
-                                    padiList[index]['kategori'] ==
+                                    produksiList[index]['kategori'] ==
                                         'Rekomendasi') ||
                                 (selectedOption == 2 &&
-                                    padiList[index]['kategori'] == 'Selalu') ||
+                                    produksiList[index]['kategori'] ==
+                                        'Selalu') ||
                                 (selectedOption == 3 &&
-                                    padiList[index]['kategori'] == 'Jarang'))
+                                    produksiList[index]['kategori'] ==
+                                        'Jarang'))
                         ? buildContentCard(
-                            padiList[index]['varietas'],
-                            padiList[index]['kategori'],
-                            padiList[index]['karakteristik_hasil'],
+                            produksiList[index]['varietas'],
+                            produksiList[index]['kategori'],
+                            produksiList[index]['karakteristik_hasil'],
                           )
                         : SizedBox()
-                    : padiList[index]['jenis_musim'] == 'Kemarau' &&
+                    : produksiList[index]['jenis_musim'] == 'Kemarau' &&
                             (selectedOption == 0 ||
                                 (selectedOption == 1 &&
-                                    padiList[index]['kategori'] ==
+                                    produksiList[index]['kategori'] ==
                                         'Rekomendasi') ||
                                 (selectedOption == 2 &&
-                                    padiList[index]['kategori'] == 'Selalu') ||
+                                    produksiList[index]['kategori'] ==
+                                        'Selalu') ||
                                 (selectedOption == 3 &&
-                                    padiList[index]['kategori'] == 'Jarang'))
+                                    produksiList[index]['kategori'] ==
+                                        'Jarang'))
                         ? buildContentCard(
-                            padiList[index]['varietas'],
-                            padiList[index]['kategori'],
-                            padiList[index]['karakteristik_hasil'],
+                            produksiList[index]['varietas'],
+                            produksiList[index]['kategori'],
+                            produksiList[index]['karakteristik_hasil'],
                           )
                         : SizedBox();
               },
@@ -397,42 +370,42 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
             return ListView.builder(
               shrinkWrap: true,
               physics: ScrollPhysics(),
-              itemCount: padiSearchedList
-                  .length, // Gunakan panjang daftar padi sebagai itemCount
+              itemCount: produksiSearchedList
+                  .length, // Gunakan panjang daftar produksi sebagai itemCount
               itemBuilder: (context, index) {
-                return isRainySeason
-                    ? padiSearchedList[index]['jenis_musim'] == 'Hujan' &&
+                return isTanggalProduksi
+                    ? produksiSearchedList[index]['jenis_musim'] == 'Hujan' &&
                             (selectedOption == 0 ||
                                 (selectedOption == 1 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Rekomendasi') ||
                                 (selectedOption == 2 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Selalu') ||
                                 (selectedOption == 3 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Jarang'))
                         ? buildContentCard(
-                            padiSearchedList[index]['varietas'],
-                            padiSearchedList[index]['kategori'],
-                            padiSearchedList[index]['karakteristik_hasil'],
+                            produksiSearchedList[index]['varietas'],
+                            produksiSearchedList[index]['kategori'],
+                            produksiSearchedList[index]['karakteristik_hasil'],
                           )
                         : SizedBox()
-                    : padiSearchedList[index]['jenis_musim'] == 'Kemarau' &&
+                    : produksiSearchedList[index]['jenis_musim'] == 'Kemarau' &&
                             (selectedOption == 0 ||
                                 (selectedOption == 1 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Rekomendasi') ||
                                 (selectedOption == 2 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Selalu') ||
                                 (selectedOption == 3 &&
-                                    padiSearchedList[index]['kategori'] ==
+                                    produksiSearchedList[index]['kategori'] ==
                                         'Jarang'))
                         ? buildContentCard(
-                            padiSearchedList[index]['varietas'],
-                            padiSearchedList[index]['kategori'],
-                            padiSearchedList[index]['karakteristik_hasil'],
+                            produksiSearchedList[index]['varietas'],
+                            produksiSearchedList[index]['kategori'],
+                            produksiSearchedList[index]['karakteristik_hasil'],
                           )
                         : SizedBox();
               },
@@ -443,7 +416,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
     );
   }
 
-  Widget buildContentCard(namaPadi, kategori, karakteristikHasil) {
+  Widget buildContentCard(namaProduksi, kategori, karakteristikHasil) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       color: whiteContainerColor,
@@ -459,7 +432,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        namaPadi,
+                        namaProduksi,
                         style: TextStyle(
                           fontWeight: semiBold,
                         ),
@@ -545,9 +518,9 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  Future<void> readPadi() async {
-    if (padiList.isEmpty) {
-      final url = Global.serverUrl + Global.readPadiPath;
+  Future<void> readProduksi() async {
+    if (produksiList.isEmpty) {
+      final url = Global.serverUrl + Global.produksiPath + Global.readProduksiPath;
       final finalUrl = url;
       Response response;
       response = await dio.get(finalUrl);
@@ -557,7 +530,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
       if (response.statusCode == 200) {
         if (body.containsKey('data')) {
           // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
-          padiList = body['data'];
+          produksiList = body['data'];
           // debugPrint(jsonEncode(body));
           // debugPrint('lahanList : $lahanList');
         } else {
@@ -569,20 +542,20 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
     }
   }
 
-  void searchPadi() {
+  void searchProduksi() {
     // Mendapatkan teks yang dimasukkan pengguna pada TextField
     String searchText = _searchController.text.toLowerCase();
 
-    // Menerapkan filter pada daftar padi berdasarkan teks pencarian
-    List<dynamic> filteredList = padiList.where((padi) {
-      String namaVarietas = padi['varietas'].toLowerCase();
+    // Menerapkan filter pada daftar produksi berdasarkan teks pencarian
+    List<dynamic> filteredList = produksiList.where((produksi) {
+      String namaVarietas = produksi['varietas'].toLowerCase();
 
-      // Return true jika nama padi atau kategori mengandung teks pencarian
+      // Return true jika nama produksi atau kategori mengandung teks pencarian
       return namaVarietas.contains(searchText);
     }).toList();
-    debugPrint('cek 10');
+    // debugPrint('cek 10');
     setState(() {
-      padiSearchedList = filteredList;
+      produksiSearchedList = filteredList;
     });
   }
 }

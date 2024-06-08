@@ -1,5 +1,6 @@
 class Global {
-  static const String serverUrl = 'https://17januari23.000webhostapp.com';
+  static const String backupServerUrl = 'https://17januari23.000webhostapp.com';
+  static const String serverUrl = 'https://www.jejakpadi.com/api';
 
   // auth
   static const String signInPath = '/signIn.php';
@@ -19,6 +20,7 @@ class Global {
   
   //produksi
   static const String produksiPath = '/produksi';
+  static const String readProduksiPath = '/read.php';
   static const String penyemaianPath = '/penyemaian/create.php';
 
   // perawatan
@@ -33,5 +35,6 @@ class Global {
   static const String homePagePath = '/home_page.php';
 
   // penanaman
-  static const String readCuacaPath = '/cuaca/read.php';
+  // static const String readCuacaPath = '/cuaca/read.php';
+  static const String readCuaca2Path = '/cuaca2/read.php';
 }
