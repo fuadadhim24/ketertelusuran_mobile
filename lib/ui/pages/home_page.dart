@@ -764,7 +764,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed('/pencatatan');
+                        if (Fase.namaFase != "") {
+                          Get.toNamed('/perawatan');
+                        } else {
+                          _showWarningSnackBar(
+                              context, 'Lakukan penyemaian terlebih dahulu');
+                        }
                       },
                       child: Container(
                         width: 24,
@@ -843,27 +848,52 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 18,
                 ),
-                ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                    HomePage.pencatatanProduksiChoosedList.length,
-                    (index) {
-                      var item = HomePage.pencatatanProduksiChoosedList[index];
-                      // Menggunakan item dalam pencatatanProduksiChoosedList
-                      return perawatanCard(
-                        title: "Perawatan ${index+1}",
-                        jenisPerawatan: item['jenis_perawatan'],
-                        namaPerawatan: item['nama_perawatan'],
-                        jumlah: item['jumlah'].toString(),
-                        kebutuhan: item['kebutuhan'], tanggalPerawatan: item['tanggal_perawatan'],
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                HomePage.pencatatanProduksiChoosedList.length != 0
+                    ? ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: List.generate(
+                          HomePage.pencatatanProduksiChoosedList.length,
+                          (index) {
+                            var item =
+                                HomePage.pencatatanProduksiChoosedList[index];
+                            // Menggunakan item dalam pencatatanProduksiChoosedList
+                            return perawatanCard(
+                              title: "Perawatan ${index + 1}",
+                              jenisPerawatan: item['jenis_perawatan'],
+                              namaPerawatan: item['nama_perawatan'],
+                              jumlah: item['jumlah'].toString(),
+                              kebutuhan: item['kebutuhan'],
+                              tanggalPerawatan: item['tanggal_perawatan'],
+                            );
+                          },
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 15,
+                      ),
+                HomePage.pencatatanProduksiChoosedList.length == 0
+                    ? Text(
+                        'Belum ada Pencatatan...',
+                        style: greenTextStyle.copyWith(
+                          fontWeight: semiBold,
+                          fontSize: 16,
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 15,
+                      ),
+                HomePage.pencatatanProduksiChoosedList.length == 0
+                    ? Text(
+                        'Silakan lakukan penyemaian terlebih dahulu',
+                        style: GreyTextStyle.copyWith(
+                          fontWeight: semiBold,
+                          fontSize: 11,
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 15,
+                      ),
               ],
             ),
           ),
@@ -997,6 +1027,7 @@ class _HomePageState extends State<HomePage> {
       // debugPrint(HomePage.namaLahan);
       // debugPrint(HomePage.detailLokasi);
       setState(() {
+        HomePage.pencatatanProduksiChoosedList.clear();
         HomePage.idLahan = chosenLahan['id'];
         HomePage.namaLahan = chosenLahan['nama_lahan'];
         HomePage.detailLokasi = chosenLahan['detail_lokasi'];
