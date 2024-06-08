@@ -1016,6 +1016,7 @@ class _HomePageState extends State<HomePage> {
         HomePage.latitude = chosenLahan['latitude'];
         HomePage.longitude = chosenLahan['longitude'];
         HomePage.jenisTanah = chosenLahan['jenis_tanah'];
+        readCuaca2(HomePage.latitude, HomePage.longitude);
 
         // PRODUKSI
         Produksi.readProduksiPanenChoosed(HomePage.idLahan, HomePage.panenList);
@@ -1143,16 +1144,16 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> readCuaca2(lat, lon) async {
     final url = Global.serverUrl + Global.readCuaca2Path;
-    // double latitude = double.parse(lat);
-    // double longitude = double.parse(lon);
+    double latitude = double.parse(lat);
+    double longitude = double.parse(lon);
     debugPrint(url);
     debugPrint(lat);
     debugPrint(lon);
 
     final headers = {'Content-Type': 'application/json'};
     final data = {
-      'lat': lat,
-      'lon': lon,
+      'lat': latitude,
+      'lon': longitude,
     };
 
     final response = await dio.get(
