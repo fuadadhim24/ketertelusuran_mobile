@@ -33,10 +33,14 @@ class Produksi {
     // debugPrint(idLahan.toString());
     if (produksiNonPanenChoosedList['id_lahan'] == idLahan) {
       // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
-      String tanggalProduksiString = produksiNonPanenChoosedList['tanggal_produksi'];
-      currentDays = calculateCurrentDays(tanggalProduksiString) + 1;
+      String tanggalProduksiString =
+          produksiNonPanenChoosedList['tanggal_produksi'];
+      currentDays = calculateCurrentDays(tanggalProduksiString);
+      HomePage.idProduksi = produksiNonPanenChoosedList['id'];
       // debugPrint('Current Days: $currentDays');
+      // debugPrint(produksiNonPanenChoosedList['id']);
       // FASE
+      await Produksi.pencatatanChoosedProduksi(produksiNonPanenChoosedList['id']);
       if (currentDays != null) {
         Fase.readFaseChoosed(currentDays);
       }
@@ -45,12 +49,22 @@ class Produksi {
       Fase.namaFase = "";
       produksiNonPanenChoosedList = {'null': 'null'};
     }
-    }
+  }
 
   static int calculateCurrentDays(tanggalProduksiString) {
     DateTime tanggalProduksi = DateTime.parse(tanggalProduksiString);
     Duration differenceDay = DateTime.now().difference(tanggalProduksi);
     int daysDuringProduksi = differenceDay.inDays + 1;
     return daysDuringProduksi;
+  }
+
+  static Future<void> pencatatanChoosedProduksi(String idProduksi) async{
+    for (var item in HomePage.pencatatanList) {
+      if (item.containsKey('id_produksi') &&
+          item['id_produksi'] == idProduksi) {
+        HomePage.pencatatanProduksiChoosedList.add(item);
+      }
+    }
+    // debugPrint(HomePage.pencatatanProduksiChoosedList.toString());
   }
 }

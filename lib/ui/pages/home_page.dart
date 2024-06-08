@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
   static Map<String, dynamic> produksiNonPanenChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
+  static List<dynamic> pencatatanProduksiChoosedList = [];
   static String namaLahan = '';
   static String? namaPadi;
   const HomePage({Key? key});
@@ -842,37 +843,23 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 18,
                 ),
-                ListView.builder(
+                ListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 8,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ExpansionTile(
-                        maintainState: true,
-                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                        title: Text("Perawatan $index"),
-                        children: [
-                          const Text(
-                            "Jenis Perawatan: Pemupukan",
-                            textAlign: TextAlign.left,
-                          ),
-                          const Text(
-                            "Nama Perawatan: NPK 32",
-                            textAlign: TextAlign.left,
-                          ),
-                          const Text(
-                            "Jumlah: 10",
-                            textAlign: TextAlign.left,
-                          ),
-                          const Text(
-                            "Kebutuhan: Mempercepat Pertumbuhan",
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                  children: List.generate(
+                    HomePage.pencatatanProduksiChoosedList.length,
+                    (index) {
+                      var item = HomePage.pencatatanProduksiChoosedList[index];
+                      // Menggunakan item dalam pencatatanProduksiChoosedList
+                      return perawatanCard(
+                        title: "Perawatan ${index+1}",
+                        jenisPerawatan: item['jenis_perawatan'],
+                        namaPerawatan: item['nama_perawatan'],
+                        jumlah: item['jumlah'].toString(),
+                        kebutuhan: item['kebutuhan'], tanggalPerawatan: item['tanggal_perawatan'],
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 15,
@@ -967,6 +954,7 @@ class _HomePageState extends State<HomePage> {
           // debugPrint(HomePage.produksiList.toString());
           // debugPrint(HomePage.idLahan);
           // debugPrint(HomePage.faseDanPerlakuanList.toString());
+          // debugPrint(HomePage.pencatatanList.toString());
 
           // PRODUKSI
           await Produksi.readProduksiPanenChoosed(
@@ -1146,9 +1134,9 @@ class _HomePageState extends State<HomePage> {
     final url = Global.serverUrl + Global.readCuaca2Path;
     double latitude = double.parse(lat);
     double longitude = double.parse(lon);
-    debugPrint(url);
-    debugPrint(lat);
-    debugPrint(lon);
+    // debugPrint(url);
+    // debugPrint(lat);
+    // debugPrint(lon);
 
     final headers = {'Content-Type': 'application/json'};
     final data = {
@@ -1162,15 +1150,15 @@ class _HomePageState extends State<HomePage> {
       options: Options(headers: headers),
     );
     // debugPrint(response.statusCode.toString());
-    if(response.statusCode ==200){
-        debugPrint('berhasil');
-    }else{
+    if (response.statusCode == 200) {
+      debugPrint('berhasil');
+    } else {
       debugPrint('gagal lagi');
     }
     // debugPrint(data.toString());
     HomePage.cuacaList = response.data['data'];
     // debugPrint(HomePage.cuacaList.toString());
-    debugPrint(HomePage.cuacaList.values.toString());
+    // debugPrint(HomePage.cuacaList.values.toString());
     setCuaca(HomePage.cuacaList);
 
     // if (response.statusCode == 200) {
@@ -1192,10 +1180,49 @@ class _HomePageState extends State<HomePage> {
       kelembaban = valuesList[3];
       tempC = valuesList[4];
       alamat = valuesList[6] + ', ' + valuesList[7];
-      debugPrint(namaCuaca);
-      debugPrint(kodeCuaca.toString());
-      debugPrint(kelembaban.toString());
-      debugPrint(tempC.toString());
+      // debugPrint(namaCuaca);
+      // debugPrint(kodeCuaca.toString());
+      // debugPrint(kelembaban.toString());
+      // debugPrint(tempC.toString());
     });
+  }
+
+  Widget perawatanCard({
+    required String title,
+    required String jenisPerawatan,
+    required String namaPerawatan,
+    required String jumlah,
+    required String kebutuhan,
+    required String tanggalPerawatan,
+  }) {
+    return Card(
+      child: ExpansionTile(
+        maintainState: true,
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        title: Text(title),
+        children: [
+          Text(
+            "Jenis Perawatan: $jenisPerawatan",
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            "Nama Perawatan: $namaPerawatan",
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            "Jumlah: $jumlah",
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            "Kebutuhan: $kebutuhan",
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            "Tanggal Perawatan: $tanggalPerawatan",
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+    );
   }
 }
