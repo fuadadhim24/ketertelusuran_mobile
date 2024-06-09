@@ -21,6 +21,7 @@ class Global {
   //produksi
   static const String produksiPath = '/produksi';
   static const String readProduksiPath = '/read.php';
+  static const String readProduksiPanenLahanPadiPath = '/produksi_panen_lahan_padi/read.php';
   static const String penyemaianPath = '/penyemaian/create.php';
 
   // perawatan

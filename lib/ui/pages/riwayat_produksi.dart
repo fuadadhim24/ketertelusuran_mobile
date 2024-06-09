@@ -64,9 +64,11 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
               SizedBox(
                 height: 5,
               ),
+              isTanggalProduksi ? SizedBox() : SizedBox(height: 10),
               isTanggalProduksi
                   ? buildSearchContainer()
                   : CustomDatePicker(title: 'Pilih tanggal produksi'),
+              isTanggalProduksi ? SizedBox() : SizedBox(height: 20),
               SizedBox(
                 height: 5,
               ),
@@ -118,7 +120,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                       onTap: toggleSeason,
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        width: MediaQuery.of(context).size.width / 2 -26,
+                        width: MediaQuery.of(context).size.width / 2 - 26,
                         height: 40,
                         decoration: BoxDecoration(
                           color: isTanggalProduksi
@@ -273,42 +275,8 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            buildOption('Semua', isSelected: selectedOption == 0),
-            buildOption('Req', isSelected: selectedOption == 1),
-            buildOption('Selalu', isSelected: selectedOption == 2),
-            buildOption('Jarang', isSelected: selectedOption == 3),
-          ],
-        ),
+        SizedBox(height: 10),
       ],
-    );
-  }
-
-  Widget buildOption(String option, {bool isSelected = false}) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedOption = ['Semua', 'Req', 'Selalu', 'Jarang'].indexOf(option);
-        });
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 17),
-        decoration: BoxDecoration(
-          color: isSelected ? greenColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(13),
-        ),
-        child: Text(
-          option,
-          style: TextStyle(
-            color: isSelected ? whiteContainerColor : txtBlackColor,
-            fontWeight: semiBold,
-          ),
-        ),
-      ),
     );
   }
 
@@ -322,101 +290,25 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
           return Text(
               'Error: ${snapshot.error}'); // Tampilkan pesan error jika terjadi kesalahan
         } else {
-          if (_searchController.text.isEmpty) {
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemCount: produksiList
-                  .length, // Gunakan panjang daftar produksi sebagai itemCount
-              itemBuilder: (context, index) {
-                return isTanggalProduksi
-                    ? produksiList[index]['jenis_musim'] == 'Hujan' &&
-                            (selectedOption == 0 ||
-                                (selectedOption == 1 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Rekomendasi') ||
-                                (selectedOption == 2 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Selalu') ||
-                                (selectedOption == 3 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Jarang'))
-                        ? buildContentCard(
-                            produksiList[index]['varietas'],
-                            produksiList[index]['kategori'],
-                            produksiList[index]['karakteristik_hasil'],
-                          )
-                        : SizedBox()
-                    : produksiList[index]['jenis_musim'] == 'Kemarau' &&
-                            (selectedOption == 0 ||
-                                (selectedOption == 1 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Rekomendasi') ||
-                                (selectedOption == 2 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Selalu') ||
-                                (selectedOption == 3 &&
-                                    produksiList[index]['kategori'] ==
-                                        'Jarang'))
-                        ? buildContentCard(
-                            produksiList[index]['varietas'],
-                            produksiList[index]['kategori'],
-                            produksiList[index]['karakteristik_hasil'],
-                          )
-                        : SizedBox();
-              },
-            );
-          } else {
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemCount: produksiSearchedList
-                  .length, // Gunakan panjang daftar produksi sebagai itemCount
-              itemBuilder: (context, index) {
-                return isTanggalProduksi
-                    ? produksiSearchedList[index]['jenis_musim'] == 'Hujan' &&
-                            (selectedOption == 0 ||
-                                (selectedOption == 1 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Rekomendasi') ||
-                                (selectedOption == 2 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Selalu') ||
-                                (selectedOption == 3 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Jarang'))
-                        ? buildContentCard(
-                            produksiSearchedList[index]['varietas'],
-                            produksiSearchedList[index]['kategori'],
-                            produksiSearchedList[index]['karakteristik_hasil'],
-                          )
-                        : SizedBox()
-                    : produksiSearchedList[index]['jenis_musim'] == 'Kemarau' &&
-                            (selectedOption == 0 ||
-                                (selectedOption == 1 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Rekomendasi') ||
-                                (selectedOption == 2 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Selalu') ||
-                                (selectedOption == 3 &&
-                                    produksiSearchedList[index]['kategori'] ==
-                                        'Jarang'))
-                        ? buildContentCard(
-                            produksiSearchedList[index]['varietas'],
-                            produksiSearchedList[index]['kategori'],
-                            produksiSearchedList[index]['karakteristik_hasil'],
-                          )
-                        : SizedBox();
-              },
-            );
-          }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            itemCount: produksiList
+                .length, // Gunakan panjang daftar produksi sebagai itemCount
+            itemBuilder: (context, index) {
+              return buildContentCard(
+                produksiList[index]['id_produksi'] ?? '',
+                produksiList[index]['tanggal_produksi'] ?? '',
+                produksiList[index]['tanggal_panen'] ?? '',
+              );
+            },
+          );
         }
       },
     );
   }
 
-  Widget buildContentCard(namaProduksi, kategori, karakteristikHasil) {
+  Widget buildContentCard(id, tanggalProduksi, tanggalPanen) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       color: whiteContainerColor,
@@ -432,14 +324,15 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        namaProduksi,
+                        'PB00' + id,
                         style: TextStyle(
                           fontWeight: semiBold,
                         ),
                       ),
                       SizedBox(height: 5),
                       Text(
-                        kategori, // Ganti dengan keterangan sesuai konten
+                        'tanggal Produksi: ' +
+                            tanggalProduksi, // Ganti dengan keterangan sesuai konten
                         style: BlackTextStyle.copyWith(
                           fontSize: 11,
                         ),
@@ -448,7 +341,8 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                       Container(
                         margin: EdgeInsets.only(right: 10),
                         child: Text(
-                          karakteristikHasil, // Ganti dengan informasi sesuai konten
+                          'Tanggal Panen: ' +
+                              tanggalPanen, // Ganti dengan informasi sesuai konten
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: BlackTextStyle.copyWith(
@@ -520,7 +414,9 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
 
   Future<void> readProduksi() async {
     if (produksiList.isEmpty) {
-      final url = Global.serverUrl + Global.produksiPath + Global.readProduksiPath;
+      final url = Global.serverUrl +
+          Global.produksiPath +
+          Global.readProduksiPanenLahanPadiPath;
       final finalUrl = url;
       Response response;
       response = await dio.get(finalUrl);
@@ -528,10 +424,12 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
       var stringResponse = body.toString();
       var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
       if (response.statusCode == 200) {
-        if (body.containsKey('data')) {
+        if (body.containsKey('produksi')) {
           // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
-          produksiList = body['data'];
+          produksiList = body['produksi'];
           // debugPrint(jsonEncode(body));
+          debugPrint(produksiList.toString());
+          debugPrint(produksiList.length.toString());
           // debugPrint('lahanList : $lahanList');
         } else {
           _showWarningSnackBar(context, responseData);
