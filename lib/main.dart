@@ -11,6 +11,7 @@ import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/notifikasi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/password_baru.dart';
 import 'package:ketertelusuran_mobile/ui/pages/pilih_lokasi_page.dart';
+import 'package:ketertelusuran_mobile/ui/pages/read_spk.dart';
 import 'package:ketertelusuran_mobile/ui/pages/read_more.dart';
 import 'package:ketertelusuran_mobile/ui/pages/riwayat_produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/sign_in_page.dart';
@@ -23,6 +24,7 @@ import 'package:ketertelusuran_mobile/ui/pages/penyemaian_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/varietas_padi_page.dart';
 import 'package:ketertelusuran_mobile/ui/pages/lupa_password.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
+import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -52,8 +54,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifikasi', page: () => const NotifikasiPage()),
         GetPage(name: '/tambah-lahan', page: () => const TambahLahanPage()),
         GetPage(
-            name: '/tambah-varietas-padi',
-            page: () => const PenyemaianPage()),
+            name: '/tambah-varietas-padi', page: () => const PenyemaianPage()),
         GetPage(
             name: '/pilih-titik-lokasi-lahan',
             page: () => const PilihLokasiPage()),
@@ -62,6 +63,8 @@ class MyApp extends StatelessWidget {
             name: '/riwayat-produksi', page: () => const RiwayatProduksiPage()),
         GetPage(
             name: '/detail-produksi', page: () => const DetailProduksiPage()),
+        GetPage(
+            name: '/read-spk', page: () => const ReadSPK()),
       ],
     );
   }

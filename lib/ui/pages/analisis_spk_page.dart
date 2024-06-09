@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/searchContainer.dart';
+import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
 class AnalisisSpkPage extends StatefulWidget {
   const AnalisisSpkPage({super.key});
@@ -162,7 +165,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     ),
                   ),
                   Text(
-                    Fase.namaFase != "" ? ('Fase '+Fase.namaFase) : '__',
+                    Fase.namaFase != "" ? ('Fase ' + Fase.namaFase) : '__',
                     style: BlackTextStyle.copyWith(
                       fontSize: 11,
                     ),
@@ -187,8 +190,8 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                   ),
                   Text(
                     Produksi.currentDays != 0
-                              ? 'Hari ke -' + Produksi.currentDays.toString()
-                              : '__',
+                        ? 'Hari ke -' + Produksi.currentDays.toString()
+                        : '__',
                     style: BlackTextStyle.copyWith(
                       fontSize: 11,
                     ),
@@ -412,7 +415,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          // Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
+                          Get.toNamed('/read-spk'); // Add navigation here
                         },
                         child: Row(
                           children: [
