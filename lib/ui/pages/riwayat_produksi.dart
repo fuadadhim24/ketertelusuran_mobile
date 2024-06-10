@@ -23,6 +23,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
   int selectedOption = 0; // Default selected option is "Semua"
   final dio = Dio();
   List<dynamic> produksiList = [];
+  List<dynamic> produksiChoosedList = [];
   List<dynamic> produksiSearchedList = [];
 
   void toggleSeason() {
@@ -38,6 +39,7 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
@@ -353,6 +355,11 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
+                          produksiChoosedList = produksiList.where((produksi) {
+                            String idProduksi = produksi['id'];
+
+                            return idProduksi.contains(id);
+                          }).toList();
                           Get.toNamed(
                               '/detail-produksi'); // Tambahkan aksi ketika tombol "Baca Selengkapnya" ditekan
                         },
@@ -455,5 +462,9 @@ class _RiwayatProduksiPage extends State<RiwayatProduksiPage> {
     setState(() {
       produksiSearchedList = filteredList;
     });
+  }
+
+  void setProduksiChoosed(){
+    
   }
 }
