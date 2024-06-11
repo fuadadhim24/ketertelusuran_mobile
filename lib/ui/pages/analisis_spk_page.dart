@@ -19,6 +19,7 @@ class AnalisisSpkPage extends StatefulWidget {
 }
 
 class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
+  TextEditingController searchController = TextEditingController();
   List<dynamic> hamaDanPenyakitList = [];
   List<dynamic> hamaDanPenyakitChoosedList = [];
   List<dynamic> hamaDanPenyakitSearchedList = [];
@@ -60,9 +61,6 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                 child: ListView(
                   children: [
                     buildContent(),
-                    const SizedBox(
-                      height: 30,
-                    ),
                     buildHamaDanPenyakitContent(),
                     const SizedBox(
                       height: 150,
@@ -342,12 +340,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
       child: Column(
         children: [
           buildHeadingFilter(),
-          SizedBox(
-            height: 5,
-          ),
-          SearchContainer(
-            hintText: 'Cari hama atau penyakit',
-          ),
+          buildSearchContainer(),
         ],
       ),
     );
@@ -362,22 +355,41 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-            ),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: hamaDanPenyakitList.length,
-            itemBuilder: (context, index) {
-              return buildContentCard(
-                hamaDanPenyakitList[index]['id'] ?? '',
-                hamaDanPenyakitList[index]['gambar_path'] ?? '',
-                hamaDanPenyakitList[index]['nama'] ?? '',
-                hamaDanPenyakitList[index]['deskripsi'] ?? '',
-              );
-            },
-          );
+          if (searchController.text.isEmpty) {
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+              ),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: hamaDanPenyakitList.length,
+              itemBuilder: (context, index) {
+                return buildContentCard(
+                  hamaDanPenyakitList[index]['id'] ?? '',
+                  hamaDanPenyakitList[index]['gambar_path'] ?? '',
+                  hamaDanPenyakitList[index]['nama'] ?? '',
+                  hamaDanPenyakitList[index]['deskripsi'] ?? '',
+                );
+              },
+            );
+          } else {
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+              ),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: hamaDanPenyakitSearchedList.length,
+              itemBuilder: (context, index) {
+                return buildContentCard(
+                  hamaDanPenyakitSearchedList[index]['id'] ?? '',
+                  hamaDanPenyakitSearchedList[index]['gambar_path'] ?? '',
+                  hamaDanPenyakitSearchedList[index]['nama'] ?? '',
+                  hamaDanPenyakitSearchedList[index]['deskripsi'] ?? '',
+                );
+              },
+            );
+          }
         }
       },
     );
@@ -406,8 +418,9 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     height: 100,
                     color: whiteBackgroundColor,
                     child: Image(
-                      image: NetworkImage(Global.serverUrl+
-                          Global.imgHamaDanPenyakitPath + fileName),
+                      image: NetworkImage(Global.serverUrl +
+                          Global.imgHamaDanPenyakitPath +
+                          fileName),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -532,5 +545,100 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
     );
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  Widget buildSearchContainer() {
+    return Container(
+      padding: EdgeInsets.all(9),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(13),
+        color: whiteContainerColor,
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            buildSearchAndFilter(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildSearchAndFilter() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: whiteBackgroundColor,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.search,
+                      color: txtBlackColor,
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Cari Varietas Padi',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {
+                  // debugPrint(jsonEncode(padiList));
+                  // debugPrint(jsonEncode(padiList));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: greenColor,
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.filter_alt, color: whiteContainerColor),
+                    onPressed: () {
+                      searchHamaDanPenyakit();
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void searchHamaDanPenyakit() {
+    // Mendapatkan teks yang dimasukkan pengguna pada TextField
+    String searchText = searchController.text.toLowerCase();
+
+    // Menerapkan filter pada daftar padi berdasarkan teks pencarian
+    List<dynamic> filteredList = hamaDanPenyakitList.where((hamaDanPenyakit) {
+      String nama = hamaDanPenyakit['nama'].toLowerCase();
+
+      // Return true jika nama padi atau kategori mengandung teks pencarian
+      return nama.contains(searchText);
+    }).toList();
+    // debugPrint('cek 10');
+    setState(() {
+      hamaDanPenyakitSearchedList = filteredList;
+    });
   }
 }

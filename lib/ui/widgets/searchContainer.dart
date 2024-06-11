@@ -11,8 +11,6 @@ class SearchContainer extends StatefulWidget {
 }
 
 class _SearchContainerState extends State<SearchContainer> {
-  int selectedOption = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -81,46 +79,7 @@ class _SearchContainerState extends State<SearchContainer> {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              buildOption('Semua', isSelected: selectedOption == 0),
-              buildOption('Req', isSelected: selectedOption == 1),
-              buildOption('Selalu', isSelected: selectedOption == 2),
-              buildOption('Jarang', isSelected: selectedOption == 3),
-            ],
-          ),
-        ),
       ],
-    );
-  }
-
-  Widget buildOption(String option, {bool isSelected = false}) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedOption =
-              ['Semua', 'Potensial', 'Selalu', 'Jarang'].indexOf(option);
-        });
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 17),
-        decoration: BoxDecoration(
-          color: isSelected ? greenColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(13),
-        ),
-        child: Text(
-          option,
-          style: TextStyle(
-            color: isSelected ? whiteContainerColor : txtBlackColor,
-            fontWeight: semiBold,
-          ),
-        ),
-      ),
     );
   }
 }
