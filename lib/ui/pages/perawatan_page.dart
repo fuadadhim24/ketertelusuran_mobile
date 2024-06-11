@@ -300,7 +300,7 @@ class _PerawatanPageState extends State<PerawatanPage> {
                       if (tanggalPerawatan != null) {
                         createPerawatan(jenisPerawatan, namaPerawatan, jumlah,
                             kebutuhan, tanggalPerawatan, idProduksi);
-                        Get.back();
+                        Get.offNamed('/home');
                       } else {
                         _showWarningSnackBar(
                             context, 'Silakan pilih tanggal perawatan');
