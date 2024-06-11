@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
+import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
 class ReadSPK extends StatelessWidget {
   const ReadSPK({Key? key}) : super(key: key);
@@ -30,50 +32,45 @@ class ReadSPK extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              width: double.infinity,
+              height: 200,
+              child: Image(
+                image: NetworkImage(Global.serverUrl +
+                    Global.imgHamaDanPenyakitPath +
+                    AnalisisSpkPage.gambarPath),
+                fit: BoxFit.cover,
+              ),
+            ),
             SizedBox(height: 24),
             Text(
-              'Wereng',
+              AnalisisSpkPage.nama,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(height: 10),
-            Text(
-              'Fase Pemupukan',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 20),
             Divider(),
             SizedBox(height: 8),
             Text(
-              'Wereng adalah salah satu hama utama pada tanaman padi. Hama ini dapat menyebabkan kerugian yang signifikan pada hasil panen dan berpotensi menghambat pertumbuhan tanaman secara keseluruhan. Wereng biasanya menyerang tanaman padi pada fase pemupukan dan berbahaya jika tidak dikendalikan dengan tepat.',
+              AnalisisSpkPage.deskripsi,
               style: TextStyle(
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 36),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Penulis: Rizky Pradika',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-                Text(
-                  'Tanggal: 9 Juni 2024',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
+           
           ],
         ),
       ),
