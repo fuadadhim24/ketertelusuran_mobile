@@ -70,7 +70,40 @@ class ReadSPK extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-           
+            SizedBox(height: 24),
+            Text(
+              'Penanggulangan',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              AnalisisSpkPage.penanggulangan,
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 36),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                Text(
+                  'Ditulis: ' + AnalisisSpkPage.createdAt,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
