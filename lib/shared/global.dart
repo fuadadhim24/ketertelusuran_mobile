@@ -38,4 +38,10 @@ class Global {
   // penanaman
   // static const String readCuacaPath = '/cuaca/read.php';
   static const String readCuaca2Path = '/cuaca2/read.php';
+
+  // hama dan penyakit
+  static const String readHamaDanPenyakitPath = '/hama_dan_penyakit/read.php';
+  
+  // iamge hama dan penyakit
+  static const String imgHamaDanPenyakitPath = '/img/hama_dan_penyakit';
 }

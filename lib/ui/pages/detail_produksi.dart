@@ -66,7 +66,7 @@ class DetailProduksiPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             _buildDetailItem(
-                Icons.agriculture, 'Sumber Benih', 'UD. Tani Rejo'),
+                Icons.agriculture, 'ID Produksi', 'PB00023'),
             _buildDetailItem(
                 Icons.scatter_plot_outlined, 'Tingkat Kemurnian', '98%'),
             _buildDetailItem(Icons.verified, 'Tingkat Vigor', '95%'),

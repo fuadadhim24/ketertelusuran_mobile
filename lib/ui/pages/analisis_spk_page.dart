@@ -1,12 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/services/produksi.dart';
+import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/forms.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/searchContainer.dart';
-import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
@@ -18,6 +19,9 @@ class AnalisisSpkPage extends StatefulWidget {
 }
 
 class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
+  List<dynamic> hamaDanPenyakitList = [];
+  List<dynamic> hamaDanPenyakitChoosedList = [];
+  List<dynamic> hamaDanPenyakitSearchedList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +63,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    buildVarietasPadiContent(),
+                    buildHamaDanPenyakitContent(),
                     const SizedBox(
                       height: 150,
                     ),
@@ -349,21 +353,37 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
     );
   }
 
-  Widget buildVarietasPadiContent() {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 14,
-      ),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return buildContentCard();
+  Widget buildHamaDanPenyakitContent() {
+    return FutureBuilder(
+      future: readHamaDanPenyakit(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+            ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: hamaDanPenyakitList.length,
+            itemBuilder: (context, index) {
+              return buildContentCard(
+                hamaDanPenyakitList[index]['id'] ?? '',
+                hamaDanPenyakitList[index]['gambar_path'] ?? '',
+                hamaDanPenyakitList[index]['nama'] ?? '',
+                hamaDanPenyakitList[index]['deskripsi'] ?? '',
+              );
+            },
+          );
+        }
       },
     );
   }
 
-  Widget buildContentCard() {
+  Widget buildContentCard(id, fileName, nama, deskripsi) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       color: whiteContainerColor,
@@ -372,6 +392,11 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              height: 0,
+              width: 0,
+              child: Text(id),
+            ),
             Row(
               children: [
                 ClipRRect(
@@ -380,6 +405,11 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     width: 100,
                     height: 100,
                     color: whiteBackgroundColor,
+                    child: Image(
+                      image: NetworkImage(Global.serverUrl+
+                          Global.imgHamaDanPenyakitPath + fileName),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 SizedBox(width: 14),
@@ -388,7 +418,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Wereng',
+                        nama,
                         style: TextStyle(
                           fontWeight: semiBold,
                         ),
@@ -404,7 +434,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                       Container(
                         margin: EdgeInsets.only(right: 10),
                         child: Text(
-                          'Hama ini mengakibatkan kehilangan hasil dan berpotensi menyebabkan puso pada tanaman padi', // Ganti dengan informasi sesuai konten
+                          deskripsi, // Ganti dengan informasi sesuai konten
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: BlackTextStyle.copyWith(
@@ -444,5 +474,63 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
     return Container(
       child: MapGoogle(),
     );
+  }
+
+  Future<void> readHamaDanPenyakit() async {
+    final url = Global.serverUrl + Global.readHamaDanPenyakitPath;
+    try {
+      Response response = await Dio().get(url);
+      final body = response.data;
+      var stringResponse = body.toString();
+      var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
+      // debugPrint('berhasil 1');
+      if (response.statusCode == 200) {
+        // debugPrint(stringResponse);
+        if (body.containsKey('data')) {
+          hamaDanPenyakitList = body['data'] as List<dynamic>;
+          debugPrint(hamaDanPenyakitList.toString());
+        } else {
+          _showWarningSnackBar(context, 'Data key not found');
+        }
+      } else {
+        _showWarningSnackBar(
+            context, 'Response status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      _showWarningSnackBar(context, error.toString());
+    }
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: greenColor, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
+  }
+
+  // Fungsi untuk menampilkan notifikasi snack bar peringatan jika alamat email atau password kosong
+  void _showWarningSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2), // Durasi notifikasi
+      backgroundColor: Colors.red, // Warna latar belakang notifikasi
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Jari-jari border radius
+      ),
+      behavior: SnackBarBehavior.floating, // Snackbar akan mengambang
+      margin: EdgeInsets.symmetric(
+          vertical: 20, horizontal: 60), // Menerapkan margin
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 }
