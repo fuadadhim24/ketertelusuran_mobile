@@ -12,6 +12,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
 class AnalisisSpkPage extends StatefulWidget {
+  static String id = '';
+  static String nama = '';
+  static String deskripsi = '';
+  static String penanggulangan = '';
+  static String gambarPath = '';
+  static String createdAt = '';
   const AnalisisSpkPage({super.key});
 
   @override
@@ -458,6 +464,16 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
+                          hamaDanPenyakitChoosedList = hamaDanPenyakitList.where((hamaDanPenyakit) {
+                            String id = hamaDanPenyakit['id'];
+
+                            return id.contains(id);
+                          }).toList();
+                          // debugPrint(jsonEncode(padiList));
+                          // debugPrint(jsonEncode(padiChoosedList));
+                          // The argument type 'String' can't be assigned to the parameter type 'int'
+                          // debugPrint(VarietasPadiPage._id);
+                          setPadiChoosed();
                           Get.toNamed('/read-spk'); // Add navigation here
                         },
                         child: Row(
@@ -640,5 +656,14 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
     setState(() {
       hamaDanPenyakitSearchedList = filteredList;
     });
+  }
+
+  void setPadiChoosed() {
+    AnalisisSpkPage.id = hamaDanPenyakitChoosedList[0]['id'].toString();
+    AnalisisSpkPage.nama = hamaDanPenyakitChoosedList[0]['nama'].toString();
+    AnalisisSpkPage.deskripsi = hamaDanPenyakitChoosedList[0]['deskripsi'].toString();
+    AnalisisSpkPage.penanggulangan = hamaDanPenyakitChoosedList[0]['penanggulangan'].toString();
+    AnalisisSpkPage.gambarPath = hamaDanPenyakitChoosedList[0]['gambar_path'].toString();
+    AnalisisSpkPage.createdAt = hamaDanPenyakitChoosedList[0]['created_at'].toString();
   }
 }
