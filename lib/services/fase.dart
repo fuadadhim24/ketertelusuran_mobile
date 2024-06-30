@@ -11,19 +11,20 @@ class Fase {
   static Map<String, List<Map<String, dynamic>>> categorizedValuesMap = {};
   static Map<String, List<Map<String, dynamic>>> currentPhase = {};
   static Future<void> readFaseChoosed(currentDays) async {
-    // debugPrint(HomePage.faseDanPerlakuanList.toString());
-    totalDurasi = hitungTotalDurasi(HomePage.faseDanPerlakuanList);
-    categorizedValuesMap = faseCategorize(HomePage.faseDanPerlakuanList);
-    totalPhase = hitungTotalFase(HomePage.faseDanPerlakuanList);
-    currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDays);
+    // debugPrint(HomePage.faseList.toString());
+    totalDurasi = hitungTotalDurasi(HomePage.faseList);
 
+    // debugPrint('total durasi:' + totalDurasi.toString());
+    categorizedValuesMap = faseCategorize(HomePage.faseList);
+    // debugPrint('categorizedValuesMap:' + categorizedValuesMap.toString());
+    totalPhase = hitungTotalFase(HomePage.faseList);
+    // debugPrint('totalPhase:' + totalPhase.toString());
+    currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDays);
+    // debugPrint('current phase' + currentPhase.toString());
     namaFase = currentPhase.values.first[0]['nama_fase'];
-    // debugPrint(currentPhase.toString());
-    // debugPrint(HomePage.faseDanPerlakuanList.toString());
-    // debugPrint(currentPhase.toString());
-    // debugPrint(totalDurasi.toString());
-    // debugPrint(categorizedValuesMap.toString());
-    // debugPrint(totalPhase.toString());
+    // debugPrint('nama Fase:' + currentPhase.toString());
+
+    // debugPrint(HomePage.faseList.toString());
   }
 
   static double hitungTotalDurasi(List<dynamic> list) {
@@ -71,6 +72,7 @@ class Fase {
       }
 
       categorizedValues[faseName]?.add(value);
+      // debugPrint(categorizedValues.toString());
     });
 
     // Sort the categorized values
@@ -109,13 +111,16 @@ class Fase {
     // debugPrint("keyList: $keysList");
     // debugPrint("totalData: $totalData");
 
+    // debugPrint('PHASES:' + phases.toString());
     for (String key in keysList) {
-      // debugPrint(phases[key]![0]['durasi'].toString());
       double doubleRangePhase =
           double.parse(phases[key]![0]['durasi'].toString());
+
       int intMaxRangePhase = doubleRangePhase.toInt();
       maxRangePhase += intMaxRangePhase;
+      // debugPrint("doubleRangePhase: $doubleRangePhase");
       // debugPrint("MinRangePhase: $minRangePhase");
+      // debugPrint("MaxRangePhase: $maxRangePhase");
       // debugPrint("CurrentDay: $currentDay");
       if (minRangePhase < currentDay && currentDay < maxRangePhase) {
         currentPhase = {
@@ -124,7 +129,6 @@ class Fase {
         // debugPrint(currentPhase.toString());
       }
       minRangePhase = intMaxRangePhase;
-      // debugPrint("MaxRangePhase: $maxRangePhase");
     }
     return currentPhase;
   }

@@ -32,8 +32,8 @@ class _TambahLahanPage extends State<TambahLahanPage> {
     // TODO: implement initState
     // readLahan();
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +190,6 @@ class _TambahLahanPage extends State<TambahLahanPage> {
                 String detailLokasi = _detailLokasiController.text.toString();
                 String luas = _luasController.text.toString();
                 String jenisTanah = _jenisTanahController.text.toString();
-                String status = 'Tersedia';
                 // debugPrint(TambahLahanPage.resultLatitude);
                 // debugPrint(TambahLahanPage.resultLongitude);
                 // debugPrint(_lahanController.text.toString()
@@ -202,7 +201,7 @@ class _TambahLahanPage extends State<TambahLahanPage> {
                 // debugPrint(_luasController.text.toString());
                 // debugPrint(_jenisTanahController.text.toString());
                 createLahan(latitude, longitude, namaLahan, detailLokasi, luas,
-                    jenisTanah, status);
+                    jenisTanah);
               }
               ;
             },
@@ -245,8 +244,8 @@ class _TambahLahanPage extends State<TambahLahanPage> {
         .showSnackBar(snackBar); // Menampilkan notifikasi
   }
 
-  void createLahan(latitude, longitude, namaLahan, detailLokasi, luas,
-      jenisTanah, status) async {
+  void createLahan(
+      latitude, longitude, namaLahan, detailLokasi, luas, jenisTanah) async {
     final url = Global.serverUrl + Global.createLahanPath;
     final headers = {'Content-Type': 'application/json'};
     final data = {
@@ -255,8 +254,9 @@ class _TambahLahanPage extends State<TambahLahanPage> {
       'luas': luas,
       'latitude': latitude,
       'longitude': longitude,
-      'status': status,
+      'jenis_tanah': jenisTanah,
     };
+    debugPrint(data.toString());
     try {
       final response = await dioP.Dio().post(
         url,
@@ -280,5 +280,4 @@ class _TambahLahanPage extends State<TambahLahanPage> {
       _showWarningSnackBar(context, 'Error $e');
     }
   }
-
 }

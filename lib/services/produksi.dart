@@ -8,6 +8,9 @@ class Produksi {
   static int? currentDays;
   static Future<void> readProduksiPanenChoosed(idLahan, panenList) async {
     currentDays = null;
+    Fase.namaFase = '';
+    produksiNonPanenChoosedList.clear();
+
     // debugPrint(HomePage.panenList.toString());
     // debugPrint(HomePage.produksiList.toString());
     produksiChoosedList = HomePage.produksiList.firstWhere(
@@ -29,8 +32,8 @@ class Produksi {
         produksiNonPanenChoosedList = produksi;
       }
     }
-    // debugPrint(produksiNonPanenChoosedList.toString());
-    // debugPrint(idLahan.toString());
+    debugPrint(produksiNonPanenChoosedList.toString());
+    debugPrint(idLahan.toString());
     if (produksiNonPanenChoosedList['id_lahan'] == idLahan) {
       // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
       String tanggalProduksiString =
@@ -40,12 +43,18 @@ class Produksi {
       // debugPrint('Current Days: $currentDays');
       // debugPrint(produksiNonPanenChoosedList['id']);
       // FASE
-      await Produksi.pencatatanChoosedProduksi(produksiNonPanenChoosedList['id']);
+      await Produksi.pencatatanChoosedProduksi(
+          produksiNonPanenChoosedList['id']);
       if (currentDays != null) {
         Fase.readFaseChoosed(currentDays);
       }
+
+      HomePage.spkTitle = 'S';
+      HomePage.spkSubTitle = 'S';
     } else {
       currentDays = 0;
+      HomePage.spkTitle = '';
+      HomePage.spkSubTitle = '';
       Fase.namaFase = "";
       produksiNonPanenChoosedList = {'null': 'null'};
     }
@@ -58,7 +67,7 @@ class Produksi {
     return daysDuringProduksi;
   }
 
-  static Future<void> pencatatanChoosedProduksi(String idProduksi) async{
+  static Future<void> pencatatanChoosedProduksi(String idProduksi) async {
     for (var item in HomePage.pencatatanList) {
       if (item.containsKey('id_produksi') &&
           item['id_produksi'] == idProduksi) {

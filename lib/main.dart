@@ -63,8 +63,7 @@ class MyApp extends StatelessWidget {
             name: '/riwayat-produksi', page: () => const RiwayatProduksiPage()),
         GetPage(
             name: '/detail-produksi', page: () => const DetailProduksiPage()),
-        GetPage(
-            name: '/read-spk', page: () => const ReadSPK()),
+        GetPage(name: '/read-spk', page: () => const ReadSPK()),
       ],
     );
   }

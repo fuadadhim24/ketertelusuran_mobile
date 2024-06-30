@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/services/validator.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
@@ -401,6 +402,11 @@ class _PanenPageState extends State<PanenPage> {
         final responseData = response.data;
         if (responseData.containsKey('success')) {
           _showSuccessSnackBar(context, 'Panen berhasil ditambahkan!');
+          // Get.offAndToNamed('/home');
+          Fase.namaFase = '';
+          HomePage.spkSubTitle = '';
+          HomePage.spkTitle = '';
+          debugPrint(Fase.namaFase);
           Get.offNamed('/home');
         } else {
           _showWarningSnackBar(context, responseData);

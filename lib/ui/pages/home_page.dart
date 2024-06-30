@@ -29,9 +29,12 @@ class HomePage extends StatefulWidget {
   static Map<String, dynamic> produksiNonPanenChoosedList = {};
   static List<dynamic> faseDanPerlakuanList = [];
   static List<dynamic> pencatatanList = [];
+  static List<dynamic> faseList = [];
   static List<dynamic> pencatatanProduksiChoosedList = [];
   static String namaLahan = '';
   static String? namaPadi;
+  static String spkTitle = '';
+  static String spkSubTitle = '';
   const HomePage({Key? key});
 
   @override
@@ -543,7 +546,9 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Waspada Terhadap Ilalang',
+                  HomePage.spkTitle == ''
+                      ? 'Lakukan penyemaian terlebih dahulu'
+                      : 'Waktu yang tepat untuk panen',
                   style: BlackTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
@@ -551,7 +556,9 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  'Rekomendasi bersihkan 1/2 bulan sekali',
+                  HomePage.spkSubTitle == ''
+                      ? 'Atau pilih lahan yang ingin anda gunakan'
+                      : 'Rekomendasi pastikan padi siap dipanen',
                   style: BlackTextStyle.copyWith(
                     fontSize: 12,
                   ),
@@ -971,16 +978,19 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       if (body.containsKey('produksi') &&
           body.containsKey('pencatatan') &&
-          body.containsKey('fase_dan_perlakuan_utama')) {
+          body.containsKey('fase_dan_perlakuan_utama') &&
+          body.containsKey('fase')) {
         // _showSuccessSnackBar(context,'Berhasil Mendapatkan Data Lahan');
         _isLoaded = true;
         HomePage.produksiList = body['produksi']['produksi'];
         HomePage.pencatatanList = body['pencatatan']['pencatatan'];
+        HomePage.faseList = body['fase']['fase'];
         HomePage.faseDanPerlakuanList =
             body['fase_dan_perlakuan_utama']['fase_dan_perlakuan_utama'];
         if (HomePage.produksiList.isNotEmpty &&
             HomePage.pencatatanList.isNotEmpty &&
-            HomePage.faseDanPerlakuanList.isNotEmpty) {
+            HomePage.faseDanPerlakuanList.isNotEmpty &&
+            HomePage.faseList.isNotEmpty) {
           // debugPrint(HomePage.produksiList.toString());
           // debugPrint(HomePage.idLahan);
           // debugPrint(HomePage.faseDanPerlakuanList.toString());
@@ -989,7 +999,6 @@ class _HomePageState extends State<HomePage> {
           // PRODUKSI
           await Produksi.readProduksiPanenChoosed(
               HomePage.idLahan, HomePage.panenList);
-
           _isLoaded = true;
         }
       } else {
@@ -1123,43 +1132,6 @@ class _HomePageState extends State<HomePage> {
       _showWarningSnackBar(context, responseData);
     }
   }
-
-  // Future<void> readCuaca(lat, lon) async {
-  //   final url = Global.serverUrl + Global.readCuacaPath;
-  //   final headers = {'Content-Type': 'application/json'};
-  //   final data = {
-  //     'lat': lat,
-  //     'lon': lon,
-  //   };
-
-  //   try {
-  //     final response = await Dio().get(
-  //       url,
-  //       data: jsonEncode(data),
-  //       options: Options(headers: headers),
-  //     );
-  //     // debugPrint(jsonEncode(data));
-  //     final body = response.data;
-  //     var stringResponse = body.toString();
-  //     var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
-
-  //     if (response.statusCode == 200) {
-  //       if (body.containsKey('data')) {
-  //         HomePage.cuacaList = body['data'];
-  //         // debugPrint(HomePage.cuacaList.toString());
-  //         debugPrint(HomePage.cuacaList.values.toString());
-  //         setCuaca(HomePage.cuacaList);
-  //       } else {
-  //         _showWarningSnackBar(context, responseData);
-  //       }
-  //     } else {
-  //       _showWarningSnackBar(context, 'Gagal mendapatkan data cuaca');
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     _showWarningSnackBar(context, 'Error $e');
-  //   }
-  // }
 
   Future<void> readCuaca2(lat, lon) async {
     final url = Global.serverUrl + Global.readCuaca2Path;
