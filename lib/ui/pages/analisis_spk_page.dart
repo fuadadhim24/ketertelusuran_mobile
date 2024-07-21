@@ -252,7 +252,7 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                   ],
                 ),
                 Container(
-                  width: 94,
+                  width: 96,
                   height: 22,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(13),
@@ -262,19 +262,10 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Lihat semua',
+                        'Rekomendasi',
                         style: BlackTextStyle.copyWith(
                           fontSize: 10,
                           fontWeight: semiBold,
-                        ),
-                      ),
-                      Container(
-                        width: 13,
-                        height: 13,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/ic_forward.png'),
-                          ),
                         ),
                       ),
                     ],
@@ -297,14 +288,14 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                 Row(
                   children: [
                     Text(
-                      'Dalam 19 hari',
+                      '- ',
                       style: WhiteTextStyle.copyWith(
                         fontSize: 12,
                         fontWeight: semiBold,
                       ),
                     ),
                     Text(
-                      ' - Kendalikan serangan wereng padi',
+                      Fase.namaPerlakuan != "" ? (Fase.namaPerlakuan) : '__',
                       style: WhiteTextStyle.copyWith(
                         fontSize: 12,
                       ),
@@ -464,7 +455,8 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
                       SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          hamaDanPenyakitChoosedList = hamaDanPenyakitList.where((hamaDanPenyakit) {
+                          hamaDanPenyakitChoosedList =
+                              hamaDanPenyakitList.where((hamaDanPenyakit) {
                             String id = hamaDanPenyakit['id'];
 
                             return id.contains(id);
@@ -661,9 +653,15 @@ class _AnalisisSpkPageState extends State<AnalisisSpkPage> {
   void setPadiChoosed() {
     AnalisisSpkPage.id = hamaDanPenyakitChoosedList[0]['id'].toString();
     AnalisisSpkPage.nama = hamaDanPenyakitChoosedList[0]['nama'].toString();
-    AnalisisSpkPage.deskripsi = hamaDanPenyakitChoosedList[0]['deskripsi'].toString();
-    AnalisisSpkPage.penanggulangan = hamaDanPenyakitChoosedList[0]['penanggulangan'].toString();
-    AnalisisSpkPage.gambarPath = hamaDanPenyakitChoosedList[0]['gambar_path'].toString();
-    AnalisisSpkPage.createdAt = hamaDanPenyakitChoosedList[0]['created_at'].toString();
+    AnalisisSpkPage.deskripsi =
+        hamaDanPenyakitChoosedList[0]['deskripsi'].toString();
+    AnalisisSpkPage.penanggulangan =
+        hamaDanPenyakitChoosedList[0]['penanggulangan'].toString();
+    AnalisisSpkPage.gambarPath =
+        hamaDanPenyakitChoosedList[0]['gambar_path'].toString();
+        debugPrint(AnalisisSpkPage.gambarPath);
+    AnalisisSpkPage.createdAt =
+        hamaDanPenyakitChoosedList[0]['created_at'].toString();
   }
+
 }

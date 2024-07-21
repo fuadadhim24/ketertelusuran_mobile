@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
@@ -51,20 +53,21 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: List.generate(
-                          10,
-                          (index) => Column(
-                                children: [
-                                  buildNotifikasiItem(
-                                    judul: 'Judul Notifikasi ${index + 1}',
-                                    isi: 'Isi notifikasi ${index + 1}',
-                                    tanggal:
-                                        '${index + 24} April 2024', // Contoh tanggal
-                                    sudahDibaca: allRead,
-                                  ),
-                                  if (index < 9)
-                                    Divider(), // Add divider between items except the last one
-                                ],
-                              )),
+                        10,
+                        (index) => Column(
+                          children: [
+                            buildNotifikasiItem(
+                              judul: 'Judul Notifikasi ${index + 1}',
+                              isi: 'Isi notifikasi ${index + 1}',
+                              tanggal:
+                                  '${index + 24} April 2024', // Contoh tanggal
+                              sudahDibaca: allRead,
+                            ),
+                            if (index < 9)
+                              Divider(), // Add divider between items except the last one
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -98,6 +101,36 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
                           offset: Offset(0, 4),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              left: 20,
+              right: 20,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: Text(
+                      'Next Update JejakPadi',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 10.0,
+                            color: Colors.black26,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

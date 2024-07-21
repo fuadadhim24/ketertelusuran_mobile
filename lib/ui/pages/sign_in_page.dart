@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' as getX;
 import 'package:ketertelusuran_mobile/services/auth.dart';
+import 'package:ketertelusuran_mobile/services/sessionManager.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
@@ -247,7 +248,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     var responseData = stringResponse.replaceAll('{', '').replaceAll('}', '');
     if (response.statusCode == 200) {
       if (body.containsKey('data')) {
-        saveSession(email);
+        await SessionManager.saveEmail(email);
         _showSuccessSnackBar(context);
         SignInPage.idUser = body['data']['id'];
         SignInPage.namaUser = body['data']['name'];

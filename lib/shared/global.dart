@@ -43,5 +43,5 @@ class Global {
   static const String readHamaDanPenyakitPath = '/hama_dan_penyakit/read.php';
   
   // iamge hama dan penyakit
-  static const String imgHamaDanPenyakitPath = '/img/hama_dan_penyakit';
+  static const String imgHamaDanPenyakitPath = '/img/hama_dan_penyakit/';
 }

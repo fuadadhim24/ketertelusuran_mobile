@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ketertelusuran_mobile/services/sessionManager.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/detail_pengolahan.dart';
 import 'package:ketertelusuran_mobile/ui/pages/detail_produksi.dart';
@@ -26,16 +27,23 @@ import 'package:ketertelusuran_mobile/ui/pages/lupa_password.dart';
 import 'package:ketertelusuran_mobile/ui/widgets/map.dart';
 import 'package:ketertelusuran_mobile/ui/pages/analisis_spk_page.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final String? savedEmail = await SessionManager.getEmail();
+
+  runApp(MyApp(initialRoute: savedEmail != null ? '/home' : '/'));
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+
+  const MyApp({required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: initialRoute,
       getPages: [
         GetPage(name: '/', page: () => const SplashPage()),
         GetPage(name: '/onboarding', page: () => const OnBoardingPage()),

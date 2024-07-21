@@ -7,6 +7,7 @@ import 'package:get/get.dart' hide Response;
 import 'package:ketertelusuran_mobile/services/auth.dart';
 import 'package:ketertelusuran_mobile/services/fase.dart';
 import 'package:ketertelusuran_mobile/services/produksi.dart';
+import 'package:ketertelusuran_mobile/services/sessionManager.dart';
 import 'package:ketertelusuran_mobile/shared/global.dart';
 import 'package:ketertelusuran_mobile/shared/theme.dart';
 import 'package:ketertelusuran_mobile/ui/pages/tambah_lahan_page.dart';
@@ -244,21 +245,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            // Jarak antara tombol Riwayat Produksi dan tombol Keluar
             SizedBox(height: 20),
             // Keluar Button
             GestureDetector(
               onTap: () {
-                Auth authOption = Auth();
-                authOption.signOut();
+                handleLogout();
               },
               child: Container(
-                width: 160, // Increased width of the Keluar Button
-                height: 50, // Match parent width
+                width: 160,
+                height: 50,
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25), // Rounded corners
-                  color: greenColor, // Green background color
+                  borderRadius: BorderRadius.circular(25), 
+                  color: greenColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -403,8 +402,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: HomePage.latitude == null || HomePage.longitude == null
                       ? Center(
-                          child:
-                              CircularProgressIndicator(),
+                          child: CircularProgressIndicator(),
                         )
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -560,9 +558,7 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  Fase.namaPerlakuan != ""
-                              ? Fase.namaPerlakuan
-                              : '__',
+                  Fase.namaPerlakuan != "" ? Fase.namaPerlakuan : '__',
                   style: BlackTextStyle.copyWith(
                     fontSize: 12,
                   ),
@@ -1231,5 +1227,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void handleLogout() {
+    SessionManager.clearSession();
+    debugPrint('berhasil');
+
+    Get.offAllNamed('/');
   }
 }

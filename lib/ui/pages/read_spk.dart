@@ -13,7 +13,7 @@ class ReadSPK extends StatelessWidget {
         toolbarHeight: 88,
         centerTitle: true,
         title: Text(
-          'Informasi Analisis SPK',
+          'Informasi Penanggulangan',
           style: TextStyle(
             fontFamily: 'NYTCheltenham',
             fontWeight: FontWeight.bold,
