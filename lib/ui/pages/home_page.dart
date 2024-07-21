@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
   static String latitude = '';
   static String longitude = '';
   static String jenisTanah = '';
+  static String perlakuan = '';
   static List<dynamic> lahanList = [];
   static List<dynamic> panenList = [];
   static List<dynamic> produksiList = [];
@@ -400,46 +401,51 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        alamat,
-                        style: BlackTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: semiBold,
+                  child: HomePage.latitude == null || HomePage.longitude == null
+                      ? Center(
+                          child:
+                              CircularProgressIndicator(),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              alamat,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              width: 63,
+                              height: 63,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: yellowColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '$tempC °',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              namaCuaca,
+                              style: TextStyle(
+                                fontSize: 10,
+                              ),
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        width: 63,
-                        height: 63,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: yellowColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        tempC + '°',
-                        style: BlackTextStyle.copyWith(
-                          fontSize: 32,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        namaCuaca,
-                        style: BlackTextStyle.copyWith(
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
               const SizedBox(
@@ -546,9 +552,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  HomePage.spkTitle == ''
-                      ? 'Lakukan penyemaian terlebih dahulu'
-                      : 'Waktu yang tepat untuk panen',
+                  'Rekomendasi Perlakuan',
                   style: BlackTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
@@ -556,9 +560,7 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  HomePage.spkSubTitle == ''
-                      ? 'Atau pilih lahan yang ingin anda gunakan'
-                      : 'Rekomendasi pastikan padi siap dipanen',
+                  Fase.namaPerlakuan,
                   style: BlackTextStyle.copyWith(
                     fontSize: 12,
                   ),
@@ -1007,7 +1009,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       _showWarningSnackBar(context, responseData);
     }
-    await readCuaca2(HomePage.latitude, HomePage.longitude);
+    readCuaca2(HomePage.latitude, HomePage.longitude);
   }
 
   void lahanDefault() {

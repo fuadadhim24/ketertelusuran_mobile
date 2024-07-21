@@ -4,45 +4,40 @@ import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
 
 class Produksi {
   static Map<String, dynamic> produksiChoosedList = {};
-  static Map<String, dynamic> produksiNonPanenChoosedList = {};
+  static Map<String, dynamic> produksiNonPanenChoosedList = {}; // Inisialisasi
   static int? currentDays;
+
   static Future<void> readProduksiPanenChoosed(idLahan, panenList) async {
     currentDays = null;
     Fase.namaFase = '';
-    produksiNonPanenChoosedList.clear();
 
-    // debugPrint(HomePage.panenList.toString());
-    // debugPrint(HomePage.produksiList.toString());
+    // Pastikan inisialisasi jika belum diinisialisasi
+    if (produksiNonPanenChoosedList == null) {
+      produksiNonPanenChoosedList = {};
+    } else {
+      produksiNonPanenChoosedList
+          .clear(); // Bersihkan jika sudah ada data sebelumnya
+    }
+
     produksiChoosedList = HomePage.produksiList.firstWhere(
       (produksi) => produksi['id_lahan'] == idLahan,
       orElse: () => {'null': 'null'},
     );
-    // debugPrint('Produksi Choosed List: $produksiChoosedList');
-    // panenList.forEach((panen) {
-    //     if (produksiChoosedList['id'] != panen['id_produksi']) {
 
-    //     }
-    //   });
-    // Produksi.produksiNonPanenChoosedList = Produksi.produksiNonPanenChoosedList.
-    // debugPrint(panenList.toString());
-    // debugPrint(Produksi.produksiChoosedList.toString());
-    // debugPrint(Produksi.produksiAllChoosedList.toString());
     for (var produksi in HomePage.produksiList) {
       if (!panenList.any((panen) => panen['id_produksi'] == produksi['id'])) {
-        produksiNonPanenChoosedList = produksi;
+        produksiNonPanenChoosedList.addAll(
+            produksi); // Gunakan .addAll() untuk menambahkan data ke Map
       }
     }
-    debugPrint(produksiNonPanenChoosedList.toString());
-    debugPrint(idLahan.toString());
-    if (produksiNonPanenChoosedList['id_lahan'] == idLahan) {
-      // debugPrint(Produksi.produksiNonPanenChoosedList.toString());
+
+    if (produksiNonPanenChoosedList.isNotEmpty &&
+        produksiNonPanenChoosedList['id_lahan'] == idLahan) {
       String tanggalProduksiString =
           produksiNonPanenChoosedList['tanggal_produksi'];
       currentDays = calculateCurrentDays(tanggalProduksiString);
       HomePage.idProduksi = produksiNonPanenChoosedList['id'];
-      // debugPrint('Current Days: $currentDays');
-      // debugPrint(produksiNonPanenChoosedList['id']);
-      // FASE
+
       await Produksi.pencatatanChoosedProduksi(
           produksiNonPanenChoosedList['id']);
       if (currentDays != null) {
@@ -60,7 +55,7 @@ class Produksi {
     }
   }
 
-  static int calculateCurrentDays(tanggalProduksiString) {
+  static int calculateCurrentDays(String tanggalProduksiString) {
     DateTime tanggalProduksi = DateTime.parse(tanggalProduksiString);
     Duration differenceDay = DateTime.now().difference(tanggalProduksi);
     int daysDuringProduksi = differenceDay.inDays + 1;
@@ -74,6 +69,5 @@ class Produksi {
         HomePage.pencatatanProduksiChoosedList.add(item);
       }
     }
-    // debugPrint(HomePage.pencatatanProduksiChoosedList.toString());
   }
 }

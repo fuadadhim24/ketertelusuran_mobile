@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:ketertelusuran_mobile/services/produksi.dart';
 import 'package:ketertelusuran_mobile/ui/pages/home_page.dart';
@@ -8,10 +10,13 @@ class Fase {
   static double? totalDurasi;
   static int totalPhase = 0;
   static String namaFase = "";
+  static String namaPerlakuan = "";
   static Map<String, List<Map<String, dynamic>>> categorizedValuesMap = {};
   static Map<String, List<Map<String, dynamic>>> currentPhase = {};
+  static List<Map<String, dynamic>> hasilPerlakuanList = [];
   static Future<void> readFaseChoosed(currentDays) async {
-    // debugPrint(HomePage.faseList.toString());
+    // debugPrint(HomePage.faseDanPerlakuanList.toString());
+
     totalDurasi = hitungTotalDurasi(HomePage.faseList);
 
     // debugPrint('total durasi:' + totalDurasi.toString());
@@ -22,7 +27,11 @@ class Fase {
     currentPhase = Fase.currentPhaseList(categorizedValuesMap, currentDays);
     // debugPrint('current phase' + currentPhase.toString());
     namaFase = currentPhase.values.first[0]['nama_fase'];
-    // debugPrint('nama Fase:' + currentPhase.toString());
+
+    hasilPerlakuanList =
+        prosesPerulanganPerlakuan(HomePage.faseDanPerlakuanList);
+    // debugPrint('nama Fase:' + hasilPerlakuanList.toString());
+    currentPerlakuan(hasilPerlakuanList, currentDays);
 
     // debugPrint(HomePage.faseList.toString());
   }
@@ -131,5 +140,55 @@ class Fase {
       minRangePhase = intMaxRangePhase;
     }
     return currentPhase;
+  }
+
+  static List<Map<String, dynamic>> prosesPerulanganPerlakuan(
+      faseDanPerlakuanList) {
+    List<Map<String, dynamic>> hasilPerulangan = [];
+
+    // Proses perulangan dan duplikasi berdasarkan durasi perlakuan
+    for (var item in faseDanPerlakuanList) {
+      int durasi = int.tryParse(item['durasi_perlakuan_utama']) ??
+          1; // Default jika parsing gagal
+
+      for (int i = 0; i < durasi; i++) {
+        Map<String, dynamic> duplicatedItem = {
+          'id_perlakuan_utama': item['id_perlakuan_utama'],
+          'nama_perlakuan_utama': item['nama_perlakuan_utama'],
+          'hari_perlakuan_utama': item['hari_perlakuan_utama'],
+          'durasi_perlakuan_utama': item['durasi_perlakuan_utama'],
+          'id_fase': item['id_fase'],
+          'nama_fase': item['nama_fase'],
+          'durasi_fase': item['durasi_fase'],
+          'fase_deleted_at': item['fase_deleted_at'],
+          'fase_created_at': item['fase_created_at'],
+          'fase_updated_at': item['fase_updated_at'],
+          'perlakuan_utama_deleted_at': item['perlakuan_utama_deleted_at'],
+          'perlakuan_utama_created_at': item['perlakuan_utama_created_at'],
+          'perlakuan_utama_updated_at': item['perlakuan_utama_updated_at'],
+        };
+
+        hasilPerulangan.add(duplicatedItem);
+      }
+    }
+
+    return hasilPerulangan;
+  }
+
+  static void currentPerlakuan(hasilPerlakuanList, currentDay) {
+    int index = 1; 
+
+    if (index >= 0 && index < hasilPerlakuanList.length) {
+      Map<String, dynamic> data = hasilPerlakuanList[index];
+      // debugPrint('Data pada indeks $index:');
+      // debugPrint('id_perlakuan_utama: ${data['id_perlakuan_utama']}');
+      debugPrint('nama_perlakuan_utama: ${data['nama_perlakuan_utama']}');
+      namaPerlakuan = data['nama_perlakuan_utama'];
+      // debugPrint('durasi_perlakuan_utama: ${data['durasi_perlakuan_utama']}');
+
+      // tambahkan sesuai kebutuhan untuk data lainnya
+    } else {
+      debugPrint('Indeks $index tidak valid atau di luar rentang.');
+    }
   }
 }
