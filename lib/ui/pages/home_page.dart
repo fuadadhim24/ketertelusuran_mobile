@@ -560,7 +560,9 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  Fase.namaPerlakuan,
+                  Fase.namaPerlakuan != ""
+                              ? Fase.namaPerlakuan
+                              : '__',
                   style: BlackTextStyle.copyWith(
                     fontSize: 12,
                   ),

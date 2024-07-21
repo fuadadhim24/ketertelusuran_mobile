@@ -10,6 +10,7 @@ class Produksi {
   static Future<void> readProduksiPanenChoosed(idLahan, panenList) async {
     currentDays = null;
     Fase.namaFase = '';
+    Fase.namaPerlakuan  = '';
 
     // Pastikan inisialisasi jika belum diinisialisasi
     if (produksiNonPanenChoosedList == null) {
